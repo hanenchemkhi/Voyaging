@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.3/font/bootstrap-icons.min.css"
+      integrity="sha512-YFENbnqHbCRmJt5d+9lHimyEMt8LKSNTMLSaHjvsclnZGICeY/0KYEeiHwD1Ux4Tcao0h60tdcMv+0GljvWyHg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="./static/css/styles.css" />
+    <script src="./static/scripts/script.js" defer></script>
+
+    <title>Reservations</title>
+  </head>
+  <body>
+    <section class="header">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+        <div class="container py-2 px-5">
+          <a class="navbar-brand" href="index.html">
+            <img
+              src="./static/images/logo.png"
+              alt=""
+              width="30"
+              height="24"
+              class="d-inline-block align-text-top"
+            />
+            Voyaging
+          </a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarColor01"
+            aria-controls="navbarColor01"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div
+            class="collapse navbar-collapse justify-content-center"
+            id="navbarColor01"
+          ></div>
+
+          <div class="collapse navbar-collapse" id="navbarColor01">
+            <ul class="navbar-nav me-5">
+              <li class="nav-item">
+                <a class="nav-link" href="dashboard.html">Dashboard</a>
+              </li>
+            </ul>
+            <ul class="navbar-nav me-auto">
+              <li class="nav-item">
+                <a class="nav-link active" href="customers.html"
+                  >Customers
+                  <span class="visually-hidden">(current)</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="rooms.html">Rooms</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="reservations.html">Reservations</a>
+              </li>
+            </ul>
+            <ul class="navbar-nav ms-auto">
+              <li class="nav-item">
+                <a class="nav-link" href="#">Logout</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </section>
+    <main>
+      <div class="container mt-5">
+        <div><h1>Reservations</h1></div>
+        <div>
+          <ul class="nav nav-pills">
+            <li class="nav-item">
+              <button
+                id="addReservation"
+                type="button"
+                class="btn btn-primary"
+                onclick="showReservationModal()"
+              >
+                Add Reservation<span class="ms-2"
+                  ><i class="bi bi-plus-circle"></i
+                ></span>
+              </button>
+            </li>
+            <li class="nav-item ms-auto">
+              <input
+                type="text"
+                id="searchReservationBox"
+                onkeyup="searchEntry('searchReservationBox','reservationTable', 4)"
+                placeholder="Search by number"
+                title="Type in reservation number"
+              />
+            </li>
+          </ul>
+        </div>
+        <table id="reservationTable" class="table table-striped" ;>
+          <thead>
+            <tr>
+              <th scope="col"></th>
+              <th scope="col"></th>
+              <th scope="col">#</th>
+              <th scope="col">Reservation Number</th>
+              <th scope="col">Room Number</th>
+              <th scope="col">Customer Email</th>
+              <th scope="col">Customer Name</th>
+              <th scope="col">Check In</th>
+              <th scope="col">Check Out</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row"></th>
+              <td>
+                <button class="btn btn-success" type="submit">
+                  <span class="material-symbols-outlined"> print </span>
+                </button>
+                <button
+                  id="editReservation"
+                  class="btn btn-primary"
+                  type="submit"
+                  onclick="showReservationModal()"
+                >
+                  <span class="material-symbols-outlined"> edit </span>
+                </button>
+                <button class="btn btn-danger" type="submit">
+                  <span class="material-symbols-outlined"> delete </span>
+                </button>
+              </td>
+              <td>1</td>
+              <td>Otto</td>
+              <td>@mdo</td>
+              <td>Mark</td>
+              <td>@mdo</td>
+              <td>Mark</td>
+              <td>Mark</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="container">
+        <div
+          id="reservationModal"
+          class="modal fade"
+          data-bs-backdrop="static"
+          data-bs-keyboard="false"
+          tabindex="-1"
+          aria-labelledby="reservationModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="reservationModalLabel">
+                  Add/Edit Reservation
+                </h1>
+              </div>
+              <div class="modal-body">
+                <div class="container">
+                  <h4 class="mb-3 text-center">Reservation Information</h4>
+                  <form class="needs-validation" novalidate>
+                    <div class="gy-3">
+                      <div class="col">
+                        <label for="roomNumber" class="form-label"
+                          >Room Number</label
+                        >
+                        <input
+                          id="roomNumber"
+                          type="text"
+                          class="form-control"
+                          placeholder=""
+                          value=""
+                          required
+                        />
+                        <div class="invalid-feedback">
+                          Valid room number is required.
+                        </div>
+                      </div>
+
+                      <div class="col">
+                        <label for="customerEmail" class="form-label"
+                          >Customer email</label
+                        >
+                        <input
+                          id="customerEmail"
+                          type="email"
+                          class="form-control"
+                          placeholder=""
+                          value=""
+                          required
+                        />
+                        <div class="invalid-feedback">
+                          Valid email is required.
+                        </div>
+                      </div>
+                      <div class="col">
+                        <label for="checkin" class="form-label">Check In</label>
+                        <input
+                          id="checkin"
+                          type="date"
+                          class="form-control"
+                          placeholder=""
+                          value=""
+                          required
+                        />
+                        <div class="invalid-feedback">
+                          Valid date is required.
+                        </div>
+                      </div>
+                      <div class="col">
+                        <label for="checkout" class="form-label"
+                          >Check Out</label
+                        >
+                        <input
+                          id="checkout"
+                          type="date"
+                          class="form-control"
+                          placeholder=""
+                          value=""
+                          required
+                        />
+                        <div class="invalid-feedback">
+                          Valid date is required.
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  Close
+                </button>
+                <button type="button" class="btn btn-primary">
+                  Save changes
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Optional JavaScript; choose one of the two! -->
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      function showReservationModal() {
+        const myModal = new bootstrap.Modal("#reservationModal");
+        myModal.show();
+      }
+    </script>
+
+    <!-- Option 2: Separate Popper and Bootstrap JS -->
+    <!--
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+    -->
+  </body>
+</html>

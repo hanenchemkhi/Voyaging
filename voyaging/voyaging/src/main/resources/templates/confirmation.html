@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Voyaging</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.3/font/bootstrap-icons.min.css"
+      integrity="sha512-YFENbnqHbCRmJt5d+9lHimyEMt8LKSNTMLSaHjvsclnZGICeY/0KYEeiHwD1Ux4Tcao0h60tdcMv+0GljvWyHg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Bitter:400,700"
+    />
+    <link rel="stylesheet" href="./static/css/styles.css" />
+    <script src="./static/scripts/script.js" defer></script>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h3 class="fs-1 text-center m-5">
+          <span class="icon"><img src="./static/images/logo.png" alt="" /></span
+          >Voyaging
+        </h3>
+        <hr />
+      </header>
+      <main class="flex-shrink-0">
+        <div class="container text-center m-5">
+          <h4 class="pt-5">Your reservation is confirmed!</h4>
+          <p>Dear <span>customer-name</span>!</p>
+          <p class="m-5">
+            Thank you for choosing our hotel for your upcoming stay. To provide
+            you with the highest form of customer service, please review your
+            reservation details.<br />
+            If you need to make any modifications, please contact us at
+            123-123-1234.
+          </p>
+        </div>
+        <div class="container fw-semibold">
+          <label for="reservationId" class="form-label"
+            >Confirmation number</label
+          >
+          <input
+            type="text"
+            class="form-control-plaintext fw-semibold border border-0"
+            id="reservationId"
+            placeholder=""
+            readonly
+          />
+        </div>
+
+        <section class="booking-details">
+          <div class="container">
+            <div class="row g-5">
+              <div class="col">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="text-center">Your booking details</h5>
+                    <div class="row d-flex justify-content-center g-5">
+                      <div class="col-4">
+                        <label for="checkinDate" class="form-label"
+                          >Check In</label
+                        >
+                        <input
+                          type="date"
+                          class="form-control-plaintext fw-semibold border border-0"
+                          id="checkinDate"
+                          placeholder=""
+                          readonly
+                        />
+                      </div>
+                      <div class="col-4">
+                        <label for="checkoutDate" class="form-label"
+                          >Check Out</label
+                        >
+                        <input
+                          type="date"
+                          class="form-control-plaintext fw-semibold border border-0"
+                          id="ckeckoutDate"
+                          placeholder=""
+                          readonly
+                        />
+                      </div>
+                      <div class="col-4">
+                        <label for="guestsNo" class="form-label"
+                          ># of guests</label
+                        >
+                        <input
+                          type="number"
+                          class="form-control-plaintext fw-semibold border border-0"
+                          id="guestsNo"
+                          placeholder=""
+                          readonly
+                        />
+                      </div>
+                    </div>
+                    <hr />
+                    <div class="row d-flex justify-content-center g-5">
+                      <div class="col-4">
+                        <label for="roomType" class="form-label"
+                          >Room type</label
+                        >
+                        <input
+                          type="text"
+                          class="form-control-plaintext fw-semibold border border-0"
+                          id="roomType"
+                          placeholder=""
+                          readonly
+                        />
+                      </div>
+                      <div class="col-4">
+                        <label for="packageType" class="form-label"
+                          >Package Type</label
+                        >
+                        <input
+                          type="text"
+                          class="form-control-plaintext fw-semibold border border-0"
+                          id="packageType"
+                          placeholder=""
+                          readonly
+                        />
+                      </div>
+                      <div class="col-4">
+                        <label for="requestedServices" class="form-label"
+                          >Requested Services</label
+                        >
+                        <input
+                          type="text"
+                          class="form-control-plaintext fw-semibold border border-0"
+                          id="requestedServices"
+                          placeholder=""
+                          readonly
+                        />
+                      </div>
+                    </div>
+                    <hr />
+                    <div class="row d-flex justify-content-center g-5">
+                      <div class="col-4">
+                        <label for="pricePerNight" class="form-label"
+                          >Price/night</label
+                        >
+                        <input
+                          type="currency"
+                          class="form-control-plaintext fw-semibold border border-0"
+                          id="pricePerNight"
+                          placeholder=""
+                          readonly
+                        />
+                      </div>
+                      <div class="col-4">
+                        <label for="extraCharges" class="form-label"
+                          >Extra charges</label
+                        >
+                        <input
+                          type="text"
+                          class="form-control-plaintext fw-semibold border border-0"
+                          id="extraCharges"
+                          placeholder=""
+                          readonly
+                        />
+                      </div>
+                      <div class="col-4 fw-semibold">
+                        <label for="totalCost" class="form-label"
+                          >Total cost</label
+                        >
+                        <input
+                          type="currency"
+                          class="form-control-plaintext border border-0"
+                          id="totalCost"
+                          placeholder=""
+                          readonly
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+      <section class="footer my-5">
+        <footer class="flex-shrink-0 py-4 bg-light">
+          <div class="container text-center">
+            <small>Copyright &copy; Voyaging</small>
+          </div>
+        </footer>
+      </section>
+    </div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
