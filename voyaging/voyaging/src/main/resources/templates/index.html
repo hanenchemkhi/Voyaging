@@ -85,8 +85,8 @@
                 <h3>Book A Unique Place</h3>
 
                 <form
-                  class="requires-validation"
-                  th:action="@{search-result.html}" method="get"
+                  class="requires-validation" th:object="${searchRooms}"
+                  th:action="@{/search-result}" method="get"
                   novalidate
                 >
                   <div class="row">
@@ -97,6 +97,7 @@
                       <input
                         class="form-control"
                         id="checkinInput"
+
                         type="date"
                         name="checkinDate"
                         placeholder="Check In"
@@ -116,6 +117,7 @@
                       <input
                         class="form-control"
                         id="checkoutInput"
+
                         onchange="validateCheckout()"
                         type="date"
                         name="checkoutDate"
@@ -133,45 +135,19 @@
 
                   <div class="row">
                     <div class="col-md-6">
-                      <label for="roomsDataList" class="form-label"
+                      <label for="numberRooms" class="form-label"
                         >Rooms</label
                       >
-                      <input
-                        class="form-control"
-                        list="datalistOptions"
-                        id="roomsDataList"
-                        onchange="validateRoom()"
-                        placeholder="Max: 3 rooms"
-                        required
-                      />
-                      <datalist id="datalistOptions">
-                        <option value="1"></option>
-                        <option value="2"></option>
-                        <option value="3"></option>
-                      </datalist>
+                      <input class="form-control" type="number" id="numberRooms" name="numberRooms" min="1" max="3">
                       <div id="invalidRooms" class="invalid-feedback">
                         Invalid Rooms Number
                       </div>
                     </div>
                     <div class="col-md-6">
-                      <label for="guestsDataList" class="form-label"
+                      <label for="numberGuests" class="form-label"
                         >Guests</label
                       >
-                      <input
-                        class="form-control"
-                        list="datalistOptions"
-                        id="guestsDataList"
-                        onchange="validateGuests()"
-                        placeholder="Max: 4 guests/room"
-                        required
-                      />
-                      <datalist id="datalistOptions">
-                        <option value="1"></option>
-                        <option value="2"></option>
-                        <option value="3"></option>
-                        <option value="4"></option>
-                        <option value="5"></option>
-                      </datalist>
+                      <input class="form-control" type="number" id="numberGuests" name="numberGuests" min="1" max="4">
                       <div id="invalidGuests" class="invalid-feedback">
                         Invalid Guests Number
                       </div>

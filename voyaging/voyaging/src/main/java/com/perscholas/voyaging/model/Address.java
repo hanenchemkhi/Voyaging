@@ -4,9 +4,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.hibernate.annotations.Nationalized;
 
-import java.util.Set;
+
+
 
 @Getter
 @Setter
@@ -22,6 +22,5 @@ public class Address {
     String street;
     String country;
     Integer zipCode;
-    @OneToOne(mappedBy = "address")
-    Customer customer;
+
 }

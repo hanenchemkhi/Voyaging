@@ -26,5 +26,4 @@ public class RoomType {
     @ElementCollection(targetClass =Amenities.class, fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
     Set<Amenities> amenities;
-
 }

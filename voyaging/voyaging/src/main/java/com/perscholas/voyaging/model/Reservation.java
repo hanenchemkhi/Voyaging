@@ -8,6 +8,7 @@ import lombok.experimental.FieldDefaults;
 
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -22,7 +23,7 @@ public class Reservation {
     Long id;
 
     @ManyToOne
-    @JoinColumn(name="customer_id", nullable=false)
+    @JoinColumn(name="customer_id")
     Customer customer;
     @ManyToMany(cascade = { CascadeType.ALL })
     @JoinTable(
@@ -30,12 +31,24 @@ public class Reservation {
             joinColumns = { @JoinColumn(name = "reservation_id") },
             inverseJoinColumns = { @JoinColumn(name = "room_id") }
     )
-    Set<Room> rooms ;
+    Set<Room> rooms = new HashSet<>();
 
     @ManyToOne
-    @JoinColumn(name="package_id", nullable=false)
+    @JoinColumn(name="package_id")
     Package reservationPackage;
-    LocalDate checkin;
-    LocalDate checkout;
+    LocalDate checkinDate;
+    LocalDate checkoutDate;
+
+    public void addRoom(Room room) {
+        rooms.add(room);
+        room.getReservations().add(this);
+    }
+
+    public void removeRoom(Room room) {
+        rooms.remove(room);
+        room.getReservations().remove(this);
+    }
+
+
 
 }

@@ -1,92 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
   <head>
-    <!-- Required meta tags -->
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <!-- Bootstrap CSS -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
-      crossorigin="anonymous"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.3/font/bootstrap-icons.min.css"
-      integrity="sha512-YFENbnqHbCRmJt5d+9lHimyEMt8LKSNTMLSaHjvsclnZGICeY/0KYEeiHwD1Ux4Tcao0h60tdcMv+0GljvWyHg=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
-    <link rel="stylesheet" href="./static/css/styles.css" />
-    <script src="./static/scripts/script.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Voyaging</title>
 
-    <title>Customers</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+    <script th:src="@{/scripts/script.js}" defer></script>
   </head>
   <body>
-    <section class="header">
-      <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
-        <div class="container py-2 px-5">
-          <a class="navbar-brand" href="index.html">
-            <img
-              src="./static/images/logo.png"
-              alt=""
-              width="30"
-              height="24"
-              class="d-inline-block align-text-top"
-            />
-            Voyaging
-          </a>
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarColor01"
-            aria-controls="navbarColor01"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div
-            class="collapse navbar-collapse justify-content-center"
-            id="navbarColor01"
-          ></div>
-
-          <div class="collapse navbar-collapse" id="navbarColor01">
-            <ul class="navbar-nav me-5">
-              <li class="nav-item">
-                <a class="nav-link" href="dashboard.html">Dashboard</a>
-              </li>
-            </ul>
-            <ul class="navbar-nav me-auto">
-              <li class="nav-item">
-                <a class="nav-link active" href="customers.html"
-                  >Customers
-                  <span class="visually-hidden">(current)</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="rooms.html">Rooms</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="reservations.html">Reservations</a>
-              </li>
-            </ul>
-            <ul class="navbar-nav ms-auto">
-              <li class="nav-item">
-                <a class="nav-link" href="#">Logout</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
-    </section>
+    <div th:replace="~{fragments/header :: header}"></div>
     <main>
       <div class="container mt-5">
         <div><h1>Customers</h1></div>
-
         <div class="container">
           <ul class="nav nav-pills">
             <li class="nav-item ms-5">
@@ -94,7 +21,7 @@
                 id="addCustomer"
                 type="button"
                 class="btn btn-primary"
-                onclick="showCustomerModal()"
+                onclick="showEmptyCustomerModal()"
               >
                 Add Customer<span class="ms-2"
                   ><i class="bi bi-plus-circle"></i
@@ -105,7 +32,7 @@
               <input
                 type="text"
                 id="searchCustomerBox"
-                onkeyup="searchEntry('searchCustomerBox','customerTable', 4)"
+                onkeyup="searchEntry('searchCustomerBox','customerTable', 2)"
                 placeholder="Search By Email.."
                 title="Type in a email"
               />
@@ -117,113 +44,59 @@
             <tr>
               <th scope="col"></th>
               <th scope="col"></th>
-              <th scope="col">#</th>
-              <th scope="col">First</th>
-              <th scope="col">Last</th>
+
+              <th scope="col">Customer name</th>
               <th scope="col">Email</th>
-              <th scope="col">Adress</th>
+              <th scope="col">Address</th>
               <th scope="col">Phone</th>
-              <th scope="col">Points</th>
-              <th scope="col">Credit Card</th>
+              <th scope="col">Cardholder name</th>
+              <th scope="col">Credit card number</th>
+              <th scope="col">Expiration date</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
+            <tr th:each="customer : ${customers}">
               <th scope="row"></th>
               <td>
                 <button
                   id="editCustomer"
                   class="btn btn-primary"
-                  type="submit"
-                  onclick="showCustomerModal()"
-                >
-                  <span class="material-symbols-outlined"> edit </span>
-                </button>
-                <button class="btn btn-danger" type="submit">
-                  <span class="material-symbols-outlined"> delete </span>
-                </button>
-              </td>
-              <td>1</td>
-              <td>Otto</td>
-              <td>@mdo</td>
-              <td>Mark</td>
-              <td>Mark</td>
-              <td>Mark</td>
-              <td>Mark</td>
-              <td>Mark</td>
-            </tr>
-            <tr>
-              <th scope="row"></th>
-              <td>
-                <button
-                  id="editCustomer"
-                  class="btn btn-primary"
-                  type="submit"
-                  onclick="showCustomerModal()"
-                >
-                  <span class="material-symbols-outlined"> edit </span>
-                </button>
-                <button class="btn btn-danger" type="submit">
-                  <span class="material-symbols-outlined"> delete </span>
-                </button>
-              </td>
-              <td>1</td>
-              <td>Otto</td>
-              <td>@mdo</td>
-              <td>Paul</td>
-              <td>Mark</td>
-              <td>Mark</td>
-              <td>Mark</td>
-              <td>Mark</td>
-            </tr>
-            <tr>
-              <th scope="row"></th>
-              <td>
-                <button
-                  id="editCustomer"
-                  class="btn btn-primary"
-                  type="submit"
-                  onclick="showCustomerModal()"
-                >
-                  <span class="material-symbols-outlined"> edit </span>
-                </button>
-                <button class="btn btn-danger" type="submit">
-                  <span class="material-symbols-outlined"> delete </span>
-                </button>
-              </td>
-              <td>1</td>
-              <td>Otto</td>
-              <td>@mdo</td>
-              <td>Sam</td>
-              <td>Mark</td>
-              <td>Mark</td>
-              <td>Mark</td>
-              <td>Mark</td>
-            </tr>
 
-            <tr>
-              <th scope="row"></th>
-              <td>
-                <button
-                  id="editCustomer"
-                  class="btn btn-primary"
-                  type="submit"
-                  onclick="showCustomerModal()"
+                  th:onclick="javascript:showCustomerModal([[${customer.firstName}]],
+                  [[${customer.lastName}]],[[${customer.email}]],[[${customer.address.street}]],[[${customer.address.country}]],
+                  [[${customer.address.zipCode}]],[[${customer.phone}]],[[${customer.card.cardholderName}]],[[${customer.address.zipCode}]],
+                  [[${customer.card.cardNumber}]])"
                 >
                   <span class="material-symbols-outlined"> edit </span>
                 </button>
-                <button class="btn btn-danger" type="submit">
-                  <span class="material-symbols-outlined"> delete </span>
-                </button>
+                <a
+                  th:href="@{/customer/delete/{customerId}(customerId=${customer.id})}"
+                  class="btn btn-danger"
+                  id="delete-note"
+                >
+                  <span class="material-symbols-outlined"> delete </span></a
+                >
               </td>
-              <td>1</td>
-              <td>Otto</td>
-              <td>@mdo</td>
-              <td>Ali</td>
-              <td>Mark</td>
-              <td>Mark</td>
-              <td>Mark</td>
-              <td>Mark</td>
+
+              <td th:text="${customer.firstName +' '+ customer.lastName}">
+                Otto
+              </td>
+              <td th:text="${customer.email}">mark@gmail.com</td>
+              <td
+                th:text="${customer.address.street +', '+customer.address.country+' '+customer.address.zipCode}"
+              >
+                address
+              </td>
+              <td th:text="${customer.phone}">123-456-7890</td>
+              <td th:text="${customer.card.cardholderName}">
+                1234567891234567
+              </td>
+              <td th:text="${customer.card.cardNumber}">1234567891234567</td>
+              <td
+                th:text="${customer.card.monthExpiration + '/' +customer.card.yearExpiration}"
+              >
+                12/32
+              </td>
             </tr>
           </tbody>
         </table>
@@ -247,12 +120,18 @@
               </div>
               <div class="modal-body">
                 <div class="">
-                  <div class="container">
+                  <div class="container justify-content-center">
                     <div class="col-md-7 col-lg-8">
                       <h4 class="mb-3 text-center">Customer Information</h4>
-                      <form class="needs-validation" novalidate>
+                      <form
+                        class="needs-validation"
+                        action="#"
+                        th:action="@{/customer/save}"
+                        th:object="${customer}"
+                        method="POST"
+                      >
                         <div class="row g-3">
-                          <div class="col-sm-4">
+                          <div class="col-sm-6">
                             <label for="firstName" class="form-label"
                               >First name</label
                             >
@@ -260,6 +139,7 @@
                               type="text"
                               class="form-control"
                               id="firstName"
+                              name="firstName"
                               placeholder=""
                               value=""
                               required
@@ -269,7 +149,7 @@
                             </div>
                           </div>
 
-                          <div class="col-sm-4">
+                          <div class="col-sm-6">
                             <label for="lastName" class="form-label"
                               >Last name</label
                             >
@@ -277,6 +157,7 @@
                               type="text"
                               class="form-control"
                               id="lastName"
+                              name="lastName"
                               placeholder=""
                               value=""
                               required
@@ -286,61 +167,121 @@
                             </div>
                           </div>
 
-                          <div class="col-4">
+                          <div class="col-6">
                             <label for="email" class="form-label">Email </label>
                             <input
                               type="email"
                               class="form-control"
                               id="email"
-                              placeholder="you@example.com"
+                              name="email"
+                              placeholder=""
                               value=""
                               required
                             />
                             <div class="invalid-feedback">
-                              Please enter a valid email address.
+                              Please enter a valid email address
                             </div>
                           </div>
-
-                          <div class="col-12">
-                            <label for="address" class="form-label"
-                              >Address</label
-                            >
+                          <div class="col-6">
+                            <label for="phone" class="form-label">Phone </label>
                             <input
                               type="text"
                               class="form-control"
-                              id="address"
-                              placeholder="1234 Main St"
-                              required
-                            />
-                            <div class="invalid-feedback">
-                              Please enter address.
-                            </div>
-                          </div>
-
-                          <div class="col-md-6">
-                            <label for="country" class="form-label"
-                              >Country</label
-                            >
-                            <select class="form-select" id="country" required>
-                              <option value="">Choose...</option>
-                              <option>United States</option>
-                            </select>
-                            <div class="invalid-feedback">
-                              Please select a valid country.
-                            </div>
-                          </div>
-
-                          <div class="col-md-6">
-                            <label for="zipCode" class="form-label">Zip</label>
-                            <input
-                              type="text"
-                              class="form-control"
-                              id="zipCode"
+                              id="phone"
+                              name="phone"
                               placeholder=""
+                              value=""
                               required
                             />
                             <div class="invalid-feedback">
-                              Zip code required.
+                              Please enter a valid phone number
+                            </div>
+                          </div>
+                          <div class="col-6">
+                            <label for="password" class="form-label"
+                              >Password
+                            </label>
+                            <input
+                              type="password"
+                              class="form-control"
+                              id="password"
+                              name="password"
+                              placeholder=""
+                              value=""
+                              required
+                            />
+                            <div class="invalid-feedback">
+                              Please enter a valid password
+                            </div>
+                          </div>
+                          <div class="col-6">
+                            <label for="confirm-password" class="form-label"
+                              >Confirm password
+                            </label>
+                            <input
+                              type="password"
+                              class="form-control"
+                              id="confirm-password"
+                              name="confirmPassword"
+                              placeholder=""
+                              value=""
+                              required
+                            />
+                            <div class="invalid-feedback">
+                              Please re-enter the password
+                            </div>
+                          </div>
+                          <div th:object="${address}">
+                            <div class="col-12">
+                              <label for="street" class="form-label"
+                                >Address</label
+                              >
+                              <input
+                                type="text"
+                                class="form-control"
+                                id="street"
+                                name="street"
+                                placeholder=""
+                                required
+                              />
+                              <div class="invalid-feedback">
+                                Please enter address.
+                              </div>
+                            </div>
+
+                            <div class="col-md-6">
+                              <label for="country" class="form-label"
+                                >Country/Region</label
+                              >
+                              <select
+                                class="form-select"
+                                id="country"
+                                name="country"
+                                required
+                              >
+                                <option value="">Choose...</option>
+                                <option value="usa">United States</option>
+                              </select>
+                              <div class="invalid-feedback">
+                                Please select a valid country.
+                              </div>
+                            </div>
+
+                            <div class="col-md-6">
+                              <label for="zipCode" class="form-label"
+                                >Zip</label
+                              >
+                              <input
+                                type="text"
+                                class="form-control"
+                                id="zipCode"
+                                name="zipCode"
+                                placeholder=""
+                                required
+                              />
+                              <div class="invalid-feedback">
+                                Zip code required.
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -348,132 +289,94 @@
                         <hr class="my-4" />
 
                         <h4 class="mb-3">Payment</h4>
-                        <div class="container">
-                          <div class="row my-3">
-                            <div class="form-check col-md-3">
+                        <div th:object="${creditCard}">
+                          <div class="row gy-3">
+                            <div class="col-md-6">
+                              <label for="cardholderName" class="form-label"
+                                >Name on card</label
+                              >
                               <input
-                                id="credit"
-                                name="paymentMethod"
-                                type="radio"
-                                class="form-check-input"
-                                checked
+                                type="text"
+                                class="form-control"
+                                id="cardholderName"
+                                name="cardholderName"
+                                placeholder=""
                                 required
                               />
-                              <label class="form-check-label" for="credit"
-                                >Credit card</label
+                              <small class="text-muted"
+                                >Full name as displayed on card</small
                               >
+                              <div class="invalid-feedback">
+                                Name on card is required
+                              </div>
                             </div>
-                            <div class="form-check col-md-3">
+
+                            <div class="col-md-6">
+                              <label for="cardNumber" class="form-label"
+                                >Credit card number</label
+                              >
                               <input
-                                id="debit"
-                                name="paymentMethod"
-                                type="radio"
-                                class="form-check-input"
+                                type="text"
+                                class="form-control"
+                                id="cardNumber"
+                                name="cardNumber"
+                                placeholder=""
                                 required
                               />
-                              <label class="form-check-label" for="debit"
-                                >Debit card</label
-                              >
+                              <div class="invalid-feedback">
+                                Credit card number is required
+                              </div>
                             </div>
-                            <div class="form-check col-md-3">
-                              <input
-                                id="paypal"
-                                name="paymentMethod"
-                                type="radio"
-                                class="form-check-input"
-                                required
-                              />
-                              <label class="form-check-label" for="paypal"
-                                >PayPal</label
+
+                            <div class="col-md-3">
+                              <label for="month-expiration" class="form-label"
+                                >Month</label
                               >
+                              <select
+                                class="form-select"
+                                id="month-expiration"
+                                name="monthExpiration"
+                                onclick="populateMonths()"
+                                aria-label=""
+                                required
+                              >
+                                <option selected>Select month</option>
+                              </select>
+                            </div>
+                            <div class="col-md-3">
+                              <label for="year-expiration" class="form-label"
+                                >Year</label
+                              >
+                              <select
+                                class="form-select"
+                                id="year-expiration"
+                                name="yearExpiration"
+                                onclick="populateYears()"
+                                aria-label=""
+                                required
+                              >
+                                <option selected>Select Year</option>
+                              </select>
                             </div>
                           </div>
                         </div>
-
-                        <div class="row gy-3">
-                          <div class="col-md-6">
-                            <label for="cc-name" class="form-label"
-                              >Name on card</label
-                            >
-                            <input
-                              type="text"
-                              class="form-control"
-                              id="cc-name"
-                              placeholder=""
-                              required
-                            />
-                            <small class="text-muted"
-                              >Full name as displayed on card</small
-                            >
-                            <div class="invalid-feedback">
-                              Name on card is required
-                            </div>
-                          </div>
-
-                          <div class="col-md-6">
-                            <label for="cc-number" class="form-label"
-                              >Credit card number</label
-                            >
-                            <input
-                              type="text"
-                              class="form-control"
-                              id="cc-number"
-                              placeholder=""
-                              required
-                            />
-                            <div class="invalid-feedback">
-                              Credit card number is required
-                            </div>
-                          </div>
-
-                          <div class="col-md-3">
-                            <label for="cc-expiration" class="form-label"
-                              >Expiration</label
-                            >
-                            <input
-                              type="text"
-                              class="form-control"
-                              id="cc-expiration"
-                              placeholder=""
-                              required
-                            />
-                            <div class="invalid-feedback">
-                              Expiration date required
-                            </div>
-                          </div>
-
-                          <div class="col-md-3">
-                            <label for="cc-cvv" class="form-label">CVV</label>
-                            <input
-                              type="text"
-                              class="form-control"
-                              id="cc-cvv"
-                              placeholder=""
-                              required
-                            />
-                            <div class="invalid-feedback">
-                              Security code required
-                            </div>
-                          </div>
-                        </div>
-
                         <hr class="my-4" />
+                        <div class="modal-footer">
+                          <button
+                            type="button"
+                            class="btn btn-secondary"
+                            data-bs-dismiss="modal"
+                          >
+                            Close
+                          </button>
+                          <button type="submit" class="btn btn-primary">
+                            Save changes
+                          </button>
+                        </div>
                       </form>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div class="modal-footer">
-                <button
-                  type="button"
-                  class="btn btn-secondary"
-                  data-bs-dismiss="modal"
-                >
-                  Close
-                </button>
-                <button type="button" class="btn btn-primary">
-                  Save changes
-                </button>
               </div>
             </div>
           </div>
@@ -490,9 +393,70 @@
       crossorigin="anonymous"
     ></script>
     <script>
-      function showCustomerModal() {
-        const myModal = new bootstrap.Modal("#customerModal");
+    function showEmptyCustomerModal(){
+      let myModal = new bootstrap.Modal("#customerModal");
+      myModal.show();
+    }
+
+      function showCustomerModal(firstName, lastName, email, street,country,zipCode, phone,cardholderName,cardNumber) {
+        let myModal = new bootstrap.Modal("#customerModal");
+        console.log("fadeet");
+        document.getElementById("firstName").value= firstName ;
+        console.log("fadeet");
+        document.getElementById("lastName").value= lastName ;
+        console.log("fadeet");
+        document.getElementById("email").value= email ;
+        console.log("fadeet");
+        document.getElementById("street").value= street;
+        console.log("fadeet");
+<!--        document.getElementById("country").value= country ;-->
+        console.log("fadeet");
+        document.getElementById("zipCode").value= zipCode ;
+        console.log("fadeet");
+        document.getElementById("phone").value= phone ;
+        console.log("fadeet");
+        document.getElementById("cardholderName").value= cardholderName ;
+        console.log("fadeet");
+        document.getElementById("cardNumber").value= cardNumber ;
+
+        console.log("fadeet");
+<!--        document.getElementById("yearExpiration").value= year ;-->
+<!--        document.getElementById("monthExpiration").value= month ;-->
         myModal.show();
+      }
+      function populateMonths() {
+        const monthSelect = document.getElementById("month-expiration");
+        const months = [
+          "01  Jan",
+          "02  Feb",
+          "03  Mar",
+          "04  Apr",
+          "05  May",
+          "06  Jun",
+          "07  Jul",
+          "08  Aug",
+          "09  Sep",
+          "10  Oct",
+          "11  Nov",
+          "12  Dec",
+        ];
+        for (let i = 0; i < months.length; i++) {
+          const option = document.createElement("option");
+          option.textContent = months[i];
+          option.value = i + 1;
+          monthSelect.appendChild(option);
+        }
+      }
+      function populateYears() {
+        const yearSelect = document.getElementById("year-expiration");
+        let year = new Date().getFullYear();
+
+        for (let i = 0; i < 10; i++) {
+          const option = document.createElement("option");
+          option.textContent = year + i;
+          option.value = year + i;
+          yearSelect.appendChild(option);
+        }
       }
     </script>
 

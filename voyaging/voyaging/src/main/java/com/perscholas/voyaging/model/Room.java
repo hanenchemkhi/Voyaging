@@ -32,6 +32,7 @@ public class Room {
     @ManyToMany(mappedBy = "rooms")
     List<RoomPrice> roomPrices= new LinkedList<>();
     Integer maxGuests;
+    String picture;
 
 
 }

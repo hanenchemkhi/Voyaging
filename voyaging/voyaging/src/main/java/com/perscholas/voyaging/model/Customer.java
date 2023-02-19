@@ -21,31 +21,47 @@ public class Customer {
     @GeneratedValue(strategy = GenerationType.IDENTITY )
     Long id;
 
-    @NonNull
+
     @Nationalized
     String firstName;
-    @NonNull
+
     @Nationalized
     String lastName;
 
-    @NonNull
+
     @Column(length = 50,name = "email", unique = true)
     String email;
-    @NonNull
+
     @Column(length = 50,name = "password")
     String password;
-    @NonNull
-    String phoneNumber;
-    @NonNull
+
+    String phone;
+
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "address_id", referencedColumnName = "id")
+    @JoinColumn(name = "address_id")
     Address address;
 
-    @NonNull
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "customer", cascade = CascadeType.ALL,orphanRemoval = true)
-    Set<CreditCard> card = new HashSet<>();
 
-  @NonNull
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "card_id")
+    CreditCard card ;
+
+
     @OneToMany(mappedBy="customer")
     Set<Reservation> reservations;
+
+
+
+    public void addReservation(Reservation reservation) {
+        reservations.add(reservation);
+        reservation.setCustomer(this);
+    }
+
+    public void removeReservation(Reservation reservation) {
+        reservations.remove(reservation);
+        reservation.setCustomer(null);
+    }
+
+
+
 }
