@@ -8,6 +8,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -25,14 +26,18 @@ public class Room {
     Long id;
 
     Long roomNumber;
-    @OneToOne(mappedBy = "room", cascade = CascadeType.ALL)
-    RoomType roomType;
-    @ManyToMany(mappedBy = "rooms")
-    Set<Reservation> reservations;
-    @ManyToMany(mappedBy = "rooms")
-    List<RoomPrice> roomPrices= new LinkedList<>();
-    Integer maxGuests;
-    String picture;
 
+    @Enumerated(EnumType.STRING)
+    RoomCategory roomCategory;
+    @ElementCollection(targetClass =Amenities.class, fetch = FetchType.EAGER)
+    @Enumerated(EnumType.STRING)
+    Set<Amenities> amenities;
+    @ManyToMany(mappedBy = "rooms")
+    Set<Reservation> reservations = new HashSet<>();
+//    @ManyToMany(mappedBy = "rooms")
+//    Set<RoomPrice> roomPrices= new HashSet<>();
+    Long price;
+    Integer maxGuests;
+    String photo;
 
 }

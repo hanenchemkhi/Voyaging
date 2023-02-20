@@ -41,4 +41,8 @@ public class RoomService {
         return availableRooms;
 
     }
+
+    public void saveRoom(Room room) {
+        roomRepository.save(room);
+    }
 }
