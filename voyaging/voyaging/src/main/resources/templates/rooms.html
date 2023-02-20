@@ -74,7 +74,7 @@
               <td>Photo</td>
               <td th:text="${room.roomNumber}"></td>
               <td th:text="${room.maxGuests}"></td>
-              <td th:text="${room.roomCategory}"></td>
+              <td th:text="${room.roomCategory.getCategory()}"></td>
               <td th:text="${room.amenities}"></td>
               <td th:text="${room.price}"></td>
             </tr>
@@ -129,25 +129,21 @@
                         </div>
 
                         <div class="col-md-3">
-                          <label for="category" class="form-label"
+                          <label for="categoryid" class="form-label"
                             >Category</label
                           >
                           <select
                             class="form-select"
-                            id="category"
-                            name="category"
+                            id="categoryid"
+                            name="roomCategory"
                             aria-label=""
                             required
                           >
-                            <option selected>Select category</option>
-                            <option value="kingGuest">King Guest Room</option>
-                            <option value="twinGuest">Twin Guest Room</option>
-                            <option value="kingExecutive">
-                              King Executive Room
-                            </option>
-                            <option value="kingExecutive">
-                              Twin Executive Roomy
-                            </option>
+                            <option
+                              th:each="category : ${T(com.perscholas.voyaging.model.RoomCategory).values()}"
+                              th:value="${category}"
+                              th:text="${category.getCategory()}"
+                            ></option>
                           </select>
                         </div>
                       </div>
@@ -177,7 +173,7 @@
                           >
                           <input
                             id="roomPrice"
-                            name="roomPrice"
+                            name="price"
                             type="text"
                             class="form-control"
                             placeholder=""
@@ -193,71 +189,19 @@
                       <div class="col-6">
                         <div class="shadow-sm p-3 mb-1 bg-body rounded">
                           <h5>Amenities</h5>
-                          <div class="form-check form-check-inline">
+                          <div
+                            class="form-check form-check-inline col-6"
+                            th:each="amenity:${T(com.perscholas.voyaging.model.Amenities).values()}"
+                          >
                             <input
                               class="form-check-input"
                               type="checkbox"
-                              value=""
-                              id="flatTV"
+                              th:text="${amenity.getAmenity()}"
+                              th:value="${amenity}"
+                              name="amenities"
+                              id="amenityid"
                             />
-                            <label class="form-check-label" for="flatTV">
-                              Flat-screen TV
-                            </label>
-                          </div>
-                          <div class="form-check form-check-inline">
-                            <input
-                              class="form-check-input"
-                              type="checkbox"
-                              value=""
-                              id="flexCheckChecked"
-                            />
-                            <label
-                              class="form-check-label"
-                              for="flexCheckChecked"
-                            >
-                              Hair dryer
-                            </label>
-                          </div>
-                          <div class="form-check form-check-inline">
-                            <input
-                              class="form-check-input"
-                              type="checkbox"
-                              value=""
-                              id="flexCheckChecked"
-                            />
-                            <label
-                              class="form-check-label"
-                              for="flexCheckChecked"
-                            >
-                              Minifridge
-                            </label>
-                          </div>
-                          <div class="form-check form-check-inline">
-                            <input
-                              class="form-check-input"
-                              type="checkbox"
-                              value=""
-                              id="flexCheckChecked"
-                            />
-                            <label
-                              class="form-check-label"
-                              for="flexCheckChecked"
-                            >
-                              Newspaper
-                            </label>
-                          </div>
-                          <div class="form-check form-check-inline">
-                            <input
-                              class="form-check-input"
-                              type="checkbox"
-                              value=""
-                              id="flexCheckChecked"
-                            />
-                            <label
-                              class="form-check-label"
-                              for="flexCheckChecked"
-                            >
-                              Crib
+                            <label class="form-check-label" for="amenityid">
                             </label>
                           </div>
                         </div>

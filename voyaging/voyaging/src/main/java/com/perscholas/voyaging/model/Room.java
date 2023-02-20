@@ -31,7 +31,7 @@ public class Room {
     RoomCategory roomCategory;
     @ElementCollection(targetClass =Amenities.class, fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
-    Set<Amenities> amenities;
+    Set<Amenities> amenities ;
     @ManyToMany(mappedBy = "rooms")
     Set<Reservation> reservations = new HashSet<>();
 //    @ManyToMany(mappedBy = "rooms")

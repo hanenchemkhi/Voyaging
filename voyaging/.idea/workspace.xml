@@ -7,15 +7,10 @@
     <list default="true" id="50b4cb0d-a45b-40d9-a5ce-02b73b3afcf7" name="Changes" comment="added entities">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/voyaging/src/main/java/com/perscholas/voyaging/controller/RoomController.java" beforeDir="false" afterPath="$PROJECT_DIR$/voyaging/src/main/java/com/perscholas/voyaging/controller/RoomController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/voyaging/src/main/java/com/perscholas/voyaging/model/Amenities.java" beforeDir="false" afterPath="$PROJECT_DIR$/voyaging/src/main/java/com/perscholas/voyaging/model/Amenities.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/voyaging/src/main/java/com/perscholas/voyaging/model/Room.java" beforeDir="false" afterPath="$PROJECT_DIR$/voyaging/src/main/java/com/perscholas/voyaging/model/Room.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/voyaging/src/main/java/com/perscholas/voyaging/model/RoomPrice.java" beforeDir="false" afterPath="$PROJECT_DIR$/voyaging/src/main/java/com/perscholas/voyaging/model/RoomPrice.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/voyaging/src/main/java/com/perscholas/voyaging/model/RoomType.java" beforeDir="false" afterPath="$PROJECT_DIR$/voyaging/src/main/java/com/perscholas/voyaging/model/RoomType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/voyaging/src/main/java/com/perscholas/voyaging/repository/RoomPriceRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/voyaging/src/main/java/com/perscholas/voyaging/repository/RoomTypeRepository.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/voyaging/src/main/java/com/perscholas/voyaging/service/RoomService.java" beforeDir="false" afterPath="$PROJECT_DIR$/voyaging/src/main/java/com/perscholas/voyaging/service/RoomService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/voyaging/src/main/resources/templates/customers.html" beforeDir="false" afterPath="$PROJECT_DIR$/voyaging/src/main/resources/templates/customers.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/voyaging/src/main/resources/templates/rooms.html" beforeDir="false" afterPath="$PROJECT_DIR$/voyaging/src/main/resources/templates/rooms.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/voyaging/src/main/resources/templates/search-result.html" beforeDir="false" afterPath="$PROJECT_DIR$/voyaging/src/main/resources/templates/search-result.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

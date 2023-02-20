@@ -21,13 +21,15 @@ public class RoomController {
     RoomService roomService;
     @GetMapping
     public String viewRooms(Model model){
-
+        model.addAttribute("rooms", roomService.findAllRooms());
         return "rooms";
 
     }
     @PostMapping("/save")
-    public String saveRoom(@ModelAttribute("room") Room room, @ModelAttribute("amenities") Amenities amenities){
-        
+    public String saveRoom(@ModelAttribute("room") Room room){
+
+        log.info(String.valueOf(room.getAmenities()));
+
         roomService.saveRoom(room);
         return "redirect:/room";
     }

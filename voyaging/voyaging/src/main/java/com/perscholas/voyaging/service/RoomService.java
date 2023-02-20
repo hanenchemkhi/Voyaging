@@ -43,6 +43,11 @@ public class RoomService {
     }
 
     public void saveRoom(Room room) {
+
         roomRepository.save(room);
+    }
+
+    public List<Room> findAllRooms() {
+        return roomRepository.findAll();
     }
 }

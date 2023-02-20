@@ -7,13 +7,13 @@ public enum Amenities {
     NEWSPAPER("Daily newspaper upon request"),
     CRIB("Crib upon request");
 
-    private final String amenity;
+    private final String amenityValue;
     Amenities(String amenity){
-        this.amenity= amenity;
+        this.amenityValue= amenity;
     }
 
     public String getAmenity(){
-        return amenity;
+        return amenityValue;
     }
 
 }
