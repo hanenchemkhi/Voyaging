@@ -53,8 +53,8 @@
             </tr>
           </thead>
           <tbody>
-            <tr th:each="room :${rooms}">
-              <th scope="row"></th>
+            <tr th:each="room :${rooms}" >
+              <th scope="row" ></th>
               <td>
                 <button
                   id="editRoom"
@@ -71,15 +71,29 @@
                   <span class="material-symbols-outlined"> delete </span></a
                 >
               </td>
-              <td>Photo</td>
+              <td> <img th:src="@{${room.imageUrl}}" width="50px" height="50px" ></td>
               <td th:text="${room.roomNumber}"></td>
               <td th:text="${room.maxGuests}"></td>
               <td th:text="${room.roomCategory.getCategory()}"></td>
-              <td th:text="${room.amenities}"></td>
+              <td>
+                <select
+                  class="form-select form-select-sm"
+                  size="2"
+                  aria-label=""
+                  disabled
+                >
+                  <option
+                    th:each="rmamenity:${room.amenities}"
+                    th:value="${rmamenity}"
+                    th:text="${rmamenity.getAmenity()}"
+                  ></option>
+                </select>
+              </td>
               <td th:text="${room.price}"></td>
             </tr>
           </tbody>
         </table>
+
       </div>
       <div class="container">
         <div
@@ -103,6 +117,7 @@
                   <h4 class="mb-3 text-center">Room Information</h4>
                   <form
                     class="needs-validation"
+                    enctype="multipart/form-data"
                     action="#"
                     th:action="@{/room/save}"
                     th:object="${room}"
@@ -208,14 +223,15 @@
                       </div>
                       <div class="row">
                         <div class="col-6">
-                          <label for="photo" class="form-label"
+                          <label for="image" class="form-label"
                             >Room photo</label
                           >
                           <input
                             class="form-control"
-                            name="photo"
+                            name="image"
                             type="file"
-                            id="photo"
+                            accept="image/png, image/jpeg"
+                            id="imageId"
                           />
                         </div>
                       </div>

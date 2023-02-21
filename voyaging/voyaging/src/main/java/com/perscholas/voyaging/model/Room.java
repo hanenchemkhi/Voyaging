@@ -38,6 +38,9 @@ public class Room {
 //    Set<RoomPrice> roomPrices= new HashSet<>();
     Long price;
     Integer maxGuests;
-    String photo;
+    @Lob
+    @Column( )
+    private byte[] imageData;
+
 
 }
