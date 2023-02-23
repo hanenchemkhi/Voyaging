@@ -59,5 +59,24 @@ public class RoomController {
         roomService.saveRoom(room, image);
         return "redirect:/room";
     }
+    @GetMapping("/view/{roomId:.+}")
+    @ResponseBody
+    public ResponseEntity<byte[]> viewImage(@PathVariable Long roomId) {
+
+//        String contentType = fileService.getContentType(filename);
+//        long fileLength = fileService.getContentLength(filename);
+//        byte[] imageData = roomService.getImageById(roomId);
+        Room room = roomService.finRoomById(roomId);
+        String filename = room.getImageName();
+        byte[] imageData = room.getImageData();
+        long fileLength = imageData.length;
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION,
+                        "inline; filename="+filename )
+                .contentType(MediaType.valueOf("image/jpeg"))
+                .contentLength(fileLength)
+                .body(imageData);
+    }
 
 }

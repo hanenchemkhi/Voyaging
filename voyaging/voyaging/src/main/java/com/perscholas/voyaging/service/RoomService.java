@@ -1,5 +1,6 @@
 package com.perscholas.voyaging.service;
 
+import com.perscholas.voyaging.exception.RoomNotFoundException;
 import com.perscholas.voyaging.exception.StorageFileNotFoundException;
 import com.perscholas.voyaging.model.Reservation;
 import com.perscholas.voyaging.model.Room;
@@ -28,8 +29,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 import java.util.List;
-
-
+import java.util.Optional;
 
 
 @Service
@@ -95,6 +95,12 @@ public class RoomService {
     }
 
 
-
-
+    public Room finRoomById(Long id){
+        Optional<Room> room = roomRepository.findById(id);
+        return unwrapPet(room, id);
+    }
+    static Room unwrapPet(Optional<Room> room, Long id) {
+        if (room.isPresent()) return room.get();
+        else throw new RoomNotFoundException(id);
+    }
 }
