@@ -1,11 +1,13 @@
 package com.perscholas.voyaging.model;
 
 
+import jakarta.annotation.Resource;
 import jakarta.persistence.Entity;
 
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.springframework.http.ResponseEntity;
 
 
 import java.util.HashSet;
@@ -39,8 +41,8 @@ public class Room {
     Long price;
     Integer maxGuests;
     @Lob
-    @Column( )
-    private byte[] imageData;
-
+    @Column(columnDefinition = "LONGBLOB")
+    byte[] imageData;
+    String imageName;
 
 }

@@ -71,7 +71,7 @@
                   <span class="material-symbols-outlined"> delete </span></a
                 >
               </td>
-              <td> <img th:src="@{${room.imageUrl}}" width="50px" height="50px" ></td>
+              <td> <img src="" th:src="${'data:image/jpeg;charset=utf-8;base64,' + room.imageData}" width="50px" height="50px" ></td>
               <td th:text="${room.roomNumber}"></td>
               <td th:text="${room.maxGuests}"></td>
               <td th:text="${room.roomCategory.getCategory()}"></td>
