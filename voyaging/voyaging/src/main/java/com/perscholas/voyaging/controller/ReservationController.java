@@ -19,8 +19,7 @@ import java.util.List;
 @Controller
 @Slf4j
 @RequestMapping
-
-
+@SessionAttributes()
 public class ReservationController {
     @Autowired
     private RoomService roomService;
@@ -65,6 +64,8 @@ public class ReservationController {
 
     @GetMapping("/confirmation")
     public String confirmationReservation(Model model){
+
+
 
 
         return "confirmation";
