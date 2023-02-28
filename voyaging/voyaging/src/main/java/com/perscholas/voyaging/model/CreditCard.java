@@ -18,13 +18,8 @@ public class CreditCard {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY )
     Long id;
-
-
-
     Long cardNumber;
     String cardholderName;
-
-
     String monthExpiration;
     String yearExpiration;
 

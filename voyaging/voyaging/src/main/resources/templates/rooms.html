@@ -21,7 +21,7 @@
                 id="addRoom"
                 type="button"
                 class="btn btn-primary"
-                onclick="showRoomModal()"
+                onclick="showEmptyRoomModal()"
               >
                 Add Room<span class="ms-2"
                   ><i class="bi bi-plus-circle"></i
@@ -32,18 +32,19 @@
               <input
                 type="text"
                 id="searchRoomBox"
-                onkeyup="searchEntry('searchRoomBox','customroomTableerTable', 2)"
+                onkeyup="searchEntry('searchRoomBox','roomTable', 2)"
                 placeholder="Search by number"
                 title="Type in room number"
               />
             </li>
           </ul>
         </div>
-        <table id="roomTable" class="table table-striped" ;>
+        <table id="roomTable" class="table table-striped" >
           <thead>
             <tr>
               <th scope="col"></th>
               <th scope="col"></th>
+
               <th scope="col">Photo</th>
               <th scope="col">Room Number</th>
               <th scope="col">Max Guests</th>
@@ -59,7 +60,8 @@
                 <button
                   id="editRoom"
                   class="btn btn-primary"
-                  onclick="showRoomModal()"
+                  th:onclick="javascript:showRoomModal([[${room.roomNumber}]],
+                  [[${room.price}]],[[${room.maxGuests}]])"
                 >
                   <span class="material-symbols-outlined"> edit </span>
                 </button>
@@ -223,7 +225,7 @@
                       </div>
                       <div class="row">
                         <div class="col-6">
-                          <label for="image" class="form-label"
+                          <label for="imageId" class="form-label"
                             >Room photo</label
                           >
                           <input
@@ -267,10 +269,25 @@
       crossorigin="anonymous"
     ></script>
     <script>
-      function showRoomModal() {
+      function showEmptyRoomModal() {
         const myModal = new bootstrap.Modal("#roomModal");
         myModal.show();
       }
+      function showRoomModal( roomNumber,  price, maxGuests) {
+        let myModal = new bootstrap.Modal("#roomModal");
+
+        document.getElementById("roomNumber").value = roomNumber;
+
+<!--        document.getElementById("roomCategory").value = roomCategory;-->
+
+<!--        document.getElementById("amenities").value = amenities;-->
+
+        document.getElementById("roomPrice").value = price;
+        document.getElementById("maxGuests").value = maxGuests;
+
+        myModal.show();
+      }
+
     </script>
 
     <!-- Option 2: Separate Popper and Bootstrap JS -->

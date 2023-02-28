@@ -1,106 +1,22 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Voyaging</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
-      crossorigin="anonymous"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.3/font/bootstrap-icons.min.css"
-      integrity="sha512-YFENbnqHbCRmJt5d+9lHimyEMt8LKSNTMLSaHjvsclnZGICeY/0KYEeiHwD1Ux4Tcao0h60tdcMv+0GljvWyHg=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Voyaging</title>
 
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css?family=Bitter:400,700"
-    />
-    <link rel="stylesheet" href="./static/css/styles.css" />
-    <script src="./static/scripts/script.js" defer></script>
-  </head>
+  <link rel="stylesheet" th:href="@{/css/styles.css}" />
+  <script th:src="@{/scripts/script.js}" defer></script>
+</head>
 
-  <body>
-    <section class="header">
-      <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
-        <div class="container py-2 px-5">
-          <a class="navbar-brand" href="index.html">
-            <img
-              src="./static/images/logo.png"
-              alt=""
-              width="30"
-              height="24"
-              class="d-inline-block align-text-top"
-            />
-            Voyaging
-          </a>
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarColor01"
-            aria-controls="navbarColor01"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarColor01">
-            <ul class="navbar-nav me-auto">
-              <li class="nav-item">
-                <a class="nav-link active" href="index.html"
-                  >Book Hotel
-                  <span class="visually-hidden">(current)</span>
-                </a>
-              </li>
+<body>
+<div th:replace="~{fragments/user-header :: header}"></div>
 
-              <li class="nav-item">
-                <a class="nav-link" href="shop.html">Shop</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="about.html">About</a>
-              </li>
-            </ul>
-            <ul class="navbar-nav ms-auto">
-              <li class="nav-item dropdown">
-                <a
-                  class="nav-link dropdown-toggle"
-                  href="#"
-                  role="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  Sign In
-                </a>
-                <ul class="dropdown-menu">
-                  <li>
-                    <a class="dropdown-item" href="login.html">Sign In</a>
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href="signup.html">Join Us</a>
-                  </li>
-                  <li><hr class="dropdown-divider" /></li>
-                  <li>
-                    <a class="dropdown-item" href="index.html">Sign Out</a>
-                  </li>
-                </ul>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
-    </section>
     <div class="container">
-      <div class="wrapper bg-white">
+      <div class="wrapper bg-white" style="max-width: 900px">
         <img
           class="mb-4"
-          src="./static/images/logo.png"
+          th:src="@{/images/logo.png}"
           alt=""
           width="72"
           height="57"
@@ -109,226 +25,241 @@
         <div class="text-muted text-center pt-2">
           <h4>Join Us</h4>
         </div>
-        <form class="needs-validation" novalidate>
-          <div class="row g-3">
-            <div class="col-sm-4">
-              <label for="firstName" class="form-label">First name</label>
-              <input
-                type="text"
-                class="form-control"
-                id="firstName"
-                placeholder=""
-                value=""
-                required
-              />
-              <div class="invalid-feedback">Valid first name is required.</div>
-            </div>
+        <div class="container">
+          <form class="needs-validation" action="#"
+              th:action="@{/customer/signup}"
+              th:object="${customer}"
+              method="POST" novalidate>
+                <div class="row g-3">
+                  <div class="col-sm-6">
+                    <label for="firstName" class="form-label"
+                    >First name</label
+                    >
+                    <input
+                            type="text"
+                            class="form-control"
+                            id="firstName"
+                            name="firstName"
+                            placeholder=""
+                            value=""
+                            required
+                    />
+                    <div class="invalid-feedback">
+                      Valid first name is required.
+                    </div>
+                  </div>
 
-            <div class="col-sm-4">
-              <label for="lastName" class="form-label">Last name</label>
-              <input
-                type="text"
-                class="form-control"
-                id="lastName"
-                placeholder=""
-                value=""
-                required
-              />
-              <div class="invalid-feedback">Valid last name is required.</div>
-            </div>
+                  <div class="col-sm-6">
+                    <label for="lastName" class="form-label"
+                    >Last name</label
+                    >
+                    <input
+                            type="text"
+                            class="form-control"
+                            id="lastName"
+                            name="lastName"
+                            placeholder=""
+                            value=""
+                            required
+                    />
+                    <div class="invalid-feedback">
+                      Valid last name is required.
+                    </div>
+                  </div>
 
-            <div class="col-4">
-              <label for="email" class="form-label">Email </label>
-              <input
-                type="email"
-                class="form-control"
-                id="email"
-                onkeyup="validateEmail()"
-                placeholder=""
-                value=""
-                required
-              />
-              <div id="invalidEmail" class="invalid-feedback">
-                Invalid email address.
-              </div>
-            </div>
+                  <div class="col-6">
+                    <label for="email" class="form-label">Email </label>
+                    <input
+                            type="email"
+                            class="form-control"
+                            id="email"
+                            name="email"
+                            placeholder=""
+                            value=""
+                            required
+                    />
+                    <div class="invalid-feedback">
+                      Please enter a valid email address
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <label for="phone" class="form-label">Phone </label>
+                    <input
+                            type="text"
+                            class="form-control"
+                            id="phone"
+                            name="phone"
+                            placeholder=""
+                            value=""
+                            required
+                    />
+                    <div class="invalid-feedback">
+                      Please enter a valid phone number
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <label for="password" class="form-label"
+                    >Password
+                    </label>
+                    <input
+                            type="password"
+                            class="form-control"
+                            id="password"
+                            name="password"
+                            placeholder=""
+                            value=""
+                            required
+                    />
+                    <div class="invalid-feedback">
+                      Please enter a valid password
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <label for="confirm-password" class="form-label"
+                    >Confirm password
+                    </label>
+                    <input
+                            type="password"
+                            class="form-control"
+                            id="confirm-password"
+                            name="confirmPassword"
+                            placeholder=""
+                            value=""
+                            required
+                    />
+                    <div class="invalid-feedback">
+                      Please re-enter the password
+                    </div>
+                  </div>
+                  <div th:object="${address}">
+                    <div class="col-12">
+                      <label for="street" class="form-label"
+                      >Address</label
+                      >
+                      <input
+                              type="text"
+                              class="form-control"
+                              id="street"
+                              name="street"
+                              placeholder=""
+                              required
+                      />
+                      <div class="invalid-feedback">
+                        Please enter address.
+                      </div>
+                    </div>
 
-            <div class="col-md-6">
-              <label for="password" class="form-label">Password</label>
-              <input
-                type="text"
-                class="form-control"
-                id="password"
-                onkeyup="validatePassword()"
-                placeholder=""
-                required
-              />
-              <small class="text-muted"
-                >Password must have at least 8 characters and contain uppercase
-                letters, lowercase letters, and numbers.
-              </small>
-              <div id="invalidPassword" class="invalid-feedback">
-                Invalid Password
-              </div>
-            </div>
-            <div class="col-md-6">
-              <label for="confirmPSW" class="form-label"
-                >Confirm Password</label
-              >
-              <input
-                type="text"
-                class="form-control"
-                id="confirmPSW"
-                onkeyup="confirmPassword()"
-                placeholder=""
-                required
-              />
+                    <div class="col-md-6">
+                      <label for="country" class="form-label"
+                      >Country/Region</label
+                      >
+                      <select
+                              class="form-select"
+                              id="country"
+                              name="country"
+                              required
+                      >
+                        <option value="">Choose...</option>
+                        <option value="usa">United States</option>
+                      </select>
+                      <div class="invalid-feedback">
+                        Please select a valid country.
+                      </div>
+                    </div>
 
-              <div id="invalidconfirmPassword" class="invalid-feedback">
-                Invalid Password
-              </div>
-              <div id="validconfirmPassword" class="valid-feedback">
-                Valid Password
-              </div>
-            </div>
+                    <div class="col-md-6">
+                      <label for="zipCode" class="form-label">Zip</label>
+                      <input
+                              type="text"
+                              class="form-control"
+                              id="zipCode"
+                              name="zipCode"
+                              placeholder=""
+                              required
+                      />
+                      <div class="invalid-feedback">
+                        Zip code required.
+                      </div>
+                    </div>
+                  </div>
+                </div>
 
-            <div class="col-12">
-              <label for="address" class="form-label">Address</label>
-              <input
-                type="text"
-                class="form-control"
-                id="address"
-                placeholder=""
-                required
-              />
-              <div class="invalid-feedback">Please enter address.</div>
-            </div>
+                <hr class="my-4" />
 
-            <div class="col-md-6">
-              <label for="countryDataList" class="form-label">Country</label>
-              <input
-                class="form-control"
-                list="datalistOptions"
-                id="countryDataList"
-                placeholder="Country"
-              />
-              <datalist id="datalistOptions">
-                <option value="United States"></option>
-              </datalist>
-              <div class="invalid-feedback">Please select a country.</div>
-            </div>
+                <h4 class="mb-3">Payment</h4>
+                <div th:object="${creditCard}">
+                  <div class="row gy-3">
+                    <div class="col-md-6">
+                      <label for="cardholderName" class="form-label"
+                      >Name on card</label
+                      >
+                      <input
+                              type="text"
+                              class="form-control"
+                              id="cardholderName"
+                              name="cardholderName"
+                              placeholder=""
+                              required
+                      />
+                      <small class="text-muted"
+                      >Full name as displayed on card</small
+                      >
+                      <div class="invalid-feedback">
+                        Name on card is required
+                      </div>
+                    </div>
 
-            <div class="col-md-6">
-              <label for="zip" class="form-label">Zip</label>
-              <input
-                type="text"
-                class="form-control"
-                id="zip"
-                placeholder=""
-                required
-              />
-              <div class="invalid-feedback">Zip code required.</div>
-            </div>
-          </div>
+                    <div class="col-md-6">
+                      <label for="cardNumber" class="form-label"
+                      >Credit card number</label
+                      >
+                      <input
+                              type="text"
+                              class="form-control"
+                              id="cardNumber"
+                              name="cardNumber"
+                              placeholder=""
+                              required
+                      />
+                      <div class="invalid-feedback">
+                        Credit card number is required
+                      </div>
+                    </div>
 
-          <hr class="my-4" />
+                    <div class="col-md-3">
+                      <label for="month-expiration" class="form-label"
+                      >Month</label
+                      >
+                      <select
+                              class="form-select"
+                              id="month-expiration"
+                              name="monthExpiration"
+                              onclick="populateMonths()"
+                              aria-label=""
+                              required
+                      >
+                        <option selected>Select month</option>
+                      </select>
+                    </div>
+                    <div class="col-md-3">
+                      <label for="year-expiration" class="form-label"
+                      >Year</label
+                      >
+                      <select
+                              class="form-select"
+                              id="year-expiration"
+                              name="yearExpiration"
+                              onclick="populateYears()"
+                              aria-label=""
+                              required
+                      >
+                        <option selected>Select Year</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
 
-          <h4 class="mb-3">Payment</h4>
-          <div class="container">
-            <div class="row my-3">
-              <div class="form-check col-md-3">
-                <input
-                  id="credit"
-                  name="paymentMethod"
-                  type="radio"
-                  class="form-check-input"
-                  checked
-                  required
-                />
-                <label class="form-check-label" for="credit">Credit card</label>
-              </div>
-              <div class="form-check col-md-3">
-                <input
-                  id="debit"
-                  name="paymentMethod"
-                  type="radio"
-                  class="form-check-input"
-                  required
-                />
-                <label class="form-check-label" for="debit">Debit card</label>
-              </div>
-              <div class="form-check col-md-3">
-                <input
-                  id="paypal"
-                  name="paymentMethod"
-                  type="radio"
-                  class="form-check-input"
-                  required
-                />
-                <label class="form-check-label" for="paypal">PayPal</label>
-              </div>
-            </div>
-          </div>
-
-          <div class="row gy-3">
-            <div class="col-md-6">
-              <label for="cc-name" class="form-label">Name on card</label>
-              <input
-                type="text"
-                class="form-control"
-                id="cc-name"
-                placeholder=""
-                required
-              />
-              <small class="text-muted">Full name as displayed on card</small>
-              <div class="invalid-feedback">Name on card is required</div>
-            </div>
-
-            <div class="col-md-6">
-              <label for="cc-number" class="form-label"
-                >Credit card number</label
-              >
-              <input
-                type="text"
-                class="form-control"
-                id="cc-number"
-                onkeyup="validateCreditCardNumber()"
-                placeholder=""
-                required
-              />
-              <div id="invalidccn" class="invalid-feedback">
-                Credit card number is invalid
-              </div>
-            </div>
-
-            <div class="col-md-3">
-              <label for="cc-expiration" class="form-label">Expiration</label>
-              <input
-                type="text"
-                class="form-control"
-                id="cc-expiration"
-                onkeyup="validateCardExpDate()"
-                placeholder=""
-                required
-              />
-              <div id="invalidcc-experation" class="invalid-feedback">
-                Expiration date required
-              </div>
-            </div>
-
-            <div class="col-md-3">
-              <label for="cc-cvv" class="form-label">CVV</label>
-              <input
-                type="text"
-                class="form-control"
-                id="cc-cvv"
-                placeholder=""
-                required
-              />
-              <div class="invalid-feedback">Security code required</div>
-            </div>
-          </div>
-          <br />
+                <br />
 
           <button
             class="btn btn-primary me-0"
@@ -343,6 +274,7 @@
           </div>
         </form>
       </div>
+      </div>
     </div>
     <section class="footer my-5">
       <footer class="flex-shrink-0 py-4 bg-light">
@@ -356,6 +288,45 @@
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
       crossorigin="anonymous"
+
+
     ></script>
+<script>
+       function populateMonths() {
+        const monthSelect = document.getElementById("month-expiration");
+        const months = [
+          "01  Jan",
+          "02  Feb",
+          "03  Mar",
+          "04  Apr",
+          "05  May",
+          "06  Jun",
+          "07  Jul",
+          "08  Aug",
+          "09  Sep",
+          "10  Oct",
+          "11  Nov",
+          "12  Dec",
+        ];
+        for (let i = 0; i < months.length; i++) {
+          const option = document.createElement("option");
+          option.textContent = months[i];
+          option.value = i + 1;
+          monthSelect.appendChild(option);
+        }
+      }
+      function populateYears() {
+        const yearSelect = document.getElementById("year-expiration");
+        let year = new Date().getFullYear();
+
+        for (let i = 0; i < 10; i++) {
+          const option = document.createElement("option");
+          option.textContent = year + i;
+          option.value = year + i;
+          yearSelect.appendChild(option);
+        }
+     }
+
+    </script>
   </body>
 </html>

@@ -32,27 +32,20 @@ import java.util.stream.Collectors;
 @Slf4j
 @RequestMapping("room")
 public class RoomController {
-
     @Autowired
     RoomService roomService;
     @GetMapping
-
     public String viewRooms(Model model){
         List<Room> allRooms = roomService.findAllRooms();
         List<RoomDTO> allRoomsDTO = allRooms.stream()
-                .map(this::convertRoomToRoomDTO)
+                .map(roomService::convertRoomToRoomDTO)
                 .collect(Collectors.toList());
 
         model.addAttribute("rooms", allRoomsDTO);
         return "rooms";
     }
 
-    private RoomDTO convertRoomToRoomDTO(Room room) {
-        RoomDTO roomDTO = new RoomDTO();
-        BeanUtils.copyProperties(room, roomDTO);
-        roomDTO.setImageData(Base64.getEncoder().encodeToString(room.getImageData()));
-        return roomDTO;
-    }
+
 
     @PostMapping("/save")
     public String saveRoom(@ModelAttribute("room") Room room, @RequestParam("image")MultipartFile image){
@@ -62,21 +55,12 @@ public class RoomController {
     @GetMapping("/view/{roomId:.+}")
     @ResponseBody
     public ResponseEntity<byte[]> viewImage(@PathVariable Long roomId) {
-
-//        String contentType = fileService.getContentType(filename);
-//        long fileLength = fileService.getContentLength(filename);
-//        byte[] imageData = roomService.getImageById(roomId);
-        Room room = roomService.finRoomById(roomId);
-        String filename = room.getImageName();
-        byte[] imageData = room.getImageData();
-        long fileLength = imageData.length;
-
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION,
-                        "inline; filename="+filename )
-                .contentType(MediaType.valueOf("image/jpeg"))
-                .contentLength(fileLength)
-                .body(imageData);
+        return roomService.loadImage(roomId);
+    }
+    @GetMapping("/delete/{roomId:.+}")
+    public String deleteRoom(@PathVariable Long roomId) {
+        roomService.deleteCustomer(roomId);
+        return "redirect:/room";
     }
 
 }

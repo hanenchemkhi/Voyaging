@@ -37,20 +37,20 @@ public class Customer {
 
     String phone;
 
+    @Enumerated(EnumType.STRING)
+    Role role;
+
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id")
     Address address;
-
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "card_id")
     CreditCard card ;
 
-
     @OneToMany(mappedBy="customer")
     Set<Reservation> reservations;
-
-
 
     public void addReservation(Reservation reservation) {
         reservations.add(reservation);

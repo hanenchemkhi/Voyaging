@@ -29,10 +29,19 @@ public class CustomerController {
        customerService.saveCustomer(customer, address, creditCard);
         return "redirect:/customer";
     }
+    @PostMapping("/signup")
+    public String signupCustomer(@ModelAttribute("customer") Customer customer, @ModelAttribute("address")Address address,
+                                 @ModelAttribute("creditCard")CreditCard creditCard){
+        customerService.saveCustomer(customer, address, creditCard);
+        return "redirect:/confirmation";
+    }
+
+
 
     @GetMapping("/delete/{customerId:.+}")
     public String deleteCustomer(@PathVariable Long customerId) {
         customerService.deleteCustomer(customerId);
         return "redirect:/customer";
     }
+
 }

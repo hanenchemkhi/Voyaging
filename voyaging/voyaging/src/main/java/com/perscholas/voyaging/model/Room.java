@@ -26,9 +26,7 @@ public class Room {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY )
     Long id;
-
     Long roomNumber;
-
     @Enumerated(EnumType.STRING)
     RoomCategory roomCategory;
     @ElementCollection(targetClass =Amenities.class, fetch = FetchType.EAGER)
