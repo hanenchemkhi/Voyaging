@@ -24,18 +24,17 @@
               class="row d-flex justify-content-center g-3"
             >
               <div class="col-auto">
-                <label for="checkinDate" class="visually-hidden"></label>
+                <label for="checkinDate" >Check In</label>
                 <input
                   type="date"
                   class="form-control"
                   name="checkinDate"
                   id="checkinDate"
                   th:value="${checkin}"
-
                 />
               </div>
               <div class="col-auto">
-                <label for="checkoutDate" class="visually-hidden"></label>
+                <label for="checkoutDate" >Check Out</label>
                 <input
                   type="date"
                   class="form-control"
@@ -45,8 +44,33 @@
                 />
               </div>
               <div class="col-auto">
+                <label for="numberRooms" > Rooms</label>
+                <input
+                        type="number"
+                        class="form-control "
+                        id="numberRooms"
+                        name="nbRooms"
+                        min="1" max="4"
+                        placeholder="Rooms"
+                        th:value="${nbRooms}"
+
+                />
+              </div>
+                <div class="col-auto">
+                  <label for="numberGuests">Guests</label>
+                  <input
+                          type="number"
+                          class="form-control "
+                          name="nbGuests"
+                          id="numberGuests"
+                          min="1" max="4"
+                          th:value="${nbGuests}"
+                  />
+                </div>
+
+              <div class="col-auto">
                 <button type="submit" class="btn btn-primary mb-3">
-                  Change Dates
+                  Update your stay
                 </button>
               </div>
             </form>
@@ -62,7 +86,13 @@
                 </div>
                 <div class="col-md-8">
                   <div class="card-body">
-                    <h5 class="card-title" th:text="${room.roomCategory.getCategory()}">Card title</h5>
+
+                    <div class="hstack gap-3">
+                      <h5 class=" bg-light border rounded" th:text="${room.roomCategory.getCategory()}">First item</h5>
+                      <h5 class="bg-light border rounded ms-auto" th:text="${reservationService.formatPrice(room.price)}">Second item</h5>
+
+                    </div>
+
                     <p class="card-text" th:text="${room.roomCategory.getDescription()}">
                     Description
                     </p>
@@ -71,8 +101,9 @@
                       <li class="list-group-item" style="border: none"><span><i class="bi bi-check"></i></span></li>
                       <li class="list-group-item" style="border: none" th:text="${rmamenity.getAmenity()}"></li>
                     </ul>
+
                     <div class="d-flex justify-content-end">
-                      <a th:href="@{/book(id=${room.id},checkin =${checkin},checkout =${checkout})}" class="btn btn-primary"
+                      <a th:href="@{/book(id=${room.id},checkin =${checkin},checkout =${checkout} , nbRooms=${nbRooms}, nbGuests=${nbGuests})}" class="btn btn-primary"
                         >Check offer</a
                       >
                     </div>

@@ -45,8 +45,6 @@ public class RoomController {
         return "rooms";
     }
 
-
-
     @PostMapping("/save")
     public String saveRoom(@ModelAttribute("room") Room room, @RequestParam("image")MultipartFile image){
         roomService.saveRoom(room, image);
@@ -57,9 +55,10 @@ public class RoomController {
     public ResponseEntity<byte[]> viewImage(@PathVariable Long roomId) {
         return roomService.loadImage(roomId);
     }
+
     @GetMapping("/delete/{roomId:.+}")
     public String deleteRoom(@PathVariable Long roomId) {
-        roomService.deleteCustomer(roomId);
+        roomService.deleteRoom(roomId);
         return "redirect:/room";
     }
 

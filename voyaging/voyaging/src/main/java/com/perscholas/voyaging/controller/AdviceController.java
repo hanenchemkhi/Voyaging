@@ -9,15 +9,15 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import java.time.LocalDate;
 
 
-@ControllerAdvice
+//@ControllerAdvice
 public class AdviceController {
-    @ExceptionHandler(Exception.class)
-    public String exception(final Exception exception, final Model model) {
-
-        String errorMessage = (exception != null ? exception.getMessage() : "Unknown error");
-        model.addAttribute("errorMessage", errorMessage);
-        return "error";
-    }
+//    @ExceptionHandler(Exception.class)
+//    public String exception(final Exception exception, final Model model) {
+//
+//        String errorMessage = (exception != null ? exception.getMessage() : "Unknown error");
+//        model.addAttribute("errorMessage", errorMessage);
+//        return "error";
+//    }
 
 //    @ModelAttribute
 //    public void bookingSelections (Model model, HttpServletRequest request, HttpSession http){

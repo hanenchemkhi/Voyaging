@@ -2,18 +2,16 @@ package com.perscholas.voyaging.service;
 
 import com.perscholas.voyaging.dto.RoomDTO;
 import com.perscholas.voyaging.exception.RoomNotFoundException;
-import com.perscholas.voyaging.exception.StorageFileNotFoundException;
+
 import com.perscholas.voyaging.model.Reservation;
 import com.perscholas.voyaging.model.Room;
 import com.perscholas.voyaging.repository.ReservationRepository;
 import com.perscholas.voyaging.repository.RoomRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.ArrayUtils;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -22,11 +20,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
-
-import java.net.MalformedURLException;
-
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -39,7 +32,7 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class RoomService {
-    final String UPLOAD_FOLDER = System.getProperty("user.dir") + "/uploads/";
+    final Double TAXE_RATES = 0.07;
     private final RoomRepository roomRepository;
 
     private final ReservationRepository reservationRepository;
@@ -102,7 +95,7 @@ public class RoomService {
         else throw new RoomNotFoundException(id);
     }
 
-    public void deleteCustomer(Long roomId) {
+    public void deleteRoom(Long roomId) {
 
         roomRepository.deleteById(roomId);
 
@@ -133,6 +126,19 @@ public class RoomService {
     public RoomDTO findRoomDTOById(Long id) {
         return convertRoomToRoomDTO(finRoomById(id));
     }
+
+    public Double calculateTaxes(Long id) {
+        return finRoomById(id).getPrice() * TAXE_RATES;
+    }
+
+    public Double calculateCostPerRoom(Long id, int nbRooms) {
+        return calculateTaxes(id) + finRoomById(id).getPrice();
+    }
+
+    public Double calculateTotalCost(Long id, Long lengthOfStay, int nbRooms) {
+        return calculateCostPerRoom(id, nbRooms) * lengthOfStay;
+    }
+
 }
 
 

@@ -24,7 +24,7 @@ public class RoomDTO {
     RoomCategory roomCategory;
     Set<Amenities> amenities;
     Set<Reservation> reservations;
-    Long price;
+    Double price;
     Integer maxGuests;
     String imageData;
     String imageName;

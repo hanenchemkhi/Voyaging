@@ -31,19 +31,27 @@
                     <div class="col-auto">
                       <div class="d-flex justify-content-between">
                         <div>
-                          <span th:text="${lengthOfStay}"></span>
                           <span>Night Stay</span>
                         </div>
                         <div>
-                          <span >price</span>
+                          <span th:text="${lengthOfStay}"></span>
                         </div>
                       </div>
+                      <div class="d-flex justify-content-between">
+                        <div>
+                          <span >Price per night per room</span>
+                        </div>
+                        <div>
+                          <span th:text="${price}"></span>
+                        </div>
+                      </div>
+
                       <div class="d-flex justify-content-between">
                         <div>
                           <span>Taxes and fees</span>
                         </div>
                         <div>
-                          <span >taxes</span>
+                          <span th:text="${taxes}"></span>
                         </div>
                       </div>
                       <div class="d-flex justify-content-between">
@@ -51,7 +59,7 @@
                           <span>Total cost per room</span>
                         </div>
                         <div>
-                          <span >cost</span>
+                          <span th:text="${costPerRoom} ">cost</span>
                         </div>
                       </div>
                       <hr>
@@ -60,7 +68,7 @@
                           <span >Total cost</span>
                         </div>
                         <div>
-                          <span >cost</span>
+                          <span th:text="${totalCost}">cost</span>
                         </div>
                       </div>
                     </div>
@@ -89,9 +97,9 @@
                           <span> - </span>
                           <span th:text="${checkout}"></span>
                           <br>
-                          <span >n rooms </span>
-                          <span> , </span>
-                          <span >n guests</span>
+                        <span>Room(s):  </span><span th:text="${nbRooms}"></span>
+                        <br>
+                        <span>Guest(s) per room:  </span><span th:text="${nbGuests}"></span>
                         <hr>
                         <div class="d-flex justify-content-end">
                           <a th:href="@{/login}" class="btn btn-primary"

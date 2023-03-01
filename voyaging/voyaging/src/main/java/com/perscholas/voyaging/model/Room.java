@@ -36,7 +36,7 @@ public class Room {
     Set<Reservation> reservations = new HashSet<>();
 //    @ManyToMany(mappedBy = "rooms")
 //    Set<RoomPrice> roomPrices= new HashSet<>();
-    Long price;
+    Double price;
     Integer maxGuests;
     @Lob
     @Column(columnDefinition = "LONGBLOB")
