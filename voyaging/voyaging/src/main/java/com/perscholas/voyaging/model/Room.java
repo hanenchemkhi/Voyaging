@@ -42,5 +42,13 @@ public class Room {
     @Column(columnDefinition = "LONGBLOB")
     byte[] imageData;
     String imageName;
+    public void addReservation(Reservation reservation) {
+        reservations.add(reservation);
+        reservation.getRooms().add(this);
+    }
 
+    public void removeReservation(Reservation reservation) {
+        reservations.remove(reservation);
+        reservation.getRooms().remove(this);
+    }
 }

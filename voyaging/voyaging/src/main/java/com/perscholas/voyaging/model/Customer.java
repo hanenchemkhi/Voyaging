@@ -50,7 +50,7 @@ public class Customer {
     CreditCard card ;
 
     @OneToMany(mappedBy="customer")
-    Set<Reservation> reservations;
+    Set<Reservation> reservations = new HashSet<>();
 
     public void addReservation(Reservation reservation) {
         reservations.add(reservation);
@@ -61,7 +61,5 @@ public class Customer {
         reservations.remove(reservation);
         reservation.setCustomer(null);
     }
-
-
-
 }
+

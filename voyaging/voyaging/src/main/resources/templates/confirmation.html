@@ -17,7 +17,7 @@
       <main class="flex-shrink-0">
         <div class="container text-center m-5">
           <h4 class="pt-5">Your reservation is confirmed!</h4>
-          <p>Dear <span>customer-name</span>!</p>
+          <p>Dear <span th:text="${customer.firstName}+' '+${customer.lastName}">customer-name</span>!</p>
           <p class="m-5">
             Thank you for choosing our hotel for your upcoming stay. To provide
             you with the highest form of customer service, please review your
@@ -35,6 +35,7 @@
             class="form-control-plaintext fw-semibold border border-0"
             id="reservationId"
             placeholder=""
+            th:value="${reservation.id}"
             readonly
           />
         </div>
@@ -56,6 +57,7 @@
                           class="form-control-plaintext fw-semibold border border-0"
                           id="checkinDate"
                           placeholder=""
+                          th:value="${reservation.checkinDate}"
                           readonly
                         />
                       </div>
@@ -68,6 +70,7 @@
                           class="form-control-plaintext fw-semibold border border-0"
                           id="checkoutDate"
                           placeholder=""
+                          th:value="${reservation.checkoutDate}"
                           readonly
                         />
                       </div>
@@ -80,6 +83,7 @@
                           class="form-control-plaintext fw-semibold border border-0"
                           id="guestsNo"
                           placeholder=""
+                          th:value="${reservation.nbGuests}"
                           readonly
                         />
                       </div>
@@ -88,13 +92,14 @@
                     <div class="row d-flex justify-content-center g-5">
                       <div class="col-4">
                         <label for="roomType" class="form-label"
-                          >Room type</label
+                          >Room Category</label
                         >
                         <input
                           type="text"
                           class="form-control-plaintext fw-semibold border border-0"
                           id="roomType"
                           placeholder=""
+                          th:value="${room.roomCategory.getCategory()}"
                           readonly
                         />
                       </div>
@@ -127,12 +132,13 @@
                     <div class="row d-flex justify-content-center g-5">
                       <div class="col-4">
                         <label for="pricePerNight" class="form-label"
-                          >Price/night</label
+                          >Price/room/night</label
                         >
                         <input
                           type="currency"
                           class="form-control-plaintext fw-semibold border border-0"
                           id="pricePerNight"
+
                           placeholder=""
                           readonly
                         />
@@ -145,6 +151,7 @@
                           type="text"
                           class="form-control-plaintext fw-semibold border border-0"
                           id="extraCharges"
+
                           placeholder=""
                           readonly
                         />

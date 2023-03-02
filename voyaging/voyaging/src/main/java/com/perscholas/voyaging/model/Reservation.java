@@ -33,11 +33,12 @@ public class Reservation {
     )
     Set<Room> rooms = new HashSet<>();
 
-    @ManyToOne
-    @JoinColumn(name="package_id")
-    Package reservationPackage;
+
+
     LocalDate checkinDate;
     LocalDate checkoutDate;
+
+    Integer nbGuests;
 
     public void addRoom(Room room) {
         rooms.add(room);

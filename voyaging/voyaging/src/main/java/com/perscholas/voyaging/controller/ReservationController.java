@@ -1,9 +1,13 @@
 package com.perscholas.voyaging.controller;
 
 import com.perscholas.voyaging.dto.RoomDTO;
+import com.perscholas.voyaging.model.Customer;
+import com.perscholas.voyaging.model.Reservation;
 import com.perscholas.voyaging.model.Room;
+import com.perscholas.voyaging.model.RoomCategory;
 import com.perscholas.voyaging.service.ReservationService;
 import com.perscholas.voyaging.service.RoomService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 import java.text.NumberFormat;
@@ -30,7 +35,7 @@ public class ReservationController {
 
     @GetMapping("/search-result")
     public String searchRooms(@RequestParam("checkinDate") LocalDate checkinDate, @RequestParam("checkoutDate") LocalDate checkoutDate,
-                              @RequestParam("nbRooms") int numberRooms, @RequestParam("nbGuests") int numberGuests, Model model ){
+                              @RequestParam("nbRooms") int numberRooms, @RequestParam("nbGuests") int numberGuests, Model model, HttpSession httpSession ){
         List<RoomDTO> availableRooms = roomService.findAvailableRooms(checkinDate, checkoutDate, numberRooms,numberGuests);
 
         model.addAttribute("availableRooms", availableRooms);
@@ -39,6 +44,9 @@ public class ReservationController {
         model.addAttribute("nbRooms", numberRooms);
         model.addAttribute("nbGuests", numberGuests);
         model.addAttribute("reservationService", reservationService);
+
+
+
 
         return "search-result";
     }
@@ -50,7 +58,9 @@ public class ReservationController {
                               @RequestParam("checkout") LocalDate checkout,
                               @RequestParam("nbRooms") int nbRooms,
                               @RequestParam("nbGuests") int nbGuests,
-                              Model model){
+                              Model model, HttpSession httpSession){
+
+
 
         Long lengthOfStay = reservationService.findLengthOfStay(checkin, checkout);
         NumberFormat formatter = NumberFormat.getCurrencyInstance();
@@ -59,7 +69,6 @@ public class ReservationController {
 
         model.addAttribute("lengthOfStay" , lengthOfStay);
         model.addAttribute("room", room );
-
         model.addAttribute("checkin",reservationService.formatDate( checkin) );
         model.addAttribute("checkout", reservationService.formatDate(checkout) );
         model.addAttribute("nbRoooms", nbRooms);
@@ -69,6 +78,11 @@ public class ReservationController {
         model.addAttribute("costPerRoom", formatter.format(roomService.calculateCostPerRoom(id, nbRooms)));
         model.addAttribute("totalCost", formatter.format(roomService.calculateTotalCost(id, lengthOfStay, nbRooms)));
 
+        httpSession.setAttribute("checkin",checkin );
+        httpSession.setAttribute("checkout", checkout );
+        httpSession.setAttribute("nbRooms", nbRooms);
+        httpSession.setAttribute("nbGuests", nbGuests);
+        httpSession.setAttribute("room", room );
 
         return "book";
     }
@@ -80,7 +94,27 @@ public class ReservationController {
     }
 
     @GetMapping("/confirmation")
-    public String confirmationReservation(Model model){
+    public String confirmationReservation(Model model, HttpSession httpSession){
+        log.warn(httpSession.getAttribute("checkin").toString());
+        log.warn(httpSession.getAttribute("checkout").toString());
+        //save reservation and send confirmation
+
+        LocalDate checkin = LocalDate.parse(httpSession.getAttribute("checkin").toString());
+        LocalDate checkout = LocalDate.parse(httpSession.getAttribute("checkout").toString());
+        int nbGuests =(Integer) httpSession.getAttribute("nbGuests");
+        Customer customer = (Customer) httpSession.getAttribute("customer");
+
+        RoomDTO room = (RoomDTO)httpSession.getAttribute("room");
+
+
+       Reservation reservation =  reservationService.saveReservation(checkin,checkout, nbGuests, customer, room);
+
+        model.addAttribute("reservation", reservation);
+        model.addAttribute("checkin", checkin);
+        model.addAttribute("checkout", checkout);
+        model.addAttribute("customer", customer);
+        model.addAttribute("room",room);
+
         return "confirmation";
     }
 

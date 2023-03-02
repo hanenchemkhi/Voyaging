@@ -4,6 +4,7 @@ import com.perscholas.voyaging.model.Address;
 import com.perscholas.voyaging.model.CreditCard;
 import com.perscholas.voyaging.model.Customer;
 import com.perscholas.voyaging.service.CustomerService;
+import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,7 +32,10 @@ public class CustomerController {
     }
     @PostMapping("/signup")
     public String signupCustomer(@ModelAttribute("customer") Customer customer, @ModelAttribute("address")Address address,
-                                 @ModelAttribute("creditCard")CreditCard creditCard){
+                                 @ModelAttribute("creditCard")CreditCard creditCard, HttpSession httpSession){
+        httpSession.setAttribute("customer", customer);
+        httpSession.setAttribute("address", address);
+        httpSession.setAttribute("creditCard", creditCard);
         customerService.saveCustomer(customer, address, creditCard);
         return "redirect:/confirmation";
     }
