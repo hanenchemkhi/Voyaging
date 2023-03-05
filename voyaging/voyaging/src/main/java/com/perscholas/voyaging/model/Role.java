@@ -1,7 +1,23 @@
 package com.perscholas.voyaging.model;
 
-public enum Role {
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
-    GUEST_USER, MEMBER_USER, ADMIN_USER;
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@Entity
+public class Role {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY )
+    Long id;
+
+    String roleName;
 
 }

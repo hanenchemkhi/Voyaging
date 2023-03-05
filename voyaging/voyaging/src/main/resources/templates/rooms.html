@@ -15,249 +15,420 @@
       <div class="container mt-5">
         <div><h1>Rooms</h1></div>
         <div>
-          <ul class="nav nav-pills">
-            <li class="nav-item ms-5">
-              <button
-                id="addRoom"
-                type="button"
-                class="btn btn-primary"
-                onclick="showEmptyRoomModal()"
-              >
-                Add Room<span class="ms-2"
-                  ><i class="bi bi-plus-circle"></i
-                ></span>
-              </button>
+          <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item" role="presentation">
+              <a class="nav-link active" data-bs-toggle="tab" href="#room" aria-selected="true" role="tab">Rooms</a>
             </li>
-            <li class="nav-item ms-auto">
-              <input
-                type="text"
-                id="searchRoomBox"
-                onkeyup="searchEntry('searchRoomBox','roomTable', 2)"
-                placeholder="Search by number"
-                title="Type in room number"
-              />
+            <li class="nav-item" role="presentation">
+              <a class="nav-link" data-bs-toggle="tab" href="#roomCategory" aria-selected="false" tabindex="-1" role="tab">Room Categories</a>
             </li>
+
+
           </ul>
-        </div>
-        <table id="roomTable" class="table table-striped" >
-          <thead>
-            <tr>
-              <th scope="col"></th>
-              <th scope="col"></th>
-
-              <th scope="col">Photo</th>
-              <th scope="col">Room Number</th>
-              <th scope="col">Max Guests</th>
-              <th scope="col">Category</th>
-              <th scope="col">Amenities</th>
-              <th scope="col">Price</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr th:each="room :${rooms}" >
-              <th scope="row" ></th>
-              <td>
-                <button
-                  id="editRoom"
-                  class="btn btn-primary"
-                  th:onclick="javascript:showRoomModal([[${room.roomNumber}]],
-                  [[${room.price}]],[[${room.maxGuests}]])"
-                >
-                  <span class="material-symbols-outlined"> edit </span>
-                </button>
-                <a
-                  th:href="@{/room/delete/{roomId}(roomId=${room.id})}"
-                  class="btn btn-danger"
-                  id="delete-room"
-                >
-                  <span class="material-symbols-outlined"> delete </span></a
-                >
-              </td>
-              <td><a th:href="@{/room/view/{roomId}(roomId=${room.id})}" target="_blank"> <img src="" th:src="${'data:image/jpeg;charset=utf-8;base64,' + room.imageData}" width="50px" height="50px" ></a></td>
-              <td th:text="${room.roomNumber}"></td>
-              <td th:text="${room.maxGuests}"></td>
-              <td th:text="${room.roomCategory.getCategory()}"></td>
-              <td>
-                <select
-                  class="form-select form-select-sm"
-                  size="2"
-                  aria-label=""
-                  disabled
-                >
-                  <option
-                    th:each="rmamenity:${room.amenities}"
-                    th:value="${rmamenity}"
-                    th:text="${rmamenity.getAmenity()}"
-                  ></option>
-                </select>
-              </td>
-              <td th:text="${room.price}"></td>
-            </tr>
-          </tbody>
-        </table>
-
-      </div>
-      <div class="container">
-        <div
-          class="modal fade"
-          id="roomModal"
-          data-bs-backdrop="static"
-          data-bs-keyboard="false"
-          tabindex="-1"
-          aria-labelledby="roomModalLabel"
-          aria-hidden="true"
-        >
-          <div class="modal-dialog modal-dialog-scrollable modal-fullscreen">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h1 class="modal-title fs-5" id="roomModalLabel">
-                  Add/Edit Room
-                </h1>
+          <div id="myTabContent" class="tab-content">
+            <div class="tab-pane fade show active" id="room" role="tabpanel">
+              <div>
+                <ul class="nav nav-pills">
+                  <li class="nav-item ms-5">
+                    <button
+                            id="addRoom"
+                            type="button"
+                            class="btn btn-primary"
+                            onclick="showEmptyRoomModal()"
+                    >
+                      Add Room<span class="ms-2"
+                    ><i class="bi bi-plus-circle"></i
+                    ></span>
+                    </button>
+                  </li>
+                  <li class="nav-item ms-auto">
+                    <input
+                            type="text"
+                            id="searchRoomBox"
+                            onkeyup="searchEntry('searchRoomBox','roomTable', 2)"
+                            placeholder="Search by number"
+                            title="Type in room number"
+                    />
+                  </li>
+                </ul>
               </div>
-              <div class="modal-body">
-                <div class="container">
-                  <h4 class="mb-3 text-center">Room Information</h4>
-                  <form
-                    class="needs-validation"
-                    enctype="multipart/form-data"
-                    action="#"
-                    th:action="@{/room/save}"
-                    th:object="${room}"
-                    method="POST"
-                  >
-                    <div class="gy-3">
-                      <div class="row">
-                        <div class="col-3">
-                          <label for="roomNumber" class="form-label"
-                            >Room number</label
-                          >
-                          <input
-                            id="roomNumber"
-                            name="roomNumber"
-                            type="text"
-                            class="form-control"
-                            placeholder=""
-                            value=""
-                            required
-                          />
-                          <div class="invalid-feedback">
-                            Valid room number is required.
-                          </div>
-                        </div>
+              <table id="roomTable" class="table table-striped" >
+                <thead>
+                <tr>
+                  <th scope="col"></th>
+                  <th scope="col"></th>
 
-                        <div class="col-md-3">
-                          <label for="categoryid" class="form-label"
-                            >Category</label
-                          >
-                          <select
-                            class="form-select"
-                            id="categoryid"
-                            name="roomCategory"
-                            aria-label=""
-                            required
-                          >
-                            <option
-                              th:each="category : ${T(com.perscholas.voyaging.model.RoomCategory).values()}"
-                              th:value="${category}"
-                              th:text="${category.getCategory()}"
-                            ></option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-3">
-                          <label for="maxGuests" class="form-label"
-                            >Max guests</label
-                          >
-                          <input
-                            id="maxGuests"
-                            name="maxGuests"
-                            type="number"
-                            min="1"
-                            max="8"
-                            class="form-control"
-                            placeholder=""
-                            value=""
-                            required
-                          />
-                          <div class="invalid-feedback">
-                            Valid room Price is required.
-                          </div>
-                        </div>
-                        <div class="col-3">
-                          <label for="roomPrice" class="form-label"
-                            >Room price</label
-                          >
-                          <input
-                            id="roomPrice"
-                            name="price"
-                            type="text"
-                            class="form-control"
-                            placeholder=""
-                            value=""
-                            required
-                          />
-                          <div class="invalid-feedback">
-                            Valid room Price is required.
-                          </div>
-                        </div>
-                      </div>
-                      <br />
-                      <div class="col-6">
-                        <div class="shadow-sm p-3 mb-1 bg-body rounded">
-                          <h5>Amenities</h5>
-                          <div
-                            class="form-check form-check-inline col-6"
-                            th:each="amenity:${T(com.perscholas.voyaging.model.Amenities).values()}"
-                          >
-                            <input
-                              class="form-check-input"
-                              type="checkbox"
-                              th:text="${amenity.getAmenity()}"
-                              th:value="${amenity}"
-                              name="amenities"
-                              id="amenityid"
-                            />
-                            <label class="form-check-label" for="amenityid">
-                            </label>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-6">
-                          <label for="imageId" class="form-label"
-                            >Room photo</label
-                          >
-                          <input
-                            class="form-control"
-                            name="image"
-                            type="file"
-                            accept="image/png, image/jpeg"
-                            id="imageId"
-                          />
-                        </div>
+                  <th scope="col">Photo</th>
+                  <th scope="col">Room Number</th>
+                  <th scope="col">Category</th>
+                  <th scope="col">Price</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="room :${rooms}" >
+                  <th scope="row" ></th>
+                  <td>
+                    <button
+                            id="editRoom"
+                            class="btn btn-primary"
+                            th:onclick="javascript:showRoomModal([[${room.roomNumber}]])"
+                    >
+                      <span class="material-symbols-outlined"> edit </span>
+                    </button>
+                    <a
+                            th:href="@{/room/delete/{roomId}(roomId=${room.id})}"
+                            class="btn btn-danger"
+                            id="delete-room"
+                    >
+                      <span class="material-symbols-outlined"> delete </span></a
+                    >
+                  </td>
+                  <td>
+                    <div th:if="${room.roomType.roomImage} != null">
+                      <a th:href="@{${room.roomType.roomImage.imageUrl}}"  target="_blank">
+                        <img src="" th:src="@{${room.roomType.roomImage.imageUrl}}" class="img-thumbnail" width="100px" height="100px" >
+                      </a>
+                    </div>
+                  </td>
+                  <td th:text="${room.roomNumber}"></td>
+                  <td th:text="${room.roomType.roomCategory.getCategory()}"></td>
+                  <td th:text="${room.roomType.price}"></td>
+                </tr>
+                </tbody>
+              </table>
+
+            </div>
+            <div class="container">
+              <div
+                      class="modal fade"
+                      id="roomModal"
+                      data-bs-backdrop="static"
+                      data-bs-keyboard="false"
+                      tabindex="-1"
+                      aria-labelledby="roomModalLabel"
+                      aria-hidden="true"
+              >
+                <div class="modal-dialog modal-dialog-scrollable modal-fullscreen">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h1 class="modal-title fs-5" id="roomModalLabel">
+                        Add/Edit Room
+                      </h1>
+                    </div>
+                    <div class="modal-body">
+                      <div class="container">
+                        <h4 class="mb-3 text-center">Room Information</h4>
+                        <form
+                                class="needs-validation"
+                                enctype="multipart/form-data"
+                                action="#"
+                                th:action="@{/room/save/room}"
+                                th:object="${room}"
+                                method="POST"
+                        >
+                          <div class="gy-3">
+                            <div class="row">
+                              <div class="col-3">
+                                <label for="roomNumber" class="form-label"
+                                >Room number</label
+                                >
+                                <input
+                                        id="roomNumber"
+                                        name="roomNumber"
+                                        type="text"
+                                        class="form-control"
+                                        placeholder=""
+                                        value=""
+                                        required
+                                />
+                                <div class="invalid-feedback">
+                                  Valid room number is required.
+                                </div>
+                              </div>
+                              <div class="col-md-3">
+                                <label for="roomTypeid" class="form-label"
+                                >Category</label
+                                >
+                                <select
+                                        class="form-select"
+                                        id="roomTypeid"
+                                        name="category"
+                                        aria-label=""
+                                        required
+                                >
+                                  <option
+                                          th:each="category : ${T(com.perscholas.voyaging.model.RoomCategory).values()}"
+                                          th:value="${category}"
+                                          th:text="${category.getCategory()}"
+                                  ></option>
+                                </select>
+                              </div>
+
+                            </div>
+
+                            <hr class="my-4" />
+                            <div class="modal-footer">
+                              <button
+                                      type="button"
+                                      class="btn btn-secondary"
+                                      data-bs-dismiss="modal"
+                              >
+                                Close
+                              </button>
+                              <button type="submit" class="btn btn-primary">
+                                Save changes
+                              </button>
+                            </div>
+                        </form>
                       </div>
                     </div>
-                    <hr class="my-4" />
-                    <div class="modal-footer">
-                      <button
-                        type="button"
-                        class="btn btn-secondary"
-                        data-bs-dismiss="modal"
-                      >
-                        Close
-                      </button>
-                      <button type="submit" class="btn btn-primary">
-                        Save changes
-                      </button>
-                    </div>
-                  </form>
+                  </div>
                 </div>
               </div>
             </div>
+
           </div>
-        </div>
-      </div>
+            <div class="tab-pane fade" id="roomCategory" role="tabpanel">
+              <div>
+                <ul class="nav nav-pills">
+                  <li class="nav-item ms-5">
+                    <button
+                            id="addRoomCategory"
+                            type="button"
+                            class="btn btn-primary"
+                            onclick="showEmptyRoomCategoryModal()"
+                    >
+                      Add Room Category <span class="ms-2"
+                    ><i class="bi bi-plus-circle"></i
+                    ></span>
+                    </button>
+                  </li>
+                </ul>
+              </div>
+              <table id="roomCategoryTable" class="table table-striped" >
+                <thead>
+                <tr>
+                  <th scope="col"></th>
+                  <th scope="col"></th>
+
+                  <th scope="col">Photo</th>
+                  <th scope="col">Room Category</th>
+                  <th scope="col">Max Guests</th>
+                 <th scope="col">Amenities</th>
+                  <th scope="col">Price</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="roomType :${roomTypes}" >
+                  <th scope="row" ></th>
+                  <td>
+                    <button
+                            id="editRoomType"
+                            class="btn btn-primary"
+                            th:onclick="javascript:showRoomCategoryModal([[${roomType.roomCategory}]])"
+                    >
+                      <span class="material-symbols-outlined"> edit </span>
+                    </button>
+                    <a
+                            href=""
+                            class="btn btn-danger"
+                            id="delete-roomType"
+                    >
+                      <span class="material-symbols-outlined"> delete </span></a
+                    >
+                  </td>
+                  <td>
+                    <div th:if="${roomType.roomImage} != null">
+                      <a th:href="@{${roomType.roomImage.imageUrl}}"  target="_blank">
+                        <img src="" th:src="@{${roomType.roomImage.imageUrl}}" class="img-thumbnail" width="100px" height="100px" >
+                      </a>
+                    </div>
+                  </td>
+
+                  <td th:text="${roomType.roomCategory.getCategory()}"></td>
+                  <td th:text="${roomType.maxGuests}"></td>
+                  <td>
+                    <select
+                            class="form-select form-select-sm"
+                            size="2"
+                            aria-label=""
+                            disabled
+                    >
+                      <option
+                              th:each="rmamenity:${roomType.amenities}"
+                              th:value="${rmamenity}"
+                              th:text="${rmamenity.getAmenity()}"
+                      ></option>
+                    </select>
+                  </td>
+                  <td th:text="${roomType.price}"></td>
+                </tr>
+                </tbody>
+              </table>
+
+            </div>
+              <div class="container">
+                <div
+                        class="modal fade"
+                        id="roomCategoryModal"
+                        data-bs-backdrop="static"
+                        data-bs-keyboard="false"
+                        tabindex="-1"
+                        aria-labelledby="roomModalLabel"
+                        aria-hidden="true"
+                >
+                  <div class="modal-dialog modal-dialog-scrollable modal-fullscreen">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="roomCategoryModalLabel">
+                          Add/Edit Room Category
+                        </h1>
+                      </div>
+                      <div class="modal-body">
+                        <div class="container">
+                          <h4 class="mb-3 text-center">Room Category Information</h4>
+                          <form
+                                  class="needs-validation"
+                                  enctype="multipart/form-data"
+                                  action="#"
+                                  th:action="@{/room/save/roomCategory}"
+                                  th:object="${roomType}"
+                                  method="POST"
+                          >
+                            <div class="gy-3">
+                              <div class="row">
+                                <div class="col-md-3">
+                                  <label for="categoryid" class="form-label"
+                                  >Category</label
+                                  >
+                                  <select
+                                          class="form-select"
+                                          id="categoryid"
+                                          name="roomCategory"
+                                          aria-label=""
+                                          required
+                                  >
+                                    <option
+                                            th:each="category : ${T(com.perscholas.voyaging.model.RoomCategory).values()}"
+                                            th:value="${category}"
+                                            th:text="${category.getCategory()}"
+                                    ></option>
+                                  </select>
+                                </div>
+                                <div class="row">
+                                  <div class="col-3" >
+                                    <label for="roomPrice" class="form-label"
+                                    >Room price</label
+                                    >
+                                    <input
+                                            id="roomPrice"
+                                            name="price"
+                                            type="text"
+                                            class="form-control"
+                                            placeholder=""
+                                            value=""
+                                            required
+                                    />
+                                    <div class="invalid-feedback">
+                                      Valid room number is required.
+                                    </div>
+                                  </div>
+                                  <div class="row">
+                                    <div class="col-3" >
+                                      <label for="maxGuests" class="form-label"
+                                      >Maximum occupancy</label
+                                      >
+                                      <input
+                                              id="maxGuests"
+                                              name="maxGuests"
+                                              type="number"
+                                              class="form-control"
+                                              placeholder=""
+                                              value=""
+                                              min="1"
+                                              max="4"
+                                              required
+                                      />
+                                      <div class="invalid-feedback">
+                                        Valid room number is required.
+                                      </div>
+                                    </div>
+                                  <div class="row">
+                                    <div class="col-6">
+                                      <div class="shadow-sm p-3 mb-1 bg-body rounded">
+                                        <h5>Amenities</h5>
+                                        <div
+                                                class="form-check form-check-inline col-6"
+                                                th:each="amenity:${T(com.perscholas.voyaging.model.Amenities).values()}"
+                                        >
+                                          <input
+                                                  class="form-check-input"
+                                                  type="checkbox"
+                                                  th:text="${amenity.getAmenity()}"
+                                                  th:value="${amenity}"
+                                                  name="amenities"
+                                                  id="amenityid"
+                                          />
+                                          <label class="form-check-label" for="amenityid">
+                                          </label>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="row">
+                                    <div class="col-6" >
+                                      <label for="imageId" class="form-label"
+                                      >Room photo</label
+                                      >
+                                      <input
+                                              class="form-control"
+                                              name="file"
+                                              type="file"
+                                              accept="image/png, image/jpeg"
+                                              id="imageId"
+                                      />
+                                    </div>
+                                  </div>
+                                </div>
+
+
+
+                              </div>
+
+                              <hr class="my-4" />
+                              <div class="modal-footer">
+                                <button
+                                        type="button"
+                                        class="btn btn-secondary"
+                                        data-bs-dismiss="modal"
+                                >
+                                  Close
+                                </button>
+                                <button type="submit" class="btn btn-primary">
+                                  Save changes
+                                </button>
+                              </div>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          </div>
+
+
+
+
+      <!-- Second modal for Room Category-->
+
+
+
+
     </main>
 
     <!-- Optional JavaScript; choose one of the two! -->
@@ -273,20 +444,24 @@
         const myModal = new bootstrap.Modal("#roomModal");
         myModal.show();
       }
-      function showRoomModal( roomNumber,  price, maxGuests) {
-        let myModal = new bootstrap.Modal("#roomModal");
+      function showEmptyRoomCategoryModal() {
+        const myModal = new bootstrap.Modal("#roomCategoryModal");
+        myModal.show();
+      }
+<!--      function showRoomModal( roomNumber,  price, maxGuests) {-->
+<!--        let myModal = new bootstrap.Modal("#roomModal");-->
 
-        document.getElementById("roomNumber").value = roomNumber;
+<!--        document.getElementById("roomNumber").value = roomNumber;-->
 
 <!--        document.getElementById("roomCategory").value = roomCategory;-->
 
 <!--        document.getElementById("amenities").value = amenities;-->
 
-        document.getElementById("roomPrice").value = price;
-        document.getElementById("maxGuests").value = maxGuests;
+<!--        document.getElementById("roomPrice").value = price;-->
+<!--        document.getElementById("maxGuests").value = maxGuests;-->
 
-        myModal.show();
-      }
+<!--        myModal.show();-->
+<!--      }-->
 
     </script>
 

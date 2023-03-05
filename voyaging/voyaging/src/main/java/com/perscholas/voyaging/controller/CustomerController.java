@@ -3,12 +3,15 @@ package com.perscholas.voyaging.controller;
 import com.perscholas.voyaging.model.Address;
 import com.perscholas.voyaging.model.CreditCard;
 import com.perscholas.voyaging.model.Customer;
+import com.perscholas.voyaging.repository.AddressRepository;
 import com.perscholas.voyaging.service.CustomerService;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -24,15 +27,36 @@ public class CustomerController {
     }
 
     @PostMapping("/save")
-    public String saveCustomer(@ModelAttribute("customer") Customer customer, @ModelAttribute("address")Address address,
-                               @ModelAttribute("creditCard")CreditCard creditCard){
+    public String saveCustomer(@Valid @ModelAttribute("customer")  Customer customer, BindingResult bindingResultCustomer,
+                               @Valid @ModelAttribute("address")  Address address, BindingResult bindingResultAddress,
+                               @Valid @ModelAttribute("creditCard")  CreditCard creditCard, BindingResult bindingResultCreditCard){
 
-       customerService.saveCustomer(customer, address, creditCard);
+
+
+        customerService.saveCustomer(customer, address, creditCard);
         return "redirect:/customer";
     }
-    @PostMapping("/signup")
-    public String signupCustomer(@ModelAttribute("customer") Customer customer, @ModelAttribute("address")Address address,
-                                 @ModelAttribute("creditCard")CreditCard creditCard, HttpSession httpSession){
+
+
+    @GetMapping("/signup")
+    public String getSignup(Customer customer, Address address, CreditCard creditCard) {
+
+        return "signup";
+    }
+
+    @PostMapping("/handlesignup")
+    public String signupCustomer(@Valid @ModelAttribute("customer")  Customer customer, BindingResult bindingResultCustomer,
+                                 @Valid @ModelAttribute("address")  Address address, BindingResult bindingResultAddress,
+                                 @Valid @ModelAttribute("creditCard")  CreditCard creditCard, BindingResult bindingResultCreditCard,
+                                 HttpSession httpSession, Model model){
+
+        if(bindingResultCustomer.hasErrors() || bindingResultAddress.hasErrors() || bindingResultCreditCard.hasErrors()) {
+            log.warn("======================errors with binding result=======================");
+            return "signup";
+        }
+
+
+
         httpSession.setAttribute("customer", customer);
         httpSession.setAttribute("address", address);
         httpSession.setAttribute("creditCard", creditCard);

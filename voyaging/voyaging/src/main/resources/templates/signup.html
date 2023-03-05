@@ -26,10 +26,11 @@
           <h4>Join Us</h4>
         </div>
         <div class="container">
-          <form class="needs-validation" action="#"
-              th:action="@{/customer/signup}"
+          <form
+              th:action="@{/customer/handlesignup}"
               th:object="${customer}"
-              method="POST" novalidate>
+              method="post" >
+
                 <div class="row g-3">
                   <div class="col-sm-6">
                     <label for="firstName" class="form-label"
@@ -40,13 +41,11 @@
                             class="form-control"
                             id="firstName"
                             name="firstName"
-                            placeholder=""
-                            value=""
-                            required
+
+
                     />
-                    <div class="invalid-feedback">
-                      Valid first name is required.
-                    </div>
+
+
                   </div>
 
                   <div class="col-sm-6">
@@ -58,10 +57,12 @@
                             class="form-control"
                             id="lastName"
                             name="lastName"
+
                             placeholder=""
                             value=""
                             required
                     />
+
                     <div class="invalid-feedback">
                       Valid last name is required.
                     </div>
@@ -78,6 +79,7 @@
                             value=""
                             required
                     />
+
                     <div class="invalid-feedback">
                       Please enter a valid email address
                     </div>
@@ -89,10 +91,12 @@
                             class="form-control"
                             id="phone"
                             name="phone"
+
                             placeholder=""
                             value=""
                             required
                     />
+
                     <div class="invalid-feedback">
                       Please enter a valid phone number
                     </div>
@@ -106,10 +110,12 @@
                             class="form-control"
                             id="password"
                             name="password"
+
                             placeholder=""
                             value=""
                             required
                     />
+
                     <div class="invalid-feedback">
                       Please enter a valid password
                     </div>
@@ -123,10 +129,12 @@
                             class="form-control"
                             id="confirm-password"
                             name="confirmPassword"
+
                             placeholder=""
                             value=""
                             required
                     />
+
                     <div class="invalid-feedback">
                       Please re-enter the password
                     </div>
@@ -141,42 +149,68 @@
                               class="form-control"
                               id="street"
                               name="street"
+
                               placeholder=""
                               required
                       />
+
                       <div class="invalid-feedback">
                         Please enter address.
                       </div>
                     </div>
+                    <div class="row">
+                      <div class="col-6">
+                        <label for="street" class="form-label"
+                        >City</label
+                        >
+                        <input
+                                type="text"
+                                class="form-control"
+                                id="city"
+                                name="city"
 
-                    <div class="col-md-6">
-                      <label for="country" class="form-label"
-                      >Country/Region</label
-                      >
-                      <select
-                              class="form-select"
-                              id="country"
-                              name="country"
-                              required
-                      >
-                        <option value="">Choose...</option>
-                        <option value="usa">United States</option>
-                      </select>
-                      <div class="invalid-feedback">
-                        Please select a valid country.
+                                placeholder=""
+                                required
+                        />
+
+                        <div class="invalid-feedback">
+                          Please enter city.
+                        </div>
+
+                      </div>
+                      <div class="col-md-6">
+                        <label for="country" class="form-label"
+                        >Country/Region</label
+                        >
+                        <select
+                                class="form-select"
+                                id="country"
+                                name="country"
+
+                                required
+                        >
+                          <option value="">Choose...</option>
+                          <option value="usa">United States</option>
+                        </select>
+
+                        <div class="invalid-feedback">
+                          Please select a valid country.
+                        </div>
                       </div>
                     </div>
 
                     <div class="col-md-6">
-                      <label for="zipCode" class="form-label">Zip</label>
+                      <label for="zipCode" class="form-label">Zip code</label>
                       <input
                               type="text"
                               class="form-control"
                               id="zipCode"
                               name="zipCode"
+
                               placeholder=""
                               required
                       />
+
                       <div class="invalid-feedback">
                         Zip code required.
                       </div>
@@ -198,9 +232,11 @@
                               class="form-control"
                               id="cardholderName"
                               name="cardholderName"
+
                               placeholder=""
                               required
                       />
+
                       <small class="text-muted"
                       >Full name as displayed on card</small
                       >
@@ -218,9 +254,11 @@
                               class="form-control"
                               id="cardNumber"
                               name="cardNumber"
+
                               placeholder=""
                               required
                       />
+
                       <div class="invalid-feedback">
                         Credit card number is required
                       </div>
@@ -234,12 +272,14 @@
                               class="form-select"
                               id="month-expiration"
                               name="monthExpiration"
+
                               onclick="populateMonths()"
                               aria-label=""
                               required
                       >
                         <option selected>Select month</option>
                       </select>
+
                     </div>
                     <div class="col-md-3">
                       <label for="year-expiration" class="form-label"
@@ -249,12 +289,14 @@
                               class="form-select"
                               id="year-expiration"
                               name="yearExpiration"
+
                               onclick="populateYears()"
                               aria-label=""
                               required
                       >
                         <option selected>Select Year</option>
                       </select>
+                     
                     </div>
                   </div>
                 </div>

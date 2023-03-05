@@ -36,7 +36,7 @@ public class ReservationController {
     @GetMapping("/search-result")
     public String searchRooms(@RequestParam("checkinDate") LocalDate checkinDate, @RequestParam("checkoutDate") LocalDate checkoutDate,
                               @RequestParam("nbRooms") int numberRooms, @RequestParam("nbGuests") int numberGuests, Model model, HttpSession httpSession ){
-        List<RoomDTO> availableRooms = roomService.findAvailableRooms(checkinDate, checkoutDate, numberRooms,numberGuests);
+        List<Room> availableRooms = roomService.findAvailableRooms(checkinDate, checkoutDate, numberRooms,numberGuests);
 
         model.addAttribute("availableRooms", availableRooms);
         model.addAttribute("checkin",checkinDate );
@@ -60,11 +60,10 @@ public class ReservationController {
                               @RequestParam("nbGuests") int nbGuests,
                               Model model, HttpSession httpSession){
 
-
-
         Long lengthOfStay = reservationService.findLengthOfStay(checkin, checkout);
         NumberFormat formatter = NumberFormat.getCurrencyInstance();
-        RoomDTO room = roomService.findRoomDTOById(id);
+        Room room = roomService.finRoomById(id);
+
 
 
         model.addAttribute("lengthOfStay" , lengthOfStay);
@@ -73,7 +72,7 @@ public class ReservationController {
         model.addAttribute("checkout", reservationService.formatDate(checkout) );
         model.addAttribute("nbRoooms", nbRooms);
         model.addAttribute("nbGuests", nbGuests);
-        model.addAttribute("price", formatter.format(room.getPrice()));
+        model.addAttribute("price", formatter.format(room.getRoomType().getPrice()));
         model.addAttribute("taxes", formatter.format(roomService.calculateTaxes(id)));
         model.addAttribute("costPerRoom", formatter.format(roomService.calculateCostPerRoom(id, nbRooms)));
         model.addAttribute("totalCost", formatter.format(roomService.calculateTotalCost(id, lengthOfStay, nbRooms)));
@@ -104,7 +103,7 @@ public class ReservationController {
         int nbGuests =(Integer) httpSession.getAttribute("nbGuests");
         Customer customer = (Customer) httpSession.getAttribute("customer");
 
-        RoomDTO room = (RoomDTO)httpSession.getAttribute("room");
+        Room room = (Room)httpSession.getAttribute("room");
 
 
        Reservation reservation =  reservationService.saveReservation(checkin,checkout, nbGuests, customer, room);

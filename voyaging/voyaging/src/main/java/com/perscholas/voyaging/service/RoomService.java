@@ -1,52 +1,62 @@
 package com.perscholas.voyaging.service;
 
+import com.perscholas.voyaging.controller.ImageController;
+import com.perscholas.voyaging.controller.RoomController;
 import com.perscholas.voyaging.dto.RoomDTO;
 import com.perscholas.voyaging.exception.RoomNotFoundException;
 
-import com.perscholas.voyaging.model.Reservation;
-import com.perscholas.voyaging.model.Room;
-import com.perscholas.voyaging.repository.ReservationRepository;
-import com.perscholas.voyaging.repository.RoomRepository;
+import com.perscholas.voyaging.model.*;
+import com.perscholas.voyaging.repository.*;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 import java.io.IOException;
 
+import java.net.MalformedURLException;
+import java.nio.file.FileAlreadyExistsException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.ArrayList;
-
-import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-
 
 @Service
 @Slf4j
 public class RoomService {
-    final Double TAXE_RATES = 0.07;
+    private final RoomImageRepository roomImageRepository;
+
+    private final RoomTypeRepository roomTypeRepository;
+
     private final RoomRepository roomRepository;
 
     private final ReservationRepository reservationRepository;
+    private final Path ROOT_FOLDER = Paths.get("./uploads");
+    final Double ROOM_TAXE_RATES = 0.07;
 
 
     @Autowired
     public RoomService(RoomRepository roomRepository,
-                       ReservationRepository reservationRepository) {
+                       ReservationRepository reservationRepository,
+                       RoomTypeRepository roomTypeRepository,
+                       RoomImageRepository roomImageRepository) {
         this.roomRepository = roomRepository;
         this.reservationRepository = reservationRepository;
+        this.roomTypeRepository = roomTypeRepository;
+        this.roomImageRepository = roomImageRepository;
     }
 
 
-    public List<RoomDTO> findAvailableRooms(LocalDate checkinDate, LocalDate checkoutDate, int numberRooms, int numberGuests) {
+    public List<Room> findAvailableRooms(LocalDate checkinDate, LocalDate checkoutDate, int numberRooms, int numberGuests) {
         List<Room> availableRooms = roomRepository.findAll();
         List<Reservation> allReservations = reservationRepository.findAll();
         List<Room> reservedRooms = new ArrayList<>();
@@ -60,24 +70,65 @@ public class RoomService {
         }
         availableRooms.removeAll(reservedRooms);
 
-        return availableRooms.stream()
-                .map(this::convertRoomToRoomDTO)
-                .collect(Collectors.toList());
+        return availableRooms;
 
     }
 
-    public void saveRoom(Room room, MultipartFile multipartFile) {
+
+    public void saveRoomType(RoomType roomType){
+        roomTypeRepository.save(roomType);
+    }
+
+
+
+    public void saveImage(MultipartFile file,Long roomTypeId) throws Exception{
+        log.warn("inside save Image");
 
         try {
-            byte[] imageArr = multipartFile.getBytes();
-            room.setImageName(multipartFile.getOriginalFilename());
-            room.setImageData(imageArr);
-            roomRepository.save(room);
 
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+
+            String ext = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
+            log.warn(ext);
+            RoomType roomType = roomTypeRepository.findById(roomTypeId).get();
+            String roomCategory = roomType.getRoomCategory().getCategory();
+            String imageName = roomCategory.concat("-").concat(String.valueOf(LocalDate.now()).concat(ext));
+            log.warn(imageName);
+            Files.copy(file.getInputStream(), this.ROOT_FOLDER.resolve(imageName));
+            log.warn("copied file to root folder");
+            Path path = ROOT_FOLDER.resolve(imageName);
+            log.warn("resolving path");
+            String url = MvcUriComponentsBuilder
+                    .fromMethodName(ImageController.class, "getImage", path.getFileName().toString()).build().toString();
+            log.warn(url);
+
+            RoomImage roomImage = new RoomImage();
+            roomImage.setImageUrl(url);
+            roomImage.setImageName(imageName);
+            roomImage.setRoomType(roomType);
+            roomImageRepository.save(roomImage);
+
+        } catch (Exception e) {
+            if (e instanceof FileAlreadyExistsException) {
+                throw new Exception("A file of that name already exists.");
+            } else {
+                throw new Exception("Error copying file to HD" + file.getOriginalFilename());
+            }
+
         }
 
+
+    }
+    public void init() throws Exception {
+        try {
+            if(Files.exists(ROOT_FOLDER)){
+                log.debug("Folder Exists!");
+            }else {
+                Files.createDirectories(ROOT_FOLDER);
+                log.debug("Folder Created!");
+            }
+        } catch (IOException e) {
+            throw new Exception("Could not initialize folder for upload!");
+        }
     }
 
     public List<Room> findAllRooms() {
@@ -101,44 +152,71 @@ public class RoomService {
 
     }
 
-    public RoomDTO convertRoomToRoomDTO(Room room) {
-        RoomDTO roomDTO = new RoomDTO();
-        BeanUtils.copyProperties(room, roomDTO);
-        roomDTO.setImageData(Base64.getEncoder().encodeToString(room.getImageData()));
-        return roomDTO;
+    public List<RoomType> findAllRoomType() {
+        return roomTypeRepository.findAll();
     }
 
-    public ResponseEntity<byte[]> loadImage(Long roomId) {
-        Room room = finRoomById(roomId);
-        String filename = room.getImageName();
-        byte[] imageData = room.getImageData();
-        long fileLength = imageData.length;
+    public void saveRoomCategory(RoomType roomType, MultipartFile file) {
 
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION,
-                        "inline; filename=" + filename)
-                .contentType(MediaType.valueOf("image/jpeg"))
-                .contentLength(fileLength)
-                .body(imageData);
+
+
+
+
+        roomTypeRepository.save(roomType);
+
+
+
+        try {
+            if (file.isEmpty()){log.warn("file is empty");}
+            saveImage(file, roomType.getId());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+
+
     }
 
 
-    public RoomDTO findRoomDTOById(Long id) {
-        return convertRoomToRoomDTO(finRoomById(id));
-    }
+//    public Room findRoomDTOById(Long id) {
+//        return convertRoomToRoomDTO(finRoomById(id));
+//    }
 
     public Double calculateTaxes(Long id) {
-        return finRoomById(id).getPrice() * TAXE_RATES;
+        return finRoomById(id).getRoomType().getPrice() * ROOM_TAXE_RATES;
     }
 
     public Double calculateCostPerRoom(Long id, int nbRooms) {
-        return calculateTaxes(id) + finRoomById(id).getPrice();
+        return calculateTaxes(id) + finRoomById(id).getRoomType().getPrice();
     }
 
     public Double calculateTotalCost(Long id, Long lengthOfStay, int nbRooms) {
         return calculateCostPerRoom(id, nbRooms) * lengthOfStay;
     }
 
+    public Resource load(String filename) {
+        try {
+            Path file = ROOT_FOLDER.resolve(filename);
+            Resource resource = new UrlResource(file.toUri());
+
+            if (resource.exists() || resource.isReadable()) {
+                return resource;
+            } else {
+                throw new RuntimeException("Could not read the file!");
+            }
+        } catch (MalformedURLException e) {
+            throw new RuntimeException("Error: " + e.getMessage());
+        }
+    }
+
+    public void saveRoom(Long roomNumber, RoomCategory roomCategory) {
+
+        Room room = new Room();
+        room.setRoomNumber(roomNumber);
+        RoomType roomType =  roomTypeRepository.findByRoomCategory(roomCategory);
+        room.setRoomType(roomType);
+        roomRepository.save(room);
+    }
 }
 
 

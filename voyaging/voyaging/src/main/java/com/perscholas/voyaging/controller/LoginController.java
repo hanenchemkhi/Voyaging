@@ -23,10 +23,7 @@ public class LoginController {
         return "signup";
     }
 
-    @GetMapping("/nesibe")
-    public String viewNesibe(){
-        return "nesibe";
-    }
+
 
 
 }

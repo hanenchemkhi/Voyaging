@@ -1,7 +1,7 @@
 package com.perscholas.voyaging.controller;
 
 import com.perscholas.voyaging.dto.RoomDTO;
-import com.perscholas.voyaging.model.Room;
+import com.perscholas.voyaging.model.*;
 import com.perscholas.voyaging.service.RoomService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -37,24 +37,27 @@ public class RoomController {
     @GetMapping
     public String viewRooms(Model model){
         List<Room> allRooms = roomService.findAllRooms();
-        List<RoomDTO> allRoomsDTO = allRooms.stream()
-                .map(roomService::convertRoomToRoomDTO)
-                .collect(Collectors.toList());
 
-        model.addAttribute("rooms", allRoomsDTO);
+
+        List<RoomType> allRoomTypes = roomService.findAllRoomType();
+        model.addAttribute("roomTypes", allRoomTypes);
+        model.addAttribute("rooms", allRooms);
+
         return "rooms";
     }
 
-    @PostMapping("/save")
-    public String saveRoom(@ModelAttribute("room") Room room, @RequestParam("image")MultipartFile image){
-        roomService.saveRoom(room, image);
+    @PostMapping("/save/room")
+    public String saveRoom(@RequestParam("roomNumber") Long roomNumber, @RequestParam("category") RoomCategory roomCategory){
+        roomService.saveRoom(roomNumber, roomCategory);
         return "redirect:/room";
     }
-    @GetMapping("/view/{roomId:.+}")
-    @ResponseBody
-    public ResponseEntity<byte[]> viewImage(@PathVariable Long roomId) {
-        return roomService.loadImage(roomId);
+    @PostMapping("/save/roomCategory")
+    public String saveRoomCategory(@ModelAttribute("roomType")RoomType roomType,
+                           @RequestParam("file") MultipartFile file ){
+        roomService.saveRoomCategory(roomType,file);
+        return "redirect:/room";
     }
+
 
     @GetMapping("/delete/{roomId:.+}")
     public String deleteRoom(@PathVariable Long roomId) {

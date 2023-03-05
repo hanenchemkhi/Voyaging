@@ -79,19 +79,18 @@
                 <div class="card mb-3">
                   <div class="row g-2">
                     <div class="col-md-4">
-                      <img
-                        src=""
-                        th:src="${'data:image/jpeg;charset=utf-8;base64,' + room.imageData}"
-                        class="img-fluid rounded-start"
-                        alt=""
-                      />
+                      <div th:if="${room.roomType.roomImage} != null">
+                        <a th:href="@{${room.roomType.roomImage.imageUrl}}"  target="_blank">
+                          <img src="" th:src="@{${room.roomType.roomImage.imageUrl}}" class="img-thumbnail" >
+                        </a>
+                      </div>
                     </div>
                     <div class="col-md-8">
                       <div class="card-body">
                         <h5>You selected</h5>
 
                         <p class="card-text">
-                        <p th:text="${room.roomCategory.getCategory()}"></p>
+                        <p th:text="${room.roomType.roomCategory.getCategory()}"></p>
 
                           <span th:text="${checkin}"></span>
                           <span> - </span>

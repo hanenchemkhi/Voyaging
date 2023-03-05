@@ -3,6 +3,8 @@ package com.perscholas.voyaging.model;
 import jakarta.persistence.Entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -22,22 +24,26 @@ public class Reservation {
     @GeneratedValue(strategy = GenerationType.IDENTITY )
     Long id;
 
-    @ManyToOne
-    @JoinColumn(name="customer_id")
+
+    @ManyToOne(fetch = FetchType.EAGER, optional = true)
+    @JoinColumn(name="customer_id",referencedColumnName = "id", nullable = true)
     Customer customer;
-    @ManyToMany(cascade = { CascadeType.ALL })
+
+
+
+    @ManyToMany(cascade = { CascadeType.ALL },fetch = FetchType.EAGER)
     @JoinTable(
             name = "room_reservation",
             joinColumns = { @JoinColumn(name = "reservation_id") },
             inverseJoinColumns = { @JoinColumn(name = "room_id") }
     )
     Set<Room> rooms = new HashSet<>();
-
-
-
+    @NotNull
     LocalDate checkinDate;
+    @NotNull
     LocalDate checkoutDate;
 
+    @NotNull
     Integer nbGuests;
 
     public void addRoom(Room room) {
@@ -49,7 +55,5 @@ public class Reservation {
         rooms.remove(room);
         room.getReservations().remove(this);
     }
-
-
 
 }

@@ -8,6 +8,7 @@ import com.perscholas.voyaging.model.RoomCategory;
 import com.perscholas.voyaging.repository.CustomerRepository;
 import com.perscholas.voyaging.repository.ReservationRepository;
 import com.perscholas.voyaging.repository.RoomRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,7 @@ import java.util.Set;
 import static java.time.temporal.ChronoUnit.DAYS;
 
 @Service
+@Slf4j
 public class ReservationService {
     @Autowired
     private final ReservationRepository reservationRepository;
@@ -51,21 +53,30 @@ public class ReservationService {
         return formatter.format(price);
     }
 
-    public Reservation saveReservation(LocalDate checkin, LocalDate checkout, int nbGuests, Customer customer, RoomDTO roomDto) {
+    public Reservation saveReservation(LocalDate checkin, LocalDate checkout, int nbGuests, Customer customer, Room room) {
+
+
         Reservation reservation = new Reservation();
+
         reservation.setCheckinDate(checkin);
+        log.warn("checkin date "+ checkin);
         reservation.setCheckoutDate(checkout);
         reservation.setNbGuests(nbGuests);
+        log.warn("nb guests "+ nbGuests);
 
-        Room room = roomRepository.findById( roomDto.getId()).get();
+
 
         //find room by category
 
 
 
         Reservation savedReservation = reservationRepository.save(reservation);
-        customer.addReservation(reservation);
-        room.addReservation(reservation);
+        log.warn("saved reservation");
+        customer.addReservation(savedReservation);
+        log.warn("added reservation to customer table");
+        reservation.addRoom(room);
+
+        log.warn("added reservation to room table");
 
 
 
