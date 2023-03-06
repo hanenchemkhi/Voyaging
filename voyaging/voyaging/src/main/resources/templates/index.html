@@ -54,7 +54,6 @@
                       <input
                         class="form-control"
                         id="checkoutInput"
-
                         onchange="validateCheckout()"
                         type="date"
                         name="checkoutDate"
@@ -85,6 +84,7 @@
                         >Guests</label
                       >
                       <input class="form-control" type="number" id="numberGuests" name="nbGuests" min="1" max="4">
+                      <div id="helper" class="form-text form-label" style="color:white">(Maximum: 4 total guests/room)</div>
                       <div id="invalidGuests" class="invalid-feedback">
                         Invalid Guests Number
                       </div>

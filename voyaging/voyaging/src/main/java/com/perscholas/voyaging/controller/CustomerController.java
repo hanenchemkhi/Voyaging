@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(value={"customer"})
 public class CustomerController {
     @Autowired
+    private AddressRepository addressRepository;
+    @Autowired
     CustomerService customerService;
     @GetMapping
     public String viewCustomers(Model model) {
@@ -31,15 +33,31 @@ public class CustomerController {
                                @Valid @ModelAttribute("address")  Address address, BindingResult bindingResultAddress,
                                @Valid @ModelAttribute("creditCard")  CreditCard creditCard, BindingResult bindingResultCreditCard){
 
+        if(bindingResultCustomer.hasErrors() || bindingResultAddress.hasErrors() || bindingResultCreditCard.hasErrors()) {
+            log.warn("======================errors with binding result=======================");
 
 
-        customerService.saveCustomer(customer, address, creditCard);
+
+            return "redirect:/customer";
+        }
+        if(customerService.isCustomerExist(customer.getEmail())) {
+            customerService.updateCustomer(customer, address, creditCard);
+        }else{
+            customerService.saveCustomer(customer, address, creditCard);
+        }
+
+
         return "redirect:/customer";
     }
 
 
     @GetMapping("/signup")
-    public String getSignup(Customer customer, Address address, CreditCard creditCard) {
+    public String getSignup(Customer customer, Address address, CreditCard creditCard, Model model) {
+
+        log.warn("inside getMapping /signup");
+        model.addAttribute("customer", customer);
+        model.addAttribute("address", address);
+        model.addAttribute("creditCard", creditCard);
 
         return "signup";
     }
@@ -52,9 +70,12 @@ public class CustomerController {
 
         if(bindingResultCustomer.hasErrors() || bindingResultAddress.hasErrors() || bindingResultCreditCard.hasErrors()) {
             log.warn("======================errors with binding result=======================");
+
             return "signup";
         }
 
+
+        log.warn("inside PostMapping /signup");
 
 
         httpSession.setAttribute("customer", customer);

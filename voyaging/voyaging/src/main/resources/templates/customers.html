@@ -62,8 +62,8 @@
                   id="editCustomer"
                   class="btn btn-primary"
                   th:onclick="javascript:showCustomerModal([[${customer.firstName}]],
-                  [[${customer.lastName}]],[[${customer.email}]],[[${customer.address.street}]],[[${customer.address.country}]],
-                  [[${customer.address.zipCode}]],[[${customer.phone}]],[[${customer.card.cardholderName}]],[[${customer.address.zipCode}]],
+                  [[${customer.lastName}]],[[${customer.email}]],[[${customer.address.street}]],[[${customer.address.city}]],[[${customer.address.country}]],
+                  [[${customer.address.zipCode}]],[[${customer.phone}]],[[${customer.card.cardholderName}]],
                   [[${customer.card.cardNumber}]])"
                 >
                   <span class="material-symbols-outlined"> edit </span>
@@ -239,21 +239,40 @@
                             </div>
                           </div>
 
-                          <div class="col-md-6">
-                            <label for="country" class="form-label"
+                          <div class="row">
+                            <div class="col-6">
+                              <label for="street" class="form-label"
+                              >City</label
+                              >
+                              <input
+                                      type="text"
+                                      class="form-control"
+                                      id="city"
+                                      name="city"
+                                      placeholder=""
+                                      required
+                              />
+
+
+                            </div>
+                            <div class="col-md-6">
+                              <label for="country" class="form-label"
                               >Country/Region</label
-                            >
-                            <select
-                              class="form-select"
-                              id="country"
-                              name="country"
-                              required
-                            >
-                              <option value="">Choose...</option>
-                              <option value="usa">United States</option>
-                            </select>
-                            <div class="invalid-feedback">
-                              Please select a valid country.
+                              >
+                              <select
+                                      class="form-select"
+                                      id="country"
+                                      name="country"
+
+                              >
+                                <option value="">Choose...</option>
+                                <option value="USA">United States</option>
+                              </select>
+
+
+                              <div class="invalid-feedback">
+                                Please select a valid country.
+                              </div>
                             </div>
                           </div>
 
@@ -389,6 +408,7 @@
         lastName,
         email,
         street,
+        city,
         country,
         zipCode,
         phone,
@@ -405,7 +425,7 @@
 
         document.getElementById("street").value = street;
 
-        <!--        document.getElementById("country").value= country ;-->
+        document.getElementById("city").value= city ;
 
         document.getElementById("zipCode").value = zipCode;
 
@@ -415,9 +435,11 @@
 
         document.getElementById("cardNumber").value = cardNumber;
 
+        document.getElementById("country").value= country ;
 
         <!--        document.getElementById("yearExpiration").value= year ;-->
         <!--        document.getElementById("monthExpiration").value= month ;-->
+
         myModal.show();
       }
       function populateMonths() {

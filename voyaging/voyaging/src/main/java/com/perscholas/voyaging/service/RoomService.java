@@ -56,15 +56,16 @@ public class RoomService {
     }
 
 
-    public List<Room> findAvailableRooms(LocalDate checkinDate, LocalDate checkoutDate, int numberRooms, int numberGuests) {
+    public List<Room> findAvailableRooms(LocalDate checkinDate, LocalDate checkoutDate) {
         List<Room> availableRooms = roomRepository.findAll();
         List<Reservation> allReservations = reservationRepository.findAll();
+        log.warn("All reseravation : "+ allReservations.size());
         List<Room> reservedRooms = new ArrayList<>();
 
         for (Reservation reservation : allReservations) {
 
-            if (checkinDate.isBefore(reservation.getCheckinDate())
-                    && checkoutDate.isAfter(reservation.getCheckinDate())) {
+            if ((checkinDate.isBefore(reservation.getCheckinDate())) || (checkinDate.isEqual(reservation.getCheckinDate()))
+                    && (checkoutDate.isAfter(reservation.getCheckoutDate()))||(checkoutDate.isEqual(reservation.getCheckoutDate()))) {
                 reservedRooms.addAll(reservation.getRooms());
             }
         }
@@ -217,6 +218,12 @@ public class RoomService {
         room.setRoomType(roomType);
         roomRepository.save(room);
     }
+    public Room findRoomByRoomType(Long roomTypeId){
+        RoomType roomType =   roomTypeRepository.findById(roomTypeId).get();
+        return roomRepository.findRoomsByRoomType(roomType).get(0);
+    }
+
+
 }
 
 

@@ -52,4 +52,27 @@ public class CustomerService {
         else throw new CustomerNotFoundException(id);
     }
 
+    public boolean isCustomerExist(String email) {
+        return customerRepository.findCustomerByEmail(email).isPresent()?true:false;
+    }
+
+    public void updateCustomer(Customer customer, Address address, CreditCard creditCard) {
+        Customer customerToUpdate = customerRepository.findCustomerByEmail(customer.getEmail()).get();
+
+        customerToUpdate.setFirstName(customer.getFirstName());
+        customerToUpdate.setLastName(customer.getLastName());
+        customerToUpdate.setPhone(customer.getPhone());
+        customerToUpdate.setConfirmPassword(customer.getConfirmPassword());
+        customerToUpdate.setPassword(customer.getPassword());
+
+        if(creditCard.getMonthExpiration().length()==1){
+            creditCard.setMonthExpiration("0"+creditCard.getMonthExpiration());
+        }
+        creditCard.setYearExpiration(creditCard.getYearExpiration().substring(2));
+
+        customerToUpdate.setCard(creditCard);
+        customerToUpdate.setAddress(address);
+        customerRepository.save(customerToUpdate);
+
+    }
 }

@@ -79,34 +79,34 @@
           <!--Show Available Rooms-->
 
           <div class="container">
-            <div class="card mb-3" th:each="room:${availableRooms}" >
+            <div class="card mb-3" th:each="roomType:${availableRooms}" >
               <div class="row g-2">
                 <div class="col-md-4">
-                  <div th:if="${room.roomType.roomImage} != null">
-                    <a th:href="@{${room.roomType.roomImage.imageUrl}}"  target="_blank">
-                      <img src="" th:src="@{${room.roomType.roomImage.imageUrl}}" class="img-thumbnail"  >
+                  <div th:if="${roomType.roomImage} != null">
+                    <a th:href="@{${roomType.roomImage.imageUrl}}"  target="_blank">
+                      <img src="" th:src="@{${roomType.roomImage.imageUrl}}" class="img-thumbnail"  >
                     </a>
                   </div>
                 </div>
                 <div class="col-md-8">
                   <div class="card-body">
                     <div class="hstack gap-3">
-                      <h5 class=" bg-light border rounded" th:text="${room.roomType.roomCategory.getCategory()}">First item</h5>
-                      <h5 class="bg-light border rounded ms-auto" th:text="${reservationService.formatPrice(room.roomType.price)}">Second item</h5>
+                      <h5 class=" bg-light border rounded" th:text="${roomType.roomCategory.getCategory()}">First item</h5>
+                      <h5 class="bg-light border rounded ms-auto" th:text="${reservationService.formatPrice(roomType.price)}">Second item</h5>
 
                     </div>
 
-                    <p class="card-text" th:text="${room.roomType.roomCategory.getDescription()}">
+                    <p class="card-text" th:text="${roomType.roomCategory.getDescription()}">
                     Description
                     </p>
                     <h6>Amenities</h6>
-                    <ul class="list-group list-group-horizontal-sm" th:each="rmamenity:${room.roomType.amenities}" >
+                    <ul class="list-group list-group-horizontal-sm" th:each="rmamenity:${roomType.amenities}" >
                       <li class="list-group-item" style="border: none"><span><i class="bi bi-check"></i></span></li>
                       <li class="list-group-item" style="border: none" th:text="${rmamenity.getAmenity()}"></li>
                     </ul>
 
                     <div class="d-flex justify-content-end">
-                      <a th:href="@{/book(id=${room.id},checkin =${checkin},checkout =${checkout} , nbRooms=${nbRooms}, nbGuests=${nbGuests})}" class="btn btn-primary"
+                      <a th:href="@{/book(roomTypeId=${roomType.id},checkin =${checkin},checkout =${checkout} , nbRooms=${nbRooms}, nbGuests=${nbGuests})}" class="btn btn-primary"
                         >Check offer</a
                       >
                     </div>

@@ -39,6 +39,7 @@ public class Customer {
 
 
     @NotBlank(message = "Please enter email")
+    @Column(unique = true)
     @Email(message="Please enter a valid email address")
     String email;
 
@@ -56,9 +57,9 @@ public class Customer {
     @Pattern(regexp="(^$|[0-9]{10})",message = "Phone number must be 10 digits")
     String phone;
 
-    @OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL, targetEntity = Role.class)
-    @JoinColumn(name = "role_id", referencedColumnName = "id",nullable = false)
-    private Role role;
+//    @OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL, targetEntity = Role.class)
+//    @JoinColumn(name = "role_id", referencedColumnName = "id",nullable = false)
+//    private Role role;
 
 
     @OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL, targetEntity = Address.class)

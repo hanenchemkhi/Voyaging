@@ -41,9 +41,10 @@
                             class="form-control"
                             id="firstName"
                             name="firstName"
-
-
+                            th:field="*{firstName}"
+                            th:value="${customer.firstName}"
                     />
+                    <div th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="error text-warning"></div>
 
 
                   </div>
@@ -57,32 +58,27 @@
                             class="form-control"
                             id="lastName"
                             name="lastName"
-
-                            placeholder=""
-                            value=""
+                            th:field="*{lastName}"
+                            th:value="${customer.lastName}"
                             required
-                    />
 
-                    <div class="invalid-feedback">
-                      Valid last name is required.
-                    </div>
+                    />
+                 <div th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="error text-warning"></div>
+
                   </div>
 
                   <div class="col-6">
                     <label for="email" class="form-label">Email </label>
                     <input
-                            type="email"
-                            class="form-control"
-                            id="email"
-                            name="email"
-                            placeholder=""
-                            value=""
-                            required
-                    />
+                        type="email"
+                        class="form-control"
+                        id="email"
+                        name="email"
+                        th:field="*{email}"
 
-                    <div class="invalid-feedback">
-                      Please enter a valid email address
-                    </div>
+                    />
+                    <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error text-warning"></div>
+
                   </div>
                   <div class="col-6">
                     <label for="phone" class="form-label">Phone </label>
@@ -91,15 +87,14 @@
                             class="form-control"
                             id="phone"
                             name="phone"
-
+                            th:field="*{phone}"
                             placeholder=""
                             value=""
                             required
                     />
+                    <div th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="error text-warning"></div>
 
-                    <div class="invalid-feedback">
-                      Please enter a valid phone number
-                    </div>
+
                   </div>
                   <div class="col-6">
                     <label for="password" class="form-label"
@@ -110,15 +105,14 @@
                             class="form-control"
                             id="password"
                             name="password"
-
+                            th:field="*{password}"
                             placeholder=""
                             value=""
                             required
                     />
+                    <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="error text-warning"></div>
 
-                    <div class="invalid-feedback">
-                      Please enter a valid password
-                    </div>
+
                   </div>
                   <div class="col-6">
                     <label for="confirm-password" class="form-label"
@@ -129,15 +123,13 @@
                             class="form-control"
                             id="confirm-password"
                             name="confirmPassword"
-
+                            th:field="*{confirmPassword}"
                             placeholder=""
                             value=""
                             required
                     />
+                    <div th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}" class="error text-warning"></div>
 
-                    <div class="invalid-feedback">
-                      Please re-enter the password
-                    </div>
                   </div>
                   <div th:object="${address}">
                     <div class="col-12">
@@ -149,14 +141,11 @@
                               class="form-control"
                               id="street"
                               name="street"
-
+                              th:field="*{street}"
                               placeholder=""
                               required
                       />
-
-                      <div class="invalid-feedback">
-                        Please enter address.
-                      </div>
+                      <div th:if="${#fields.hasErrors('street')}" th:errors="*{street}" class="error text-warning"></div>
                     </div>
                     <div class="row">
                       <div class="col-6">
@@ -168,14 +157,11 @@
                                 class="form-control"
                                 id="city"
                                 name="city"
-
+                                th:field="*{city}"
                                 placeholder=""
                                 required
                         />
-
-                        <div class="invalid-feedback">
-                          Please enter city.
-                        </div>
+                        <div th:if="${#fields.hasErrors('city')}" th:errors="*{city}" class="error text-warning"></div>
 
                       </div>
                       <div class="col-md-6">
@@ -186,12 +172,12 @@
                                 class="form-select"
                                 id="country"
                                 name="country"
-
-                                required
+                                th:field="*{country}"
                         >
                           <option value="">Choose...</option>
                           <option value="usa">United States</option>
                         </select>
+                        <div th:if="${#fields.hasErrors('country')}" th:errors="*{country}" class="error text-warning"></div>
 
                         <div class="invalid-feedback">
                           Please select a valid country.
@@ -206,10 +192,11 @@
                               class="form-control"
                               id="zipCode"
                               name="zipCode"
-
+                              th:field="*{zipCode}"
                               placeholder=""
                               required
                       />
+                      <div th:if="${#fields.hasErrors('zipCode')}" th:errors="*{zipCode}" class="error text-warning"></div>
 
                       <div class="invalid-feedback">
                         Zip code required.
@@ -232,10 +219,11 @@
                               class="form-control"
                               id="cardholderName"
                               name="cardholderName"
-
+                              th:field="*{cardholderName}"
                               placeholder=""
                               required
                       />
+                      <div th:if="${#fields.hasErrors('cardholderName')}" th:errors="*{cardholderName}" class="error text-warning"></div>
 
                       <small class="text-muted"
                       >Full name as displayed on card</small
@@ -254,10 +242,11 @@
                               class="form-control"
                               id="cardNumber"
                               name="cardNumber"
-
+                              th:field="*{cardNumber}"
                               placeholder=""
                               required
                       />
+                      <div th:if="${#fields.hasErrors('cardNumber')}" th:errors="*{cardNumber}" class="error text-warning"></div>
 
                       <div class="invalid-feedback">
                         Credit card number is required
@@ -273,12 +262,15 @@
                               id="month-expiration"
                               name="monthExpiration"
 
+                              th:field="*{monthExpiration}"
                               onclick="populateMonths()"
                               aria-label=""
                               required
                       >
-                        <option selected>Select month</option>
+                        <option  value="">Select month</option>
+                        <option th:if="${creditCard.monthExpiration}" th:value="${creditCard.monthExpiration}" th:utext="${creditCard.monthExpiration}"/>
                       </select>
+                      <div th:if="${#fields.hasErrors('monthExpiration')}" th:errors="*{monthExpiration}" class="error text-warning"></div>
 
                     </div>
                     <div class="col-md-3">
@@ -289,14 +281,16 @@
                               class="form-select"
                               id="year-expiration"
                               name="yearExpiration"
-
+                              th:field="*{yearExpiration}"
                               onclick="populateYears()"
                               aria-label=""
                               required
                       >
-                        <option selected>Select Year</option>
+                        <option  value="">Select year</option>
+                        <option  th:if="${creditCard.yearExpiration}" th:value="${creditCard.yearExpiration}" th:utext="${creditCard.yearExpiration}"/>
                       </select>
-                     
+                      <div th:if="${#fields.hasErrors('yearExpiration')}" th:errors="*{yearExpiration}" class="error text-warning"></div>
+
                     </div>
                   </div>
                 </div>
