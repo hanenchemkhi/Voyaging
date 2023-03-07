@@ -36,5 +36,9 @@ public class Room {
     @ManyToMany(mappedBy = "rooms",fetch = FetchType.EAGER)
     Set<Reservation> reservations = new HashSet<>();
 
+    @Override
+    public String toString() {
+        return  roomNumber+ " "+ roomType.getRoomCategory().getCategory();
 
+    }
 }

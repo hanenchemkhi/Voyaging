@@ -117,7 +117,6 @@ public class RoomService {
 
         }
 
-
     }
     public void init() throws Exception {
         try {
@@ -159,13 +158,7 @@ public class RoomService {
 
     public void saveRoomCategory(RoomType roomType, MultipartFile file) {
 
-
-
-
-
         roomTypeRepository.save(roomType);
-
-
 
         try {
             if (file.isEmpty()){log.warn("file is empty");}
@@ -178,10 +171,6 @@ public class RoomService {
 
     }
 
-
-//    public Room findRoomDTOById(Long id) {
-//        return convertRoomToRoomDTO(finRoomById(id));
-//    }
 
     public Double calculateTaxes(Long id) {
         return finRoomById(id).getRoomType().getPrice() * ROOM_TAXE_RATES;
@@ -218,12 +207,10 @@ public class RoomService {
         room.setRoomType(roomType);
         roomRepository.save(room);
     }
-    public Room findRoomByRoomType(Long roomTypeId){
-        RoomType roomType =   roomTypeRepository.findById(roomTypeId).get();
-        return roomRepository.findRoomsByRoomType(roomType).get(0);
+
+    public RoomType findRoomTypeById(Long roomTypeId) {
+        return roomTypeRepository.findById(roomTypeId).get();
     }
-
-
 }
 
 

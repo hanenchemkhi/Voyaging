@@ -79,9 +79,9 @@
                 <div class="card mb-3">
                   <div class="row g-2">
                     <div class="col-md-4">
-                      <div th:if="${room.roomType.roomImage} != null">
-                        <a th:href="@{${room.roomType.roomImage.imageUrl}}"  target="_blank">
-                          <img src="" th:src="@{${room.roomType.roomImage.imageUrl}}" class="img-thumbnail" >
+                      <div th:if="${roomType.roomImage} != null">
+                        <a th:href="@{${roomType.roomImage.imageUrl}}"  target="_blank">
+                          <img src="" th:src="@{${roomType.roomImage.imageUrl}}" class="img-thumbnail" >
                         </a>
                       </div>
                     </div>
@@ -90,7 +90,7 @@
                         <h5>You selected</h5>
 
                         <p class="card-text">
-                        <p th:text="${room.roomType.roomCategory.getCategory()}"></p>
+                        <p th:text="${roomType.roomCategory.getCategory()}"></p>
 
                           <span th:text="${checkin}"></span>
                           <span> - </span>

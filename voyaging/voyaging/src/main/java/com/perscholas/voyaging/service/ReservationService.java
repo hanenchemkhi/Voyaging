@@ -1,11 +1,6 @@
 package com.perscholas.voyaging.service;
 
-import com.perscholas.voyaging.dto.RoomDTO;
-import com.perscholas.voyaging.model.Customer;
-import com.perscholas.voyaging.model.Reservation;
-import com.perscholas.voyaging.model.Room;
-import com.perscholas.voyaging.model.RoomCategory;
-import com.perscholas.voyaging.repository.CustomerRepository;
+import com.perscholas.voyaging.model.*;
 import com.perscholas.voyaging.repository.ReservationRepository;
 import com.perscholas.voyaging.repository.RoomRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +11,8 @@ import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
-import java.util.Set;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 
@@ -27,16 +23,23 @@ public class ReservationService {
     private final ReservationRepository reservationRepository;
     @Autowired
     private final CustomerService customerService;
+    @Autowired
     private final RoomRepository roomRepository;
 
+    @Autowired
+    private final RoomService roomService;
 
+
+
+    @Autowired
     public ReservationService(ReservationRepository reservationRepository,
-                             CustomerService customerService,
-                              RoomRepository roomRepository) {
+                              CustomerService customerService,
+                              RoomRepository roomRepository, RoomService roomService) {
         this.reservationRepository = reservationRepository;
 
         this.customerService = customerService;
         this.roomRepository = roomRepository;
+        this.roomService = roomService;
     }
 
     public Long findLengthOfStay(LocalDate checkin, LocalDate checkout) {
@@ -53,37 +56,34 @@ public class ReservationService {
         return formatter.format(price);
     }
 
-    public Reservation saveReservation(LocalDate checkin, LocalDate checkout, int nbGuests, Customer customer, Room room) {
+    public Reservation saveReservation(LocalDate checkin, LocalDate checkout, int nbGuests, Customer customer, RoomType roomType, int nbRooms) {
 
-
+        List<Room> rooms = roomService.findAvailableRooms(checkin,checkout)
+                .stream()
+                .filter(room -> room.getRoomType().equals(roomType))
+                .collect(Collectors.toList());
         Reservation reservation = new Reservation();
 
-        reservation.setCheckinDate(checkin);
-        log.warn("checkin date "+ checkin);
-        reservation.setCheckoutDate(checkout);
-        reservation.setNbGuests(nbGuests);
-        log.warn("nb guests "+ nbGuests);
+        for (int i = 0; i <nbRooms ; i++) {
 
 
 
-        //find room by category
+            reservation.setCheckinDate(checkin);
+            reservation.setCheckoutDate(checkout);
+            reservation.setNbGuests(nbGuests);
 
+            Reservation savedReservation = reservationRepository.save(reservation);
 
+            customer.addReservation(savedReservation);
+            reservation.addRoom(rooms.get(i));
+            reservationRepository.save(reservation);
 
-        Reservation savedReservation = reservationRepository.save(reservation);
-        log.warn("saved reservation");
-        customer.addReservation(savedReservation);
-        log.warn("added reservation to customer table");
-        reservation.addRoom(room);
+        }
+        return reservation;
+    }
 
-        log.warn("added reservation to room table");
+    public Object findAllReservations() {
 
-
-
-       //find available rooms by category
-        //reservation.setRooms(roomSet);
-
-        return reservationRepository.save(reservation);
-
+        return reservationRepository.findAll();
     }
 }

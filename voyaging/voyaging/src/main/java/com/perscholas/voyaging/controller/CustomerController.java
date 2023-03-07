@@ -82,7 +82,7 @@ public class CustomerController {
         httpSession.setAttribute("address", address);
         httpSession.setAttribute("creditCard", creditCard);
         customerService.saveCustomer(customer, address, creditCard);
-        return "redirect:/confirmation";
+        return "redirect:/save-reservation";
     }
 
 

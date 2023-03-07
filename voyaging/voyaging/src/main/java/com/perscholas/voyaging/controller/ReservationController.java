@@ -5,6 +5,7 @@ import com.perscholas.voyaging.model.*;
 import com.perscholas.voyaging.service.ReservationService;
 import com.perscholas.voyaging.service.RoomService;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -29,33 +30,28 @@ import java.util.stream.Collectors;
 @Controller
 @Slf4j
 @RequestMapping
-@Validated
 public class ReservationController {
     @Autowired
     private RoomService roomService;
     @Autowired
     private ReservationService reservationService;
 
-
     @GetMapping("/search-result")
-    public String searchRooms(@RequestParam("checkinDate") @Future LocalDate checkinDate,BindingResult bindingResultCheckin,
-                              @RequestParam("checkoutDate") @Future LocalDate checkoutDate,BindingResult bindingResultCheckout,
-                              @RequestParam("nbRooms") @Min(value = 1) @Max(value = 4)int numberRooms,BindingResult bindingResultNbRooms,
-                              @RequestParam("nbGuests")@Min(value = 1) @Max(value = 4) int numberGuests,BindingResult bindingResultNbGuests,
+    public String searchRooms(@RequestParam("checkinDate")@Valid @NotNull @Future(message = "Invalid checkin date") LocalDate checkinDate,
+                              @RequestParam("checkoutDate")@Valid @NotNull @Future(message = "Invalid checkout date")LocalDate checkoutDate,
+                              @RequestParam("nbRooms")@Valid @NotNull @Min(value = 1) @Max(value = 4) Integer numberRooms,
+                              @RequestParam("nbGuests")@Valid @NotNull @Min(value = 1) @Max(value = 4) Integer numberGuests,
                               Model model, HttpSession httpSession ){
 
 
-        if(bindingResultCheckin.hasErrors()|| bindingResultCheckout.hasErrors()||
-                bindingResultNbRooms.hasErrors()||bindingResultNbGuests.hasErrors() ){
 
-            return "index";
-        }
 
         List<Room> availableRooms = roomService.findAvailableRooms(checkinDate, checkoutDate);
 
 
         Set<RoomType> availableRoomType = availableRooms.stream()
                 .map(room -> room.getRoomType())
+                .filter(roomType -> roomType.getMaxGuests()>=numberGuests)
                 .collect(Collectors.groupingBy(
                                 Function.identity(),
                                 Collectors.counting()))
@@ -70,13 +66,7 @@ public class ReservationController {
                 // And Collect them in a Set
                 .collect(Collectors.toSet());
 
-
-
-
-
         model.addAttribute("availableRooms", availableRoomType);
-
-        //model.addAttribute("availableRooms", availableRooms);
         model.addAttribute("checkin",checkinDate );
         model.addAttribute("checkout",checkoutDate );
         model.addAttribute("nbRooms", numberRooms);
@@ -97,18 +87,18 @@ public class ReservationController {
 
         Long lengthOfStay = reservationService.findLengthOfStay(checkin, checkout);
         NumberFormat formatter = NumberFormat.getCurrencyInstance();
-        //find available rooms with roomType selected by user
-//        List<RoomType> roomType = roomService.findAllRoomType();
-        Room room = roomService.findRoomByRoomType(id);
+
+        RoomType roomType = roomService.findRoomTypeById(id);
+
 
 
         model.addAttribute("lengthOfStay" , lengthOfStay);
-        model.addAttribute("room", room );
+        model.addAttribute("roomType", roomType );
         model.addAttribute("checkin",reservationService.formatDate( checkin) );
         model.addAttribute("checkout", reservationService.formatDate(checkout) );
         model.addAttribute("nbRooms", nbRooms);
         model.addAttribute("nbGuests", nbGuests);
-        model.addAttribute("price", formatter.format(room.getRoomType().getPrice()));
+        model.addAttribute("price", formatter.format(roomType.getPrice()));
         model.addAttribute("taxes", formatter.format(roomService.calculateTaxes(id)));
         model.addAttribute("costPerRoom", formatter.format(roomService.calculateCostPerRoom(id, nbRooms)));
         model.addAttribute("totalCost", formatter.format(roomService.calculateTotalCost(id, lengthOfStay, nbRooms)));
@@ -117,40 +107,81 @@ public class ReservationController {
         httpSession.setAttribute("checkout", checkout );
         httpSession.setAttribute("nbRooms", nbRooms);
         httpSession.setAttribute("nbGuests", nbGuests);
-        httpSession.setAttribute("room", room );
+        httpSession.setAttribute("roomType", roomType );
 
         return "book";
     }
 
 
     @GetMapping("/reservation")
-    public String viewReservation(){
+    public String viewReservation(Model model){
+
+        model.addAttribute("reservations", reservationService.findAllReservations());
+
         return "reservations";
     }
 
-    @GetMapping("/confirmation")
-    public String confirmationReservation(Model model, HttpSession httpSession){
-        log.warn(httpSession.getAttribute("checkin").toString());
-        log.warn(httpSession.getAttribute("checkout").toString());
+    @GetMapping("/save-reservation")
+    public String saveReservation(Model model, HttpSession httpSession){
+
+
+
+
         //save reservation and send confirmation
 
         LocalDate checkin = LocalDate.parse(httpSession.getAttribute("checkin").toString());
         LocalDate checkout = LocalDate.parse(httpSession.getAttribute("checkout").toString());
+        Long lengthOfStay = reservationService.findLengthOfStay(checkin, checkout);
+
         int nbGuests =(Integer) httpSession.getAttribute("nbGuests");
+        int nbRooms = (Integer) httpSession.getAttribute("nbRooms");
         Customer customer = (Customer) httpSession.getAttribute("customer");
 
-        Room room = (Room)httpSession.getAttribute("room");
+        RoomType roomType = (RoomType)httpSession.getAttribute("roomType");
 
 
-       Reservation reservation =  reservationService.saveReservation(checkin,checkout, nbGuests, customer, room);
+       //add number of rooms in the reservation
+        Reservation reservation =  reservationService.saveReservation(checkin,checkout, nbGuests, customer, roomType,nbRooms);
+
+        httpSession.setAttribute("reservation", reservation);
+
+
+
+
+        return "redirect:/confirmation";
+    }
+
+    @GetMapping("/confirmation")
+    public String confirmReservation(Model model, HttpSession httpSession){
+
+        NumberFormat formatter = NumberFormat.getCurrencyInstance();
+
+
+        LocalDate checkin = LocalDate.parse(httpSession.getAttribute("checkin").toString());
+        LocalDate checkout = LocalDate.parse(httpSession.getAttribute("checkout").toString());
+        Long lengthOfStay = reservationService.findLengthOfStay(checkin, checkout);
+
+        int nbGuests =(Integer) httpSession.getAttribute("nbGuests");
+        int nbRooms = (Integer) httpSession.getAttribute("nbRooms");
+        Customer customer = (Customer) httpSession.getAttribute("customer");
+
+        RoomType roomType = (RoomType)httpSession.getAttribute("roomType");
+
+        Reservation reservation =(Reservation)httpSession.getAttribute("reservation");
 
         model.addAttribute("reservation", reservation);
         model.addAttribute("checkin", checkin);
         model.addAttribute("checkout", checkout);
         model.addAttribute("customer", customer);
-        model.addAttribute("room",room);
+        model.addAttribute("nbRooms", nbRooms);
+        model.addAttribute("roomType",roomType);
+        model.addAttribute("price", formatter.format(roomType.getPrice()));
+        model.addAttribute("taxes", formatter.format(roomService.calculateTaxes(roomType.getId())));
+        model.addAttribute("costPerRoom", formatter.format(roomService.calculateCostPerRoom(roomType.getId(), nbRooms)));
+        model.addAttribute("totalCost", formatter.format(roomService.calculateTotalCost(roomType.getId(), lengthOfStay, nbRooms)));
 
         return "confirmation";
+
     }
 
 

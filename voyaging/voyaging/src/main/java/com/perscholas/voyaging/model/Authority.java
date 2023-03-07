@@ -13,7 +13,7 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-public class Role {
+public class Authority {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY )
     Long id;

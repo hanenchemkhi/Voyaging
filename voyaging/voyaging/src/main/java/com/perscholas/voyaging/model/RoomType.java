@@ -7,6 +7,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.aspectj.bridge.IMessage;
 
 import java.util.HashSet;
@@ -66,4 +68,19 @@ public class RoomType {
         room.setRoomType(null);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof RoomType roomType)) return false;
+
+        if (!getPrice().equals(roomType.getPrice())) return false;
+        return getRoomCategory() == roomType.getRoomCategory();
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getPrice().hashCode();
+        result = 31 * result + getRoomCategory().hashCode();
+        return result;
+    }
 }

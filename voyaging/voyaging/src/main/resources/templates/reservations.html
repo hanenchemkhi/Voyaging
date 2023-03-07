@@ -44,7 +44,7 @@
             <tr>
               <th scope="col"></th>
               <th scope="col"></th>
-              <th scope="col">#</th>
+
               <th scope="col">Reservation Number</th>
               <th scope="col">Room Number</th>
               <th scope="col">Customer Email</th>
@@ -54,7 +54,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
+            <tr th:each="reservation : ${reservations}">
               <th scope="row"></th>
               <td>
                 <button class="btn btn-success" type="submit">
@@ -72,13 +72,16 @@
                   <span class="material-symbols-outlined"> delete </span>
                 </button>
               </td>
-              <td>1</td>
-              <td>Otto</td>
-              <td>@mdo</td>
-              <td>Mark</td>
-              <td>@mdo</td>
-              <td>Mark</td>
-              <td>Mark</td>
+
+              <td th:text="${reservation.id}"></td>
+              <td th:each="room:${reservation.rooms}">
+                <span th:text="${room.getRoomNumber()}"> </span>
+             </td>
+
+              <td th:text="${reservation.customer.email}"></td>
+              <td th:text="${reservation.customer.firstName}+' '+${reservation.customer.lastName }">Mark</td>
+              <td th:text="${reservation.checkinDate}"></td>
+              <td th:text="${reservation.checkoutDate}">Mark</td>
             </tr>
           </tbody>
         </table>

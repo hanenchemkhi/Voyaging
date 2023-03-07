@@ -12,6 +12,7 @@ import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.Nationalized;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -57,10 +58,6 @@ public class Customer {
     @Pattern(regexp="(^$|[0-9]{10})",message = "Phone number must be 10 digits")
     String phone;
 
-//    @OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL, targetEntity = Role.class)
-//    @JoinColumn(name = "role_id", referencedColumnName = "id",nullable = false)
-//    private Role role;
-
 
     @OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL, targetEntity = Address.class)
     @JoinColumn(name = "address_id")
@@ -85,4 +82,3 @@ public class Customer {
         reservation.setCustomer(null);
     }
 }
-

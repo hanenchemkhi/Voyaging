@@ -31,7 +31,7 @@ public class Reservation {
 
 
 
-    @ManyToMany(cascade = { CascadeType.ALL },fetch = FetchType.EAGER)
+    @ManyToMany(cascade = { CascadeType.ALL },fetch = FetchType.LAZY)
     @JoinTable(
             name = "room_reservation",
             joinColumns = { @JoinColumn(name = "reservation_id") },
@@ -56,4 +56,9 @@ public class Reservation {
         room.getReservations().remove(this);
     }
 
+
+    @Override
+    public String toString() {
+        return " " + rooms ;
+    }
 }
