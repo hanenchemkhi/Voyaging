@@ -12,9 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping
 public class LoginController {
     @GetMapping("/login")
-    public String viewLogin(HttpSession httpSession){
-        log.warn(httpSession.getAttribute("checkin").toString());
-
+    public String viewLogin(){
         return "login";
     }
 

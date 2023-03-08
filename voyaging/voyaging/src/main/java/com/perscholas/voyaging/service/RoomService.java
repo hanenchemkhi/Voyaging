@@ -199,7 +199,7 @@ public class RoomService {
         }
     }
 
-    public void saveRoom(Long roomNumber, RoomCategory roomCategory) {
+    public void saveRoom(Integer roomNumber, RoomCategory roomCategory) {
 
         Room room = new Room();
         room.setRoomNumber(roomNumber);

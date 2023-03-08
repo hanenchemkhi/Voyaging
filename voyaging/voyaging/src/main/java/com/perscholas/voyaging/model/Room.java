@@ -22,8 +22,9 @@ public class Room {
     @GeneratedValue(strategy = GenerationType.IDENTITY )
     Long id;
 
+    @Column(unique = true)
     @NotNull(message="Please enter room number")
-    Long roomNumber;
+    Integer roomNumber;
 
 
     @NotNull(message="Please select room category")
@@ -32,6 +33,10 @@ public class Room {
     RoomType roomType;
 
 
+    public Room(Integer roomNumber, RoomType roomType) {
+        this.roomNumber = roomNumber;
+        this.roomType = roomType;
+    }
 
     @ManyToMany(mappedBy = "rooms",fetch = FetchType.EAGER)
     Set<Reservation> reservations = new HashSet<>();

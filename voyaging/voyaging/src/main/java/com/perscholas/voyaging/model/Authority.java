@@ -1,9 +1,6 @@
 package com.perscholas.voyaging.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -15,9 +12,14 @@ import lombok.experimental.FieldDefaults;
 @Entity
 public class Authority {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY )
-    Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Integer id;
 
-    String roleName;
+    @NonNull
+    @Column(unique = true)
+    String authority;
 
+    public Authority(@NonNull String authority) {
+        this.authority = authority;
+    }
 }

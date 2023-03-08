@@ -41,7 +41,7 @@ public class RoomType {
 
     @ToString.Exclude
     @OneToOne(mappedBy = "roomType", cascade = CascadeType.ALL,
-            fetch = FetchType.EAGER, optional = false)
+            fetch = FetchType.EAGER, optional = true)
     RoomImage roomImage;
 
     @OneToMany(
@@ -56,6 +56,11 @@ public class RoomType {
    @Enumerated(EnumType.STRING)
    Set<Amenities> amenities;
 
+    public RoomType(int maxGuests, Double price, RoomCategory roomCategory) {
+        this.maxGuests = maxGuests;
+        this.price = price;
+        this.roomCategory = roomCategory;
+    }
 
     public void addRoom(Room room){
         rooms.add(room);

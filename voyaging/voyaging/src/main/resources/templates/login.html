@@ -26,10 +26,11 @@
         <div class="text-muted text-center pt-2">
           <h4>Sign In</h4>
         </div>
-        <form class="pt-3" th:action="@{/signup}" method="post">
+        <form class="pt-3" th:action="@{/login}" method="post">
           <div class="form-floating">
             <input
               type="email"
+              name="email"
               class="form-control"
               id="floatingInput"
               placeholder="name@example.com"
@@ -40,6 +41,7 @@
           <div class="form-floating">
             <input
               type="password"
+              name="password"
               class="form-control"
               id="floatingPassword"
               placeholder="Password"

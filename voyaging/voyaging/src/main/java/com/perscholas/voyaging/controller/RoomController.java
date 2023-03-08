@@ -47,7 +47,7 @@ public class RoomController {
     }
 
     @PostMapping("/save/room")
-    public String saveRoom(@RequestParam("roomNumber") Long roomNumber, @RequestParam("category") RoomCategory roomCategory){
+    public String saveRoom(@RequestParam("roomNumber") Integer roomNumber, @RequestParam("category") RoomCategory roomCategory){
         roomService.saveRoom(roomNumber, roomCategory);
         return "redirect:/room";
     }
