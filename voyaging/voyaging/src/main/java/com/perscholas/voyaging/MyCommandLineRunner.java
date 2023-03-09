@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import static com.perscholas.voyaging.model.RoomCategory.*;
@@ -67,17 +68,17 @@ public class MyCommandLineRunner implements CommandLineRunner {
         roomRepository.saveAndFlush(room4);
 
 
-        Authority admin = new Authority("Admin");
-        Authority customer = new Authority("Customer");
+        Authority admin = new Authority("ROLE_ADMIN");
+        Authority customer = new Authority("ROLE_CUSTOMER");
 
         authorityRepository.saveAndFlush(admin);
         authorityRepository.saveAndFlush(customer);
 
-        User adminUser = new Admin("Taha","Habib", "habib@gmail.com","password1", "password1", UserType.ADMIN);
+
+        User adminUser = new Admin("Taha","Habib", "habib@gmail.com",new BCryptPasswordEncoder().encode("password1"), "password1", Role.ADMIN);
         adminUser.addAuthority(admin);
-
-
         userRepository.saveAndFlush(adminUser);
+
 
     }
 }

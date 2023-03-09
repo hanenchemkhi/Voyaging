@@ -1,6 +1,8 @@
 package com.perscholas.voyaging.model;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -9,7 +11,6 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.Nationalized;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 
 @Getter
@@ -19,6 +20,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
+
 public abstract class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,25 +47,23 @@ public abstract class User {
 
 
     @Enumerated(EnumType.STRING)
-    UserType userType;
-    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-    @JoinTable(name = "users_authorities", joinColumns = {
+    Role role;
+    @ManyToMany(cascade =CascadeType.MERGE, fetch = FetchType.EAGER, targetEntity = Authority.class)
+    @JoinTable(name = "user_authoritie", joinColumns = {
             @JoinColumn(name = "user_id", referencedColumnName = "id") }, inverseJoinColumns = {
             @JoinColumn(name = "authoritie_id", referencedColumnName = "id") })
-    Set<Authority> authorities = new HashSet<>();
+    List<Authority> authorities = new ArrayList<>();
 
-    public User( String password, String confirmPassword, String firstName, String lastName, String email,UserType userType) {
+    public User(String password, String confirmPassword, String firstName, String lastName, String email, Role role) {
 
-        this.password = setPassword(password);
+        this.password = password;
         this.confirmPassword = confirmPassword;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.userType = userType;
+        this.role = role;
     }
-    public String setPassword(String password) {
-        return this.password = new BCryptPasswordEncoder().encode(password);
-    }
+
 
 
     public void addAuthority(Authority auth){
@@ -71,4 +71,7 @@ public abstract class User {
     }
 
 
+    public void removeAuthority(Authority auth ){
+        authorities.remove(auth);
+    }
 }

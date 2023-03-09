@@ -1,26 +1,40 @@
 package com.perscholas.voyaging.service;
 
 import com.perscholas.voyaging.exception.CustomerNotFoundException;
-import com.perscholas.voyaging.exception.RoomNotFoundException;
-import com.perscholas.voyaging.model.Address;
-import com.perscholas.voyaging.model.CreditCard;
-import com.perscholas.voyaging.model.Customer;
-import com.perscholas.voyaging.model.Room;
+import com.perscholas.voyaging.model.*;
+import com.perscholas.voyaging.repository.AuthorityRepository;
 import com.perscholas.voyaging.repository.CustomerRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class CustomerService {
     @Autowired
     private  CustomerRepository customerRepository;
+    @Autowired
+    private AuthorityRepository authorityRepository;
 
+    public String saveCustomer(Customer customer, Address address, CreditCard creditCard) {
 
+        log.warn("inside saveCustomer");
 
-    public void saveCustomer(Customer customer, Address address, CreditCard creditCard) {
+        if(customerRepository.existsByEmail(customer.getEmail())){
+            log.warn("An account with this email already exists");
+            return "An account with this email already exists ";
+        }
+
+        log.warn("authority "+ authorityRepository.getReferenceById(2).toString());
+        customer.addAuthority(authorityRepository.getReferenceById(2));
+
+        customer.setPassword( new BCryptPasswordEncoder().encode(customer.getPassword()));
+        customer.setRole(Role.CUSTOMER);
+        log.warn("added auth to customer");
 
         customer.setAddress(address);
 
@@ -30,8 +44,10 @@ public class CustomerService {
         creditCard.setYearExpiration(creditCard.getYearExpiration().substring(2));
 
         customer.setCard(creditCard);
+        customerRepository.saveAndFlush(customer);
 
-        customerRepository.save(customer);
+        log.warn("Account successfully created");
+        return "Account successfully created";
     }
 
     public List<Customer> findAllCustomers() {
@@ -59,11 +75,15 @@ public class CustomerService {
     public void updateCustomer(Customer customer, Address address, CreditCard creditCard) {
         Customer customerToUpdate = customerRepository.findCustomerByEmail(customer.getEmail()).get();
 
+
+        customerToUpdate.setRole(Role.CUSTOMER);
+
+
         customerToUpdate.setFirstName(customer.getFirstName());
         customerToUpdate.setLastName(customer.getLastName());
         customerToUpdate.setPhone(customer.getPhone());
-        customerToUpdate.setConfirmPassword(customer.getConfirmPassword());
-        customerToUpdate.setPassword(customer.getPassword());
+        customerToUpdate.setConfirmPassword(new BCryptPasswordEncoder().encode(customer.getConfirmPassword()));
+        customerToUpdate.setPassword(new BCryptPasswordEncoder().encode(customer.getPassword()));
 
         if(creditCard.getMonthExpiration().length()==1){
             creditCard.setMonthExpiration("0"+creditCard.getMonthExpiration());
@@ -73,6 +93,11 @@ public class CustomerService {
         customerToUpdate.setCard(creditCard);
         customerToUpdate.setAddress(address);
         customerRepository.save(customerToUpdate);
+        log.warn("added auth to updated customer");
 
+    }
+
+    public Customer findCustomerByEmail(String email) {
+            return customerRepository.findCustomerByEmail(email).get();
     }
 }

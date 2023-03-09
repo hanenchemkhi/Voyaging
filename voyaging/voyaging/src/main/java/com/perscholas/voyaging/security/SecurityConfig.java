@@ -2,10 +2,13 @@ package com.perscholas.voyaging.security;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.authentication.event.AuthenticationFailureBadCredentialsEvent;
+import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -45,10 +48,10 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("","/", "/index", "/css/**","/images/**", "/scripts/**", "/login/**").permitAll()
-                        .requestMatchers("/search-result/**","/book/**").permitAll()
+                        .requestMatchers("","/", "/index", "/css/**","/images/**", "/scripts/**", "/login/**","/image").permitAll()
+                        .requestMatchers("/search-result/**","/book/**","/customer/signup/**", "/customer/handlesignup/**" ).permitAll()
                         .requestMatchers("/dashboard/**").hasRole("ADMIN")
-                        .requestMatchers("/user/**").hasAnyRole("CUSTOMER", "ADMIN")
+                        .requestMatchers("/user/**","/customer/**","/confirmation**").hasAnyRole("CUSTOMER", "ADMIN")
                         .anyRequest().authenticated()
                 )
                 .formLogin((form) -> form
@@ -60,15 +63,18 @@ public class SecurityConfig {
                         .failureUrl("/login?error=true")
                         .permitAll()
                 )
-                .logout((logout) -> logout.logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/")
+                .logout((logout) -> logout
+                        .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                        .logoutSuccessUrl("/")
                         .invalidateHttpSession(true)
-                        .deleteCookies("JSESSIONID")
                         .clearAuthentication(true)
+                        .deleteCookies( "JSESSIONID")
                         .permitAll()).exceptionHandling().accessDeniedPage("/403");
+
+
 
 
         return http.build();
     }
-
 
 }

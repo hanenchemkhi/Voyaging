@@ -76,7 +76,7 @@
                       <span class="material-symbols-outlined"> edit </span>
                     </button>
                     <a
-                            th:href="@{/room/delete/{roomId}(roomId=${room.id})}"
+                            th:href="@{/dashboard/room/delete/{roomId}(roomId=${room.id})}"
                             class="btn btn-danger"
                             id="delete-room"
                     >
@@ -122,7 +122,7 @@
                                 class="needs-validation"
                                 enctype="multipart/form-data"
                                 action="#"
-                                th:action="@{/room/save/room}"
+                                th:action="@{/dashboard/room/save/room}"
                                 th:object="${room}"
                                 method="POST"
                         >
@@ -291,7 +291,7 @@
                                   class="needs-validation"
                                   enctype="multipart/form-data"
                                   action="#"
-                                  th:action="@{/room/save/roomCategory}"
+                                  th:action="@{/dashboard/room/save/roomCategory}"
                                   th:object="${roomType}"
                                   method="POST"
                           >

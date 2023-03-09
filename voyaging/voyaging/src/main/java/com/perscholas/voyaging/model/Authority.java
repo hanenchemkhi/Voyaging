@@ -4,6 +4,11 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -14,12 +19,17 @@ public class Authority {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
-
     @NonNull
     @Column(unique = true)
     String authority;
 
+    @ManyToMany(mappedBy = "authorities")
+    private List<User> users = new ArrayList<>();
+
     public Authority(@NonNull String authority) {
         this.authority = authority;
     }
+
+
+
 }

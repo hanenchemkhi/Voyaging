@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
 
 @Controller
 @Slf4j
-@RequestMapping("room")
+@RequestMapping("/dashboard/room")
 public class RoomController {
     @Autowired
     RoomService roomService;
@@ -49,20 +49,20 @@ public class RoomController {
     @PostMapping("/save/room")
     public String saveRoom(@RequestParam("roomNumber") Integer roomNumber, @RequestParam("category") RoomCategory roomCategory){
         roomService.saveRoom(roomNumber, roomCategory);
-        return "redirect:/room";
+        return "redirect:/dashboard/room";
     }
     @PostMapping("/save/roomCategory")
     public String saveRoomCategory(@ModelAttribute("roomType")RoomType roomType,
                            @RequestParam("file") MultipartFile file ){
         roomService.saveRoomCategory(roomType,file);
-        return "redirect:/room";
+        return "redirect:/dashboard/room";
     }
 
 
     @GetMapping("/delete/{roomId:.+}")
     public String deleteRoom(@PathVariable Long roomId) {
         roomService.deleteRoom(roomId);
-        return "redirect:/room";
+        return "redirect:/dashboard/room";
     }
 
 }

@@ -4,6 +4,7 @@ import com.perscholas.voyaging.model.Authority;
 import com.perscholas.voyaging.model.User;
 import com.perscholas.voyaging.repository.AuthorityRepository;
 import com.perscholas.voyaging.repository.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -18,6 +19,7 @@ import java.util.Optional;
 import java.util.Set;
 
 @Service
+@Slf4j
 public class AppUserDetailsService implements UserDetailsService {
 
     @Autowired
@@ -47,8 +49,10 @@ public class AppUserDetailsService implements UserDetailsService {
         user.getAuthorities().stream().forEach(authority ->
                 grantedAuthorities.add(new SimpleGrantedAuthority(authority.getAuthority())));
 
+        log.warn("User: "+ user.getEmail()+" with authorities: "+ grantedAuthorities.toString());
 
-            return new AppUserPrincipal(user,grantedAuthorities);
+
+        return new AppUserPrincipal(user,grantedAuthorities);
 
 
     }

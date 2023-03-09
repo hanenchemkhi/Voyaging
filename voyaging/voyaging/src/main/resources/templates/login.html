@@ -24,18 +24,22 @@
           height="57"
         />
         <div class="text-muted text-center pt-2">
-          <h4>Sign In</h4>
-        </div>
-        <form class="pt-3" th:action="@{/login}" method="post">
+
+        <h4>Sign In</h4>
+        <div th:if="${param.error}">
+          Invalid username and password.</div>
+        <div th:if="${param.logout}">
+          You have been logged out.</div>
+        <form class="pt-3" th:action="@{/login/processing}" method="post">
           <div class="form-floating">
             <input
               type="email"
               name="email"
               class="form-control"
-              id="floatingInput"
-              placeholder="name@example.com"
+              id="email"
+
             />
-            <label for="floatingInput">Email address</label>
+            <label for="email">Email address</label>
           </div>
           <br />
           <div class="form-floating">
@@ -43,10 +47,10 @@
               type="password"
               name="password"
               class="form-control"
-              id="floatingPassword"
-              placeholder="Password"
+              id="password"
+
             />
-            <label for="floatingPassword">Password</label>
+            <label for="password">Password</label>
           </div>
           <br />
 

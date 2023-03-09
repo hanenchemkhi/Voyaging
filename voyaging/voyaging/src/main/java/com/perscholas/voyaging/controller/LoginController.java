@@ -16,12 +16,5 @@ public class LoginController {
         return "login";
     }
 
-    @GetMapping("/signup")
-    public String viewSignup(){
-        return "signup";
-    }
-
-
-
 
 }

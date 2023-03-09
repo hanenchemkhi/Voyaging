@@ -1,6 +1,6 @@
 package com.perscholas.voyaging.model;
 
-public enum UserType {
+public enum Role {
     CUSTOMER, ADMIN;
 
 }

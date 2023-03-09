@@ -2,6 +2,8 @@ package com.perscholas.voyaging.controller;
 
 import com.perscholas.voyaging.dto.RoomDTO;
 import com.perscholas.voyaging.model.*;
+import com.perscholas.voyaging.repository.CustomerRepository;
+import com.perscholas.voyaging.service.CustomerService;
 import com.perscholas.voyaging.service.ReservationService;
 import com.perscholas.voyaging.service.RoomService;
 import jakarta.servlet.http.HttpSession;
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
+import java.security.Principal;
 import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.util.List;
@@ -29,8 +33,12 @@ import java.util.stream.Collectors;
 
 @Controller
 @Slf4j
-@RequestMapping
+@RequestMapping()
 public class ReservationController {
+    @Autowired
+    private CustomerRepository customerRepository;
+    @Autowired
+    private CustomerService customerService;
     @Autowired
     private RoomService roomService;
     @Autowired
@@ -41,9 +49,7 @@ public class ReservationController {
                               @RequestParam("checkoutDate")@Valid @NotNull @Future(message = "Invalid checkout date")LocalDate checkoutDate,
                               @RequestParam("nbRooms")@Valid @NotNull @Min(value = 1) @Max(value = 4) Integer numberRooms,
                               @RequestParam("nbGuests")@Valid @NotNull @Min(value = 1) @Max(value = 4) Integer numberGuests,
-                              Model model, HttpSession httpSession ){
-
-
+                              Model model ){
 
 
         List<Room> availableRooms = roomService.findAvailableRooms(checkinDate, checkoutDate);
@@ -90,8 +96,6 @@ public class ReservationController {
 
         RoomType roomType = roomService.findRoomTypeById(id);
 
-
-
         model.addAttribute("lengthOfStay" , lengthOfStay);
         model.addAttribute("roomType", roomType );
         model.addAttribute("checkin",reservationService.formatDate( checkin) );
@@ -113,21 +117,11 @@ public class ReservationController {
     }
 
 
-    @GetMapping("/reservation")
-    public String viewReservation(Model model){
-
-        model.addAttribute("reservations", reservationService.findAllReservations());
-
-        return "reservations";
-    }
-
-    @GetMapping("/save-reservation")
-    public String saveReservation(Model model, HttpSession httpSession){
 
 
+    @GetMapping("/customer/save-reservation")
+    public String saveReservation(Model model, HttpSession httpSession, Principal principal){
 
-
-        //save reservation and send confirmation
 
         LocalDate checkin = LocalDate.parse(httpSession.getAttribute("checkin").toString());
         LocalDate checkout = LocalDate.parse(httpSession.getAttribute("checkout").toString());
@@ -135,24 +129,28 @@ public class ReservationController {
 
         int nbGuests =(Integer) httpSession.getAttribute("nbGuests");
         int nbRooms = (Integer) httpSession.getAttribute("nbRooms");
-        Customer customer = (Customer) httpSession.getAttribute("customer");
-
         RoomType roomType = (RoomType)httpSession.getAttribute("roomType");
 
+//        Customer customer = (Customer) httpSession.getAttribute("customer");
 
-       //add number of rooms in the reservation
+        log.warn(principal.getName());
+
+        Customer customer = customerService.findCustomerByEmail(principal.getName());
+
+        httpSession.setAttribute("customer", customer);
+
         Reservation reservation =  reservationService.saveReservation(checkin,checkout, nbGuests, customer, roomType,nbRooms);
 
         httpSession.setAttribute("reservation", reservation);
-
-
 
 
         return "redirect:/confirmation";
     }
 
     @GetMapping("/confirmation")
+    @PreAuthorize("hasRole('CUSTOMER')")
     public String confirmReservation(Model model, HttpSession httpSession){
+        log.warn("inside confirmation");
 
         NumberFormat formatter = NumberFormat.getCurrencyInstance();
 
