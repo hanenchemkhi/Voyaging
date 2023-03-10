@@ -74,4 +74,16 @@ public abstract class User {
     public void removeAuthority(Authority auth ){
         authorities.remove(auth);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User user)) return false;
+        return getEmail().equals(user.getEmail());
+    }
+
+    @Override
+    public int hashCode() {
+        return getEmail().hashCode();
+    }
 }

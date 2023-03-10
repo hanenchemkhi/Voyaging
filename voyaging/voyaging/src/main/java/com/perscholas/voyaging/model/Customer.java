@@ -50,4 +50,7 @@ public class Customer extends User{
         reservations.remove(reservation);
         reservation.setCustomer(null);
     }
+
+
+
 }

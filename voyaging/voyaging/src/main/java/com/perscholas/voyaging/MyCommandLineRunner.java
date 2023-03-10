@@ -45,23 +45,23 @@ public class MyCommandLineRunner implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        RoomType roomType = new RoomType(4,100.0, KING_GUEST_ROOM);
+
         RoomType roomType1 = new RoomType(4,120.0,TWIN_GUEST_ROOM);
         RoomType roomType2 = new RoomType(4,140.0,KING_EXECUTIVE_ROOM);
 
 
-        roomTypeRepository.saveAndFlush(roomType);
+
         roomTypeRepository.saveAndFlush(roomType1);
         roomTypeRepository.saveAndFlush(roomType2);
 
 
-        Room room = new Room(123,roomType);
+
         Room room1 = new Room(125,roomType1);
         Room room2 = new Room(127,roomType1);
         Room room3 = new Room(129,roomType1);
         Room room4 = new Room(131,roomType2);
 
-        roomRepository.saveAndFlush(room);
+
         roomRepository.saveAndFlush(room1);
         roomRepository.saveAndFlush(room2);
         roomRepository.saveAndFlush(room3);

@@ -1,0 +1,33 @@
+
+j
+java:S11924"ODefine a constant instead of duplicating this literal "redirect:/room" 3 times.(Áä”¥øÿÿÿÿ
+b
+java:S1128"@Remove this unused import 'com.perscholas.voyaging.dto.RoomDTO'.(½§ƒıÿÿÿÿ8úôˆÉê0
+`
+java:S1128"DRemove this unused import 'jakarta.servlet.http.HttpServletRequest'.(õ38ûôˆÉê0
+]
+java:S1128"@Remove this unused import 'org.apache.commons.lang3.ArrayUtils'.(ªğô†8ûôˆÉê0
+]
+java:S1128	"@Remove this unused import 'org.springframework.beans.BeanUtils'.(ŠğÄÜ8ûôˆÉê0
+g
+java:S1128"JRemove this unused import 'org.springframework.core.io.ByteArrayResource'.(Ã¤Ê¾8ûôˆÉê0
+^
+java:S1128"ARemove this unused import 'org.springframework.core.io.Resource'.(¹ÒÁ8ûôˆÉê0
+c
+java:S1128"ARemove this unused import 'org.springframework.http.HttpHeaders'.(ãŸñ×úÿÿÿÿ8ûôˆÉê0
+b
+java:S1128"@Remove this unused import 'org.springframework.http.HttpStatus'.(íŸ¤Šúÿÿÿÿ8ûôˆÉê0
+a
+java:S1128"?Remove this unused import 'org.springframework.http.MediaType'.(úŸİ¯şÿÿÿÿ8ûôˆÉê0
+f
+java:S1128"DRemove this unused import 'org.springframework.http.ResponseEntity'.(¶¯ø¦úÿÿÿÿ8ûôˆÉê0
+F
+java:S1128")Remove this unused import 'java.io.File'.(†Ğ¥Å8ûôˆÉê0
+R
+java:S1128"0Remove this unused import 'java.io.IOException'.(ªº»Úıÿÿÿÿ8ûôˆÉê0
+M
+java:S1128"0Remove this unused import 'java.nio.file.Files'.(‚ƒü8ûôˆÉê0
+J
+java:S1128"-Remove this unused import 'java.util.Base64'.(ëŠ»Õ8ûôˆÉê0
+Z
+java:S1128"8Remove this unused import 'java.util.stream.Collectors'.(Óóº´úÿÿÿÿ8ûôˆÉê0

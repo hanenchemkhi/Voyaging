@@ -80,8 +80,7 @@ public class ReservationService {
         return reservation;
     }
 
-    public Object findAllReservations() {
-
+    public List<Reservation> findAllReservations() {
         return reservationRepository.findAll();
     }
 }

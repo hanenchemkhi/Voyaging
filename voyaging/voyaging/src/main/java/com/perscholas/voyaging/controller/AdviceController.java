@@ -9,14 +9,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import java.time.LocalDate;
 
 
-//@ControllerAdvice
+@ControllerAdvice
 public class AdviceController {
 
-//    @ExceptionHandler(Exception.class)
-//   public String exception(final Exception exception, final Model model) {
-//
-//       String errorMessage = (exception != null ? exception.getMessage() : "Unknown error");
-//       return "error";
-//   }
+    @ExceptionHandler(Exception.class)
+   public String exception(final Exception exception, final Model model) {
+
+      String errorMessage = (exception != null ? exception.getMessage() : "Unknown error");
+       return "error";
+   }
 
 }

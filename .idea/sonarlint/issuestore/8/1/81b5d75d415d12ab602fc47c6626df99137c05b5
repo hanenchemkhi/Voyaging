@@ -1,0 +1,24 @@
+
+[	java:S112p"FDefine and throw a dedicated exception instead of using a generic one.(³³ÛÁ
+`	java:S112r"FDefine and throw a dedicated exception instead of using a generic one.(ÛÒøâûÿÿÿÿ
+\	java:S112‚"FDefine and throw a dedicated exception instead of using a generic one.(‘áÊ
+a	java:S112­"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ
+\	java:S112Í"FDefine and throw a dedicated exception instead of using a generic one.(ĞæÇ‘
+a	java:S112Ğ"FDefine and throw a dedicated exception instead of using a generic one.(ò˜“şÿÿÿÿ
+m
+java:S2259Z"RA "NullPointerException" could be thrown; "getOriginalFilename()" can return null.(©š½­ûÿÿÿÿ
+m
+java:S2259Z"RA "NullPointerException" could be thrown; "getOriginalFilename()" can return null.(©š½­ûÿÿÿÿ
+k
+java:S3655\"PCall "Optional#isPresent()" or "!Optional#isEmpty()" before accessing the value.(·ëù³ÿÿÿÿÿ
+k	java:S116+"VRename this field "ROOT_FOLDER" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(œöÚ€
+n	java:S116,"ZRename this field "ROOM_TAXE_RATES" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(çû
+6
+java:S1170,"!Make this final field static too.(çû
+Z
+java:S1172;"DRemove these unused method parameters "numberRooms", "numberGuests".(íœÇî
+[
+java:S1193o"@Replace the usage of the "instanceof" operator by a catch block.(Á°Ñ—ÿÿÿÿÿ
+R	java:S125µ"<This block of commented-out lines of code should be removed.(§®êñ
+E
+java:S1172½".Remove this unused method parameter "nbRooms".(õ©å

@@ -1,0 +1,9 @@
+
+_
+java:S1192-"IDefine a constant instead of duplicating this literal "nbGuests" 4 times.(‚Ñ½­
+c
+java:S1192*"HDefine a constant instead of duplicating this literal "checkin" 6 times.(ªø¼ˆÿÿÿÿÿ
+_
+java:S1192+"IDefine a constant instead of duplicating this literal "checkout" 6 times.(¹“ò¹
+n
+java:S3753"XAdd a call to "setComplete()" on the SessionStatus object in a "@RequestMapping" method.(æ­ëÇ

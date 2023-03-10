@@ -72,12 +72,12 @@ public class CustomerService {
         return customerRepository.findCustomerByEmail(email).isPresent()?true:false;
     }
 
-    public void updateCustomer(Customer customer, Address address, CreditCard creditCard) {
+    public Customer updateCustomer(Customer customer, Address address, CreditCard creditCard) {
+
+
         Customer customerToUpdate = customerRepository.findCustomerByEmail(customer.getEmail()).get();
 
-
         customerToUpdate.setRole(Role.CUSTOMER);
-
 
         customerToUpdate.setFirstName(customer.getFirstName());
         customerToUpdate.setLastName(customer.getLastName());
@@ -92,8 +92,8 @@ public class CustomerService {
 
         customerToUpdate.setCard(creditCard);
         customerToUpdate.setAddress(address);
-        customerRepository.save(customerToUpdate);
-        log.warn("added auth to updated customer");
+        return customerRepository.save(customerToUpdate);
+
 
     }
 

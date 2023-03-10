@@ -1,0 +1,19 @@
+
+_
+java:S2094"BRemove this empty class, write its code or make it an "interface".(×ÚÑğ8¥‘Âìé0
+]	java:S125"<This block of commented-out lines of code should be removed.(Õ¼êüÿÿÿÿ8§‘Âìé0
+Q	java:S125"<This block of commented-out lines of code should be removed.(¼¤¤Œ
+Y
+java:S1128"DRemove this unused import 'jakarta.servlet.http.HttpServletRequest'.(õ3
+R
+java:S1128"=Remove this unused import 'jakarta.servlet.http.HttpSession'.(Çê°
+[
+java:S1128"9Remove this unused import 'org.springframework.ui.Model'.(ê†ıÿÿÿÿ8©‘Âìé0
+p
+java:S1128"URemove this unused import 'org.springframework.web.bind.annotation.ControllerAdvice'.(¶Í„áüÿÿÿÿ
+r
+java:S1128"URemove this unused import 'org.springframework.web.bind.annotation.ExceptionHandler'.(–Œ•¬8©‘Âìé0
+i
+java:S1128"SRemove this unused import 'org.springframework.web.bind.annotation.ModelAttribute'.(®ùæé
+K
+java:S1128	"0Remove this unused import 'java.time.LocalDate'.(›‘¬èıÿÿÿÿ

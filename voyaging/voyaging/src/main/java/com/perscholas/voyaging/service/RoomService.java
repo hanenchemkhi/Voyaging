@@ -64,8 +64,10 @@ public class RoomService {
 
 
 
-    public void saveRoomType(RoomType roomType){
-        roomTypeRepository.save(roomType);
+    public RoomType saveRoomType(RoomType roomType){
+
+        return roomTypeRepository.save(roomType);
+
     }
 
 
@@ -195,7 +197,7 @@ public class RoomService {
         }
     }
 
-    public void saveRoom(Integer roomNumber, RoomCategory roomCategory) {
+    public Room saveRoom(Integer roomNumber, RoomCategory roomCategory) {
 
         Room room = new Room();
         if (roomRepository.existsRoomByRoomNumber(roomNumber)) {
@@ -204,7 +206,7 @@ public class RoomService {
             room.setRoomNumber(roomNumber);
             RoomType roomType =  roomTypeRepository.findByRoomCategory(roomCategory);
             room.setRoomType(roomType);
-            roomRepository.save(room);
+            return roomRepository.save(room);
 
     }
 
