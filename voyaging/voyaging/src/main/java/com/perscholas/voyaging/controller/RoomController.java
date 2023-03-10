@@ -1,33 +1,19 @@
 package com.perscholas.voyaging.controller;
 
-import com.perscholas.voyaging.dto.RoomDTO;
+
 import com.perscholas.voyaging.model.*;
 import com.perscholas.voyaging.service.RoomService;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.ArrayUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import java.text.NumberFormat;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.util.Base64;
 import java.util.List;
-import java.util.stream.Collectors;
-
-
 @Controller
 @Slf4j
 @RequestMapping("/dashboard/room")
@@ -36,18 +22,22 @@ public class RoomController {
     RoomService roomService;
     @GetMapping
     public String viewRooms(Model model){
+
+        NumberFormat formatter = NumberFormat.getCurrencyInstance();
+
+
         List<Room> allRooms = roomService.findAllRooms();
-
-
         List<RoomType> allRoomTypes = roomService.findAllRoomType();
         model.addAttribute("roomTypes", allRoomTypes);
         model.addAttribute("rooms", allRooms);
+        model.addAttribute("roomCategories", roomService.findRoomCategories());
 
         return "rooms";
     }
 
     @PostMapping("/save/room")
     public String saveRoom(@RequestParam("roomNumber") Integer roomNumber, @RequestParam("category") RoomCategory roomCategory){
+
         roomService.saveRoom(roomNumber, roomCategory);
         return "redirect:/dashboard/room";
     }
@@ -62,6 +52,11 @@ public class RoomController {
     @GetMapping("/delete/{roomId:.+}")
     public String deleteRoom(@PathVariable Long roomId) {
         roomService.deleteRoom(roomId);
+        return "redirect:/dashboard/room";
+    }
+    @GetMapping("roomType/delete/{roomTypeId:.+}")
+    public String deleteRoomType(@PathVariable Long roomTypeId){
+        roomService.deleteRoomType(roomTypeId);
         return "redirect:/dashboard/room";
     }
 

@@ -71,7 +71,7 @@
                     <button
                             id="editRoom"
                             class="btn btn-primary"
-                            th:onclick="javascript:showRoomModal([[${room.roomNumber}]])"
+                            th:onclick="javascript:showRoomModal([[${room.roomNumber}]],[[${room.roomType.roomCategory}]])"
                     >
                       <span class="material-symbols-outlined"> edit </span>
                     </button>
@@ -92,7 +92,7 @@
                   </td>
                   <td th:text="${room.roomNumber}"></td>
                   <td th:text="${room.roomType.roomCategory.getCategory()}"></td>
-                  <td th:text="${room.roomType.price}"></td>
+                  <td th:text="${#numbers.formatCurrency(room.roomType.price)}"></td>
                 </tr>
                 </tbody>
               </table>
@@ -156,8 +156,9 @@
                                         aria-label=""
                                         required
                                 >
+                                  <option value="">Choose...</option>
                                   <option
-                                          th:each="category : ${T(com.perscholas.voyaging.model.RoomCategory).values()}"
+                                          th:each="category : ${roomCategories}"
                                           th:value="${category}"
                                           th:text="${category.getCategory()}"
                                   ></option>
@@ -225,12 +226,12 @@
                     <button
                             id="editRoomType"
                             class="btn btn-primary"
-                            th:onclick="javascript:showRoomCategoryModal([[${roomType.roomCategory}]])"
+                            th:onclick="javascript:showRoomCategoryModal([[${roomType.price}]],[[${roomType.maxGuests}]], [[${roomType.roomCategory}]])"
                     >
                       <span class="material-symbols-outlined"> edit </span>
                     </button>
                     <a
-                            href=""
+                            th:href="@{/dashboard/room/roomType/delete/{roomTypeId}(roomTypeId=${roomType.id})}"
                             class="btn btn-danger"
                             id="delete-roomType"
                     >
@@ -261,7 +262,7 @@
                       ></option>
                     </select>
                   </td>
-                  <td th:text="${roomType.price}"></td>
+                  <td th:text="${#numbers.formatCurrency(roomType.price)}"></td>
                 </tr>
                 </tbody>
               </table>
@@ -301,13 +302,14 @@
                                   <label for="categoryid" class="form-label"
                                   >Category</label
                                   >
+
                                   <select
                                           class="form-select"
                                           id="categoryid"
                                           name="roomCategory"
-                                          aria-label=""
                                           required
                                   >
+                                    <option value="">Choose...</option>
                                     <option
                                             th:each="category : ${T(com.perscholas.voyaging.model.RoomCategory).values()}"
                                             th:value="${category}"
@@ -330,7 +332,7 @@
                                             required
                                     />
                                     <div class="invalid-feedback">
-                                      Valid room number is required.
+                                      Valid room price is required.
                                     </div>
                                   </div>
                                   <div class="row">
@@ -444,25 +446,31 @@
         const myModal = new bootstrap.Modal("#roomModal");
         myModal.show();
       }
+
+      function showRoomModal(roomNumber, roomType){
+        let myModal=new bootstrap.Modal("#roomModal");
+        document.getElementById("roomNumber").value = roomNumber;
+        document.getElementById("roomTypeid").value = roomType;
+        myModal.show();
+
+      }
+
       function showEmptyRoomCategoryModal() {
         const myModal = new bootstrap.Modal("#roomCategoryModal");
         myModal.show();
       }
-<!--      function showRoomModal( roomNumber,  price, maxGuests) {-->
-<!--        let myModal = new bootstrap.Modal("#roomModal");-->
+     function showRoomCategoryModal( price, maxGuests, roomCategory) {
+        let myModal = new bootstrap.Modal("#roomCategoryModal");
+        document.getElementById("roomPrice").value = price;
+        document.getElementById("maxGuests").value = maxGuests;
+        document.getElementById("categoryid").value = roomCategory;
+        console.log("showing room category "+roomCategory);
 
-<!--        document.getElementById("roomNumber").value = roomNumber;-->
+       // document.getElementById("roomNumber").value = roomNumber;
+       // document.getElementById("amenities").value = amenities;
 
-<!--        document.getElementById("roomCategory").value = roomCategory;-->
-
-<!--        document.getElementById("amenities").value = amenities;-->
-
-<!--        document.getElementById("roomPrice").value = price;-->
-<!--        document.getElementById("maxGuests").value = maxGuests;-->
-
-<!--        myModal.show();-->
-<!--      }-->
-
+        myModal.show();
+    }
     </script>
 
     <!-- Option 2: Separate Popper and Bootstrap JS -->

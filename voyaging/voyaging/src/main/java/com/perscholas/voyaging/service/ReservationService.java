@@ -66,8 +66,6 @@ public class ReservationService {
 
         for (int i = 0; i <nbRooms ; i++) {
 
-
-
             reservation.setCheckinDate(checkin);
             reservation.setCheckoutDate(checkout);
             reservation.setNbGuests(nbGuests);

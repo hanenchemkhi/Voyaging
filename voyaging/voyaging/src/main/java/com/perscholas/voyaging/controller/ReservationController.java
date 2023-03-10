@@ -1,6 +1,6 @@
 package com.perscholas.voyaging.controller;
 
-import com.perscholas.voyaging.dto.RoomDTO;
+
 import com.perscholas.voyaging.model.*;
 import com.perscholas.voyaging.repository.CustomerRepository;
 import com.perscholas.voyaging.service.CustomerService;
@@ -123,6 +123,8 @@ public class ReservationController {
     public String saveReservation(Model model, HttpSession httpSession, Principal principal){
 
 
+
+
         LocalDate checkin = LocalDate.parse(httpSession.getAttribute("checkin").toString());
         LocalDate checkout = LocalDate.parse(httpSession.getAttribute("checkout").toString());
         Long lengthOfStay = reservationService.findLengthOfStay(checkin, checkout);
@@ -150,7 +152,7 @@ public class ReservationController {
     @GetMapping("/confirmation")
     @PreAuthorize("hasRole('CUSTOMER')")
     public String confirmReservation(Model model, HttpSession httpSession){
-        log.warn("inside confirmation");
+
 
         NumberFormat formatter = NumberFormat.getCurrencyInstance();
 
