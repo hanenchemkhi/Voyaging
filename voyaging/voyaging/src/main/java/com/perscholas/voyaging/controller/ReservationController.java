@@ -52,27 +52,9 @@ public class ReservationController {
                               Model model ){
 
 
-        List<Room> availableRooms = roomService.findAvailableRooms(checkinDate, checkoutDate);
 
 
-        Set<RoomType> availableRoomType = availableRooms.stream()
-                .map(room -> room.getRoomType())
-                .filter(roomType -> roomType.getMaxGuests()>=numberGuests)
-                .collect(Collectors.groupingBy(
-                                Function.identity(),
-                                Collectors.counting()))
-                // Convert this map into a stream
-                .entrySet()
-                .stream()
-                // Check if frequency > numberRooms
-                // for duplicate elements
-                .filter(m -> m.getValue() >= numberRooms)
-                // Find such elements
-                .map(Map.Entry::getKey)
-                // And Collect them in a Set
-                .collect(Collectors.toSet());
-
-        model.addAttribute("availableRooms", availableRoomType);
+        model.addAttribute("availableRooms", roomService.availableRoomType(checkinDate,checkoutDate,numberRooms,numberGuests));
         model.addAttribute("checkin",checkinDate );
         model.addAttribute("checkout",checkoutDate );
         model.addAttribute("nbRooms", numberRooms);

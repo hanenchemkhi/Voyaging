@@ -26,9 +26,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -56,24 +56,7 @@ public class RoomService {
     }
 
 
-    public List<Room> findAvailableRooms(LocalDate checkinDate, LocalDate checkoutDate) {
-        List<Room> availableRooms = roomRepository.findAll();
-        List<Reservation> allReservations = reservationRepository.findAll();
-        log.warn("All reseravation : "+ allReservations.size());
-        List<Room> reservedRooms = new ArrayList<>();
 
-        for (Reservation reservation : allReservations) {
-
-            if ((checkinDate.isBefore(reservation.getCheckinDate())) || (checkinDate.isEqual(reservation.getCheckinDate()))
-                    && (checkoutDate.isAfter(reservation.getCheckoutDate()))||(checkoutDate.isEqual(reservation.getCheckoutDate()))) {
-                reservedRooms.addAll(reservation.getRooms());
-            }
-        }
-        availableRooms.removeAll(reservedRooms);
-
-        return availableRooms;
-
-    }
 
 
     public void saveRoomType(RoomType roomType){
@@ -100,7 +83,7 @@ public class RoomService {
             log.warn("resolving path");
             String url = MvcUriComponentsBuilder
                     .fromMethodName(ImageController.class, "getImage", path.getFileName().toString()).build().toString();
-            log.warn(url);
+
 
             RoomImage roomImage = new RoomImage();
             roomImage.setImageUrl(url);
@@ -135,7 +118,6 @@ public class RoomService {
         return roomRepository.findAll();
     }
 
-
     public Room finRoomById(Long id) {
         Optional<Room> room = roomRepository.findById(id);
         return unwrapRoom(room, id);
@@ -147,7 +129,6 @@ public class RoomService {
     }
 
     public void deleteRoom(Long roomId) {
-
         roomRepository.deleteById(roomId);
 
     }
@@ -166,8 +147,6 @@ public class RoomService {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
-
 
     }
 
@@ -210,6 +189,48 @@ public class RoomService {
 
     public RoomType findRoomTypeById(Long roomTypeId) {
         return roomTypeRepository.findById(roomTypeId).get();
+    }
+
+    public List<Room> findAvailableRooms(LocalDate checkinDate, LocalDate checkoutDate) {
+
+        List<Room> availableRooms = roomRepository.findAll();
+        List<Reservation> allReservations = reservationRepository.findAll();
+
+        List<Room> reservedRooms = new ArrayList<>();
+
+        for (Reservation reservation : allReservations) {
+
+            if ((checkinDate.isBefore(reservation.getCheckinDate())) || (checkinDate.isEqual(reservation.getCheckinDate()))
+                    && (checkoutDate.isAfter(reservation.getCheckoutDate()))||(checkoutDate.isEqual(reservation.getCheckoutDate()))) {
+                reservedRooms.addAll(reservation.getRooms());
+            }
+        }
+
+        availableRooms.removeAll(reservedRooms);
+
+        return availableRooms;
+
+    }
+
+    public Set<RoomType> availableRoomType(LocalDate checkinDate, LocalDate checkoutDate, int numberRooms,int numberGuests) {
+        List<Room> availableRooms = findAvailableRooms(checkinDate, checkoutDate);
+
+        return availableRooms.stream()
+                .map(room -> room.getRoomType())
+                .filter(roomType -> roomType.getMaxGuests()>=numberGuests)
+                .collect(Collectors.groupingBy(
+                        Function.identity(),
+                        Collectors.counting()))
+                // Convert this map into a stream
+                .entrySet()
+                .stream()
+                // Check if frequency > numberRooms
+                // for duplicate elements
+                .filter(m -> m.getValue() >= numberRooms)
+                // Find such elements
+                .map(Map.Entry::getKey)
+                // And Collect them in a Set
+                .collect(Collectors.toSet());
     }
 }
 
