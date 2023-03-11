@@ -4,8 +4,10 @@ package com.perscholas.voyaging.controller;
 import com.perscholas.voyaging.model.*;
 import com.perscholas.voyaging.repository.CustomerRepository;
 import com.perscholas.voyaging.service.CustomerService;
+import com.perscholas.voyaging.service.EmailSenderService;
 import com.perscholas.voyaging.service.ReservationService;
 import com.perscholas.voyaging.service.RoomService;
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
@@ -25,6 +27,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.security.Principal;
 import java.text.NumberFormat;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -44,6 +47,8 @@ public class ReservationController {
     @Autowired
     private ReservationService reservationService;
 
+    @Autowired
+    EmailSenderService emailSenderService;
     @GetMapping("/search-result")
     public String searchRooms(@RequestParam("checkinDate")@Valid @NotNull @Future(message = "Invalid checkin date") LocalDate checkinDate,
                               @RequestParam("checkoutDate")@Valid @NotNull @Future(message = "Invalid checkout date")LocalDate checkoutDate,
@@ -102,10 +107,10 @@ public class ReservationController {
 
 
     @GetMapping("/customer/save-reservation")
-    public String saveReservation(Model model, HttpSession httpSession, Principal principal){
+    public String saveReservation(Model model, HttpSession httpSession, Principal principal) throws MessagingException {
 
-
-
+        Map<String, Object> properties = new HashMap<>();
+        NumberFormat formatter = NumberFormat.getCurrencyInstance();
 
         LocalDate checkin = LocalDate.parse(httpSession.getAttribute("checkin").toString());
         LocalDate checkout = LocalDate.parse(httpSession.getAttribute("checkout").toString());
@@ -115,7 +120,7 @@ public class ReservationController {
         int nbRooms = (Integer) httpSession.getAttribute("nbRooms");
         RoomType roomType = (RoomType)httpSession.getAttribute("roomType");
 
-//        Customer customer = (Customer) httpSession.getAttribute("customer");
+
 
         log.warn(principal.getName());
 
@@ -128,12 +133,25 @@ public class ReservationController {
         httpSession.setAttribute("reservation", reservation);
 
 
-        return "redirect:/confirmation";
+
+
+
+
+
+
+        emailSenderService.sendHtmlMessage(customer.getEmail(), customer, reservation,checkin,checkout,nbRooms,roomType,
+                formatter.format(roomType.getPrice()),formatter.format(roomService.calculateTaxes(roomType.getId())),
+                formatter.format(roomService.calculateCostPerRoom(roomType.getId(), nbRooms)),
+                formatter.format(roomService.calculateTotalCost(roomType.getId(),lengthOfStay, nbRooms)));
+
+
+
+        return "redirect:/customer/confirmation";
     }
 
-    @GetMapping("/confirmation")
+    @GetMapping("/customer/confirmation")
     @PreAuthorize("hasRole('CUSTOMER')")
-    public String confirmReservation(Model model, HttpSession httpSession){
+    public String confirmReservation(Model model, HttpSession httpSession) throws MessagingException {
 
 
         NumberFormat formatter = NumberFormat.getCurrencyInstance();

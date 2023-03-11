@@ -26,6 +26,7 @@ import java.time.LocalDate;
 import static com.perscholas.voyaging.model.RoomCategory.*;
 
 @SpringBootTest
+
 class VoyagingApplicationTests {
 
 	@Autowired
@@ -44,24 +45,11 @@ class VoyagingApplicationTests {
 	public void contextLoads() {
 	}
 
-	@Test @Order(1)
-	public void updateRoom(){
-
-		RoomType roomType = new RoomType(4,100.0,KING_GUEST_ROOM );
-		RoomType newRoomType = roomService.saveRoomType(roomType);
-
-		Room savedRoom = roomService.saveRoom(100,KING_GUEST_ROOM);
-		assertThat(savedRoom.getRoomType()).isEqualTo(roomType);
-
-		roomService.deleteRoomType(roomType.getId());
-
-	}
-
 
 
 	@Test
 	public void saveRoomType(){
-		RoomType roomType = new RoomType(4,100.0, KING_GUEST_ROOM);
+		RoomType roomType = new RoomType(4,100.0, TWIN_EXECUTIVE_ROOM);
 
 		RoomType newRoomType = roomService.saveRoomType(roomType);
 		RoomType retrievedRoomType = roomService.findAllRoomType().get(roomService.findAllRoomType().size()-1);
@@ -70,6 +58,15 @@ class VoyagingApplicationTests {
 		assertThat(newRoomType.getPrice()).isEqualTo (retrievedRoomType.getPrice());
 		assertThat(newRoomType.getMaxGuests()).isEqualTo(roomType.getMaxGuests());
 
+	}
+	@Test @Order(1)
+	public void updateRoom(){
+
+		RoomType roomType = new RoomType(4,100.0, KING_GUEST_ROOM );
+		RoomType newRoomType = roomService.saveRoomType(roomType);
+
+		Room savedRoom = roomService.saveRoom(100, KING_GUEST_ROOM);
+		assertThat(savedRoom.getRoomType()).isEqualTo(roomType);
 	}
 
 

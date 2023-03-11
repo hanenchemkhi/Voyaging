@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="./css/styles.css}"  />
+    <title>Voyaging</title>
+</head>
+
+<body>
+
+<div class="container">
+    <div class="wrapper bg-white" style="max-width: 1000px">
+        <main class="flex-shrink-0">
+            <div class="container text-center m-5">
+                <h2 style="font-weight: bold; color: skyblue">Your reservation is confirmed!</h2>
+                <p style="font-weight: bold">Dear <span th:text="${customer.firstName}+' '+${customer.lastName}">customer-name</span>,</p>
+                <p class="m-5">
+                    Thank you for choosing our hotel for your upcoming stay. To provide
+                    you with the highest form of customer service, please review your
+                    reservation details.<br />
+                    If you need to make any modifications, please contact us at
+                    123-123-1234.
+                </p>
+
+            </div>
+
+            <section class="booking-details">
+                <div class="container">
+                    <div class="row g-5">
+                        <div class="col">
+                            <div class="card">
+                                <div class="card-body">
+
+                                    <div class="row d-flex justify-content-center g-5">
+
+                                        <table style="border:1px solid skyblue;margin-left:auto;margin-right:auto;padding:2px;border-spacing:20px;">
+                                            <thead>
+                                            <tr>
+                                                <th style="align-content: center;font-weight: bold; color: skyblue ">Your booking details</th>
+
+                                            </tr>
+                                            </thead>
+
+                                            <tbody>
+                                            <tr>
+                                                <th scope="row"></th>
+                                                <td>Confirmation # </td>
+                                                <td th:text="${reservation.id}"></td>
+
+                                            </tr>
+                                            <tr>
+                                                <th scope="row"></th>
+                                                <td>Check In</td>
+                                                <td th:text="${reservation.checkinDate}"></td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row"></th>
+                                                <td>Check Out</td>
+                                                <td th:text="${reservation.checkoutDate}"></td>
+
+                                            </tr>
+                                            <tr>
+                                                <th scope="row"></th>
+                                                <td>Room Category</td>
+                                                <td th:text="${roomType.roomCategory.getCategory()}"></td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row"></th>
+                                                <td># of guests</td>
+                                                <td th:text="${reservation.nbGuests}"></td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row"></th>
+                                                <td># of rooms</td>
+                                                <td th:text="${nbRooms}"></td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row"></th>
+                                                <td>Price/room/night</td>
+                                                <td th:text="${price}"></td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row"></th>
+                                                <td>Estimated taxes/room</td>
+                                                <td th:text="${taxes}"></td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row"></th>
+                                                <td>Total cost</td>
+                                                <td style="font-weight: bold " th:text="${totalCost}"></td>
+                                            </tr>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+    </div>
+</div>
+
+</body>
+</html>
