@@ -37,6 +37,7 @@
 
                         type="date"
                         name="checkinDate"
+                        th:value="${checkinDate}"
                         placeholder="Check In"
                         onchange="validateCheckin()"
                         required
@@ -57,6 +58,7 @@
                         onchange="validateCheckout()"
                         type="date"
                         name="checkoutDate"
+                        th:value="${checkoutDate}"
                         placeholder="Check Out"
                         required
                       />
@@ -74,7 +76,7 @@
                       <label for="numberRooms" class="form-label"
                         >Rooms</label
                       >
-                      <input class="form-control" type="number" id="numberRooms" name="nbRooms" min="1" max="4">
+                      <input class="form-control" type="number" id="numberRooms" name="nbRooms" th:value="${nbRooms}" min="1" max="4">
                       <div id="invalidRooms" class="invalid-feedback">
                         Invalid Rooms Number
                       </div>
@@ -83,7 +85,7 @@
                       <label for="numberGuests" class="form-label"
                         >Guests</label
                       >
-                      <input class="form-control" type="number" id="numberGuests" name="nbGuests" min="1" max="4">
+                      <input class="form-control" type="number" id="numberGuests" th:value="${nbGuests}" name="nbGuests" min="1" max="4">
                       <div id="helper" class="form-text form-label" style="color:white">(Maximum: 4 total guests/room)</div>
                       <div id="invalidGuests" class="invalid-feedback">
                         Invalid Guests Number

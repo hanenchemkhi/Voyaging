@@ -50,13 +50,11 @@ public class ReservationController {
     @Autowired
     EmailSenderService emailSenderService;
     @GetMapping("/search-result")
-    public String searchRooms(@RequestParam("checkinDate")@Valid @NotNull @Future(message = "Invalid checkin date") LocalDate checkinDate,
-                              @RequestParam("checkoutDate")@Valid @NotNull @Future(message = "Invalid checkout date")LocalDate checkoutDate,
-                              @RequestParam("nbRooms")@Valid @NotNull @Min(value = 1) @Max(value = 4) Integer numberRooms,
-                              @RequestParam("nbGuests")@Valid @NotNull @Min(value = 1) @Max(value = 4) Integer numberGuests,
-                              Model model ){
-
-
+    public String searchRooms(@RequestParam(value="checkinDate") LocalDate checkinDate,
+                              @RequestParam(value = "checkoutDate") LocalDate checkoutDate,
+                              @RequestParam(value ="nbRooms", defaultValue = "1") Integer numberRooms,
+                              @RequestParam(value ="nbGuests", defaultValue = "1") Integer numberGuests,
+                              Model model, BindingResult result ){
 
 
         model.addAttribute("availableRooms", roomService.availableRoomType(checkinDate,checkoutDate,numberRooms,numberGuests));
@@ -104,8 +102,6 @@ public class ReservationController {
     }
 
 
-
-
     @GetMapping("/customer/save-reservation")
     public String saveReservation(Model model, HttpSession httpSession, Principal principal) throws MessagingException {
 
@@ -131,12 +127,6 @@ public class ReservationController {
         Reservation reservation =  reservationService.saveReservation(checkin,checkout, nbGuests, customer, roomType,nbRooms);
 
         httpSession.setAttribute("reservation", reservation);
-
-
-
-
-
-
 
 
         emailSenderService.sendHtmlMessage(customer.getEmail(), customer, reservation,checkin,checkout,nbRooms,roomType,

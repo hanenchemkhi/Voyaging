@@ -49,12 +49,7 @@ public class CustomerController {
         }
 
         if(bindingResultCustomer.hasErrors() || bindingResultAddress.hasErrors() || bindingResultCreditCard.hasErrors()) {
-
-//
-
-
             log.warn("======================errors with binding result=======================");
-
             return "signup";
         }
 
