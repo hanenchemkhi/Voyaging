@@ -12,11 +12,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
 @Slf4j
 @RequestMapping("/customer")
+
 public class CustomerController {
     @Autowired
     private AddressRepository addressRepository;
@@ -40,7 +43,16 @@ public class CustomerController {
                                  @Valid @ModelAttribute("creditCard")  CreditCard creditCard, BindingResult bindingResultCreditCard,
                                  HttpSession httpSession, Model model){
 
+        if(!customer.getPassword().equals(customer.getConfirmPassword())){
+            bindingResultCustomer.addError(new FieldError("customer","password", "Passwords don't match."));
+            bindingResultCustomer.addError(new FieldError("customer","confirmPassword", "Passwords don't match."));
+        }
+
         if(bindingResultCustomer.hasErrors() || bindingResultAddress.hasErrors() || bindingResultCreditCard.hasErrors()) {
+
+//
+
+
             log.warn("======================errors with binding result=======================");
 
             return "signup";

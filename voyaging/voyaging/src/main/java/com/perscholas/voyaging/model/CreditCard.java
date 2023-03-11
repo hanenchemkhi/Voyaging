@@ -3,10 +3,7 @@ package com.perscholas.voyaging.model;
 import jakarta.persistence.Entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.validator.constraints.CreditCardNumber;
@@ -27,7 +24,7 @@ public class CreditCard {
     @CreditCardNumber
     String cardNumber;
     @NotBlank(message ="Please enter credit card holder name")
-    @Size(min=5)
+    @Pattern(regexp = "^[\\p{L} .'-]+$")
     String cardholderName;
     @NotBlank(message ="Please select expiration month")
     String monthExpiration;

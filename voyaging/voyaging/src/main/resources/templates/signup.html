@@ -31,6 +31,7 @@
               th:object="${customer}"
               method="post" >
 
+
                 <div class="row g-3">
                   <div class="col-sm-6">
                     <label for="firstName" class="form-label"
@@ -60,7 +61,7 @@
                             name="lastName"
                             th:field="*{lastName}"
                             th:value="${customer.lastName}"
-                            required
+
 
                     />
                  <div th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="error text-warning"></div>
@@ -90,7 +91,7 @@
                             th:field="*{phone}"
                             placeholder=""
                             value=""
-                            required
+
                     />
                     <div th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="error text-warning"></div>
 
@@ -108,10 +109,9 @@
                             th:field="*{password}"
                             placeholder=""
                             value=""
-                            required
+
                     />
                     <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="error text-warning"></div>
-
 
                   </div>
                   <div class="col-6">
@@ -126,7 +126,7 @@
                             th:field="*{confirmPassword}"
                             placeholder=""
                             value=""
-                            required
+
                     />
                     <div th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}" class="error text-warning"></div>
 
@@ -143,7 +143,7 @@
                               name="street"
                               th:field="*{street}"
                               placeholder=""
-                              required
+
                       />
                       <div th:if="${#fields.hasErrors('street')}" th:errors="*{street}" class="error text-warning"></div>
                     </div>
@@ -159,7 +159,7 @@
                                 name="city"
                                 th:field="*{city}"
                                 placeholder=""
-                                required
+
                         />
                         <div th:if="${#fields.hasErrors('city')}" th:errors="*{city}" class="error text-warning"></div>
 

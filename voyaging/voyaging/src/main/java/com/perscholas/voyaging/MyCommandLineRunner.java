@@ -77,7 +77,7 @@ public class MyCommandLineRunner implements CommandLineRunner {
 
         User adminUser = new Admin("Taha","Habib", "habib@gmail.com",new BCryptPasswordEncoder().encode("password1"), "password1", Role.ADMIN);
         adminUser.addAuthority(admin);
-        userRepository.saveAndFlush(adminUser);
+        userRepository.save(adminUser);
 
 
     }

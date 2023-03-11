@@ -4,9 +4,12 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import com.perscholas.voyaging.annotation.FieldsValueMatch;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -20,7 +23,12 @@ import org.hibernate.annotations.Nationalized;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-
+@FieldsValueMatch.List({
+        @FieldsValueMatch(
+                field = "password",
+                fieldMatch = "confirmPassword",
+                message = "Passwords do not match!"
+)})
 public abstract class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,19 +37,23 @@ public abstract class User {
     @Nationalized
     @NotBlank(message = "Please enter first name")
     @Size(min=2, max= 50, message = "Please enter a valid name")
-     String firstName;
+    @Pattern(regexp = "^[\\p{L} .'-]+$")
+    String firstName;
     @Nationalized
     @NotBlank(message = "Please enter last name")
     @Size(min=2, max= 50, message = "Please enter a valid name")
-     String lastName;
+    @Pattern(regexp = "^[\\p{L} .'-]+$")
+    String lastName;
     @NotBlank(message = "Please enter email")
     @Column(unique = true)
     @Email(message="Please enter a valid email address")
     String email;
-    @NotBlank(message="Password is required)")
+    @NotBlank(message="Password is required")
     @Size(min=8,  message = "Password length must be between 8 and 35 characters (special characters are permitted)")
     String password;
 
+    @NotBlank(message="Confirm password is required")
+    @Size(min=8,  message = "Password length must be between 8 and 35 characters (special characters are permitted)")
     @Transient
     String confirmPassword;
 
