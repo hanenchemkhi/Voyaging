@@ -3,6 +3,8 @@ package com.perscholas.voyaging.model;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.validator.constraints.UniqueElements;
+
 import java.util.Objects;
 
 @Entity

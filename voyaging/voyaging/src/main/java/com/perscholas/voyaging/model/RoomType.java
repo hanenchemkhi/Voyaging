@@ -35,10 +35,6 @@ public class RoomType {
     @Column(unique=true)
     @Enumerated(EnumType.STRING)
     RoomCategory roomCategory;
-
-
-
-
     @ToString.Exclude
     @OneToOne(mappedBy = "roomType", cascade = CascadeType.ALL,
             fetch = FetchType.EAGER, optional = true)

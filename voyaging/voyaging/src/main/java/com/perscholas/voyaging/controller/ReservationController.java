@@ -54,7 +54,7 @@ public class ReservationController {
                               @RequestParam(value = "checkoutDate") LocalDate checkoutDate,
                               @RequestParam(value ="nbRooms", defaultValue = "1") Integer numberRooms,
                               @RequestParam(value ="nbGuests", defaultValue = "1") Integer numberGuests,
-                              Model model, BindingResult result ){
+                              Model model ){
 
 
         model.addAttribute("availableRooms", roomService.availableRoomType(checkinDate,checkoutDate,numberRooms,numberGuests));

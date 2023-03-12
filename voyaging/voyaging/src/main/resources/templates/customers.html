@@ -16,18 +16,18 @@
         <div><h1>Customers</h1></div>
         <div class="container">
           <ul class="nav nav-pills">
-            <li class="nav-item ms-5">
-              <button
-                id="addCustomer"
-                type="button"
-                class="btn btn-primary"
-                onclick="showEmptyCustomerModal()"
-              >
-                Add Customer<span class="ms-2"
-                  ><i class="bi bi-plus-circle"></i
-                ></span>
-              </button>
-            </li>
+<!--            <li class="nav-item ms-5">-->
+<!--              <button-->
+<!--                id="addCustomer"-->
+<!--                type="button"-->
+<!--                class="btn btn-primary"-->
+<!--                onclick="showEmptyCustomerModal()"-->
+<!--              >-->
+<!--                Add Customer<span class="ms-2"-->
+<!--                  ><i class="bi bi-plus-circle"></i-->
+<!--                ></span>-->
+<!--              </button>-->
+<!--            </li>-->
             <li class="nav-item ms-auto">
               <input
                 type="text"
@@ -58,16 +58,16 @@
             <tr th:each="customer : ${customers}">
               <th scope="row"></th>
               <td>
-                <button
-                  id="editCustomer"
-                  class="btn btn-primary"
-                  th:onclick="javascript:showCustomerModal([[${customer.firstName}]],
-                  [[${customer.lastName}]],[[${customer.email}]],[[${customer.address.street}]],[[${customer.address.city}]],[[${customer.address.country}]],
-                  [[${customer.address.zipCode}]],[[${customer.phone}]],[[${customer.card.cardholderName}]],
-                  [[${customer.card.cardNumber}]])"
-                >
-                  <span class="material-symbols-outlined"> edit </span>
-                </button>
+<!--                <button-->
+<!--                  id="editCustomer"-->
+<!--                  class="btn btn-primary"-->
+<!--                  th:onclick="javascript:showCustomerModal([[${customer.firstName}]],-->
+<!--                  [[${customer.lastName}]],[[${customer.email}]],[[${customer.address.street}]],[[${customer.address.city}]],[[${customer.address.country}]],-->
+<!--                  [[${customer.address.zipCode}]],[[${customer.address.phone}]],[[${customer.card.cardholderName}]],-->
+<!--                  [[${customer.card.cardNumber}]])"-->
+<!--                >-->
+<!--                  <span class="material-symbols-outlined"> edit </span>-->
+<!--                </button>-->
                 <a
                   th:href="@{/dashboard/customer/delete/{customerId}(customerId=${customer.id})}"
                   class="btn btn-danger"
@@ -82,7 +82,7 @@
               <td
                 th:text="${customer.address.street +', '+customer.address.country+' '+customer.address.zipCode}"
               ></td>
-              <td th:text="${customer.phone}"></td>
+              <td th:text="${customer.address.phone}"></td>
               <td th:text="${customer.card.cardholderName}"></td>
               <td th:text="${customer.card.cardNumber}"></td>
               <td
@@ -132,7 +132,7 @@
                             name="firstName"
                             placeholder=""
                             value=""
-                            required
+                            READONLY
                           />
                           <div class="invalid-feedback">
                             Valid first name is required.
@@ -150,7 +150,7 @@
                             name="lastName"
                             placeholder=""
                             value=""
-                            required
+                            READONLY
                           />
                           <div class="invalid-feedback">
                             Valid last name is required.
@@ -166,62 +166,63 @@
                             name="email"
                             placeholder=""
                             value=""
-                            required
+                            READONLY
                           />
                           <div class="invalid-feedback">
                             Please enter a valid email address
                           </div>
                         </div>
-                        <div class="col-6">
-                          <label for="phone" class="form-label">Phone </label>
-                          <input
-                            type="text"
-                            class="form-control"
-                            id="phone"
-                            name="phone"
-                            placeholder=""
-                            value=""
-                            required
-                          />
-                          <div class="invalid-feedback">
-                            Please enter a valid phone number
-                          </div>
-                        </div>
-                        <div class="col-6">
-                          <label for="password" class="form-label"
-                            >Password
-                          </label>
-                          <input
-                            type="password"
-                            class="form-control"
-                            id="password"
-                            name="password"
-                            placeholder=""
-                            value=""
-                            required
-                          />
-                          <div class="invalid-feedback">
-                            Please enter a valid password
-                          </div>
-                        </div>
-                        <div class="col-6">
-                          <label for="confirm-password" class="form-label"
-                            >Confirm password
-                          </label>
-                          <input
-                            type="password"
-                            class="form-control"
-                            id="confirm-password"
-                            name="confirmPassword"
-                            placeholder=""
-                            value=""
-                            required
-                          />
-                          <div class="invalid-feedback">
-                            Please re-enter the password
-                          </div>
-                        </div>
+
+<!--                        <div class="col-6">-->
+<!--                          <label for="password" class="form-label"-->
+<!--                            >Password-->
+<!--                          </label>-->
+<!--                          <input-->
+<!--                            type="password"-->
+<!--                            class="form-control"-->
+<!--                            id="password"-->
+<!--                            name="password"-->
+<!--                            placeholder=""-->
+<!--                            value=""-->
+
+<!--                          />-->
+<!--                          <div class="invalid-feedback">-->
+<!--                            Please enter a valid password-->
+<!--                          </div>-->
+<!--                        </div>-->
+<!--                        <div class="col-6">-->
+<!--                          <label for="confirm-password" class="form-label"-->
+<!--                            >Confirm password-->
+<!--                          </label>-->
+<!--                          <input-->
+<!--                            type="password"-->
+<!--                            class="form-control"-->
+<!--                            id="confirm-password"-->
+<!--                            name="confirmPassword"-->
+<!--                            placeholder=""-->
+<!--                            value=""-->
+
+<!--                          />-->
+<!--                          <div class="invalid-feedback">-->
+<!--                            Please re-enter the password-->
+<!--                          </div>-->
+<!--                        </div>-->
                         <div th:object="${address}">
+                          <div class="col-6">
+                            <label for="phone" class="form-label">Phone </label>
+                            <input
+                                    type="text"
+                                    class="form-control"
+                                    id="phone"
+                                    name="phone"
+                                    placeholder=""
+                                    value=""
+                                    required
+                            />
+                            <div class="invalid-feedback">
+                              Please enter a valid phone number
+                            </div>
+                          </div>
                           <div class="col-12">
                             <label for="street" class="form-label"
                               >Address</label

@@ -23,9 +23,7 @@ import java.util.Set;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 public class Customer extends User{
-    @NotBlank(message="Please enter phone number")
-    @Pattern(regexp="(^$|[0-9]{10})",message = "Phone number must be 10 digits")
-    String phone;
+
 
 
     @OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL, targetEntity = Address.class)

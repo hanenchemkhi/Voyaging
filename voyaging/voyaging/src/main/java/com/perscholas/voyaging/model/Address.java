@@ -20,6 +20,10 @@ public class Address {
     @GeneratedValue(strategy = GenerationType.IDENTITY )
     Long id;
 
+    @NotBlank(message="Please enter phone number")
+    @Pattern(regexp="(^$|[0-9]{10})",message = "Phone number must be 10 digits")
+    String phone;
+
     @NotBlank(message = "Please enter street")
     @Size(max=150, message = "Invalid street address")
     String street;

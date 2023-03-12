@@ -1,9 +1,11 @@
 package com.perscholas.voyaging.service;
 
 import com.perscholas.voyaging.exception.CustomerNotFoundException;
+import com.perscholas.voyaging.exception.CustomerWithEmailExistException;
 import com.perscholas.voyaging.model.*;
 import com.perscholas.voyaging.repository.AuthorityRepository;
 import com.perscholas.voyaging.repository.CustomerRepository;
+import com.perscholas.voyaging.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -11,10 +13,13 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
 public class CustomerService {
+    @Autowired
+    private UserRepository userRepository;
     @Autowired
     private  CustomerRepository customerRepository;
     @Autowired
@@ -24,10 +29,11 @@ public class CustomerService {
 
         log.warn("inside saveCustomer");
 
-        if(customerRepository.existsByEmail(customer.getEmail())){
+        if(userRepository.existsByEmail(customer.getEmail())) {
             log.warn("An account with this email already exists");
-            return "An account with this email already exists ";
+            throw new CustomerWithEmailExistException(customer.getEmail());
         }
+
 
         log.warn("authority "+ authorityRepository.getReferenceById(2).toString());
         customer.addAuthority(authorityRepository.getReferenceById(2));
@@ -76,12 +82,12 @@ public class CustomerService {
 
 
         Customer customerToUpdate = customerRepository.findCustomerByEmail(customer.getEmail()).get();
+        log.warn("Customer Email to update: "+customerToUpdate.getEmail());
 
         customerToUpdate.setRole(Role.CUSTOMER);
 
         customerToUpdate.setFirstName(customer.getFirstName());
         customerToUpdate.setLastName(customer.getLastName());
-        customerToUpdate.setPhone(customer.getPhone());
         customerToUpdate.setConfirmPassword(new BCryptPasswordEncoder().encode(customer.getConfirmPassword()));
         customerToUpdate.setPassword(new BCryptPasswordEncoder().encode(customer.getPassword()));
 
@@ -98,6 +104,14 @@ public class CustomerService {
     }
 
     public Customer findCustomerByEmail(String email) {
-            return customerRepository.findCustomerByEmail(email).get();
+
+        return customerRepository.findCustomerByEmail(email).get();
+    }
+
+    public List<String> findAllEmails() {
+        return userRepository.findAll()
+                .stream().
+                map(user -> user.getEmail())
+                .collect(Collectors.toList());
     }
 }

@@ -22,11 +22,8 @@ public class RoomController {
     RoomService roomService;
     @GetMapping
     public String viewRooms(Model model){
-
-        NumberFormat formatter = NumberFormat.getCurrencyInstance();
-
-
         List<Room> allRooms = roomService.findAllRooms();
+        log.warn(allRooms.toString());
         List<RoomType> allRoomTypes = roomService.findAllRoomType();
         model.addAttribute("roomTypes", allRoomTypes);
         model.addAttribute("rooms", allRooms);
@@ -39,6 +36,7 @@ public class RoomController {
     public String saveRoom(@RequestParam("roomNumber") Integer roomNumber, @RequestParam("category") RoomCategory roomCategory){
 
         roomService.saveRoom(roomNumber, roomCategory);
+        log.warn("room :"+roomService.saveRoom(roomNumber, roomCategory).toString());
         return "redirect:/dashboard/room";
     }
     @PostMapping("/save/roomCategory")

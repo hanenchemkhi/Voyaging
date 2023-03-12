@@ -24,6 +24,7 @@ import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +35,8 @@ import java.util.*;
 import java.util.function.Function;
 
 import java.util.stream.Collectors;
+
+import static com.fasterxml.jackson.databind.type.LogicalType.DateTime;
 
 @Service
 @Slf4j
@@ -79,7 +82,9 @@ public class RoomService {
             RoomType roomType = roomTypeRepository.findById(roomTypeId).get();
 
             String roomCategory = roomType.getRoomCategory().getCategory();
-            String imageName = roomCategory.concat("-").concat(String.valueOf(LocalDate.now()).concat(ext));
+            String imageName = roomCategory.concat("-")
+                    .concat(new SimpleDateFormat("yyyyMMddHHmmss'.txt'").format(new Date()))
+                    .concat(ext);
 
             Files.copy(file.getInputStream(), this.ROOT_FOLDER.resolve(imageName));
 
@@ -147,6 +152,7 @@ public class RoomService {
 
         RoomCategory roomCategory = roomType.getRoomCategory();
         if(roomTypeRepository.existsRoomTypesByRoomCategory(roomCategory)){
+            //update roomType
             RoomType roomTypeToUpdate = roomTypeRepository.findByRoomCategory(roomCategory);
             roomTypeToUpdate.setMaxGuests(roomType.getMaxGuests());
             roomTypeToUpdate.setPrice(roomType.getPrice());
@@ -158,6 +164,7 @@ public class RoomService {
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
+
         }else {
             roomTypeRepository.save(roomType);
             try {
@@ -196,6 +203,7 @@ public class RoomService {
             throw new RuntimeException("Error: " + e.getMessage());
         }
     }
+
 
     public Room saveRoom(Integer roomNumber, RoomCategory roomCategory) {
 

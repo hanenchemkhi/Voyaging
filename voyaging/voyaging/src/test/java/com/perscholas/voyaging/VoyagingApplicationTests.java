@@ -78,7 +78,6 @@ class VoyagingApplicationTests {
 		customer.setEmail("taha@gmail.com");
 		customer.setPassword("1234567890");
 		customer.setConfirmPassword("1234567890");
-		customer.setPhone("1234567890");
 		Customer newCustomer = customerRepository.save(customer);
 
 		Customer retrievedCustomer = customerService.findCustomerByEmail("taha@gmail.com");

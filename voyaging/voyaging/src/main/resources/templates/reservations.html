@@ -16,24 +16,24 @@
         <div><h1>Reservations</h1></div>
         <div>
           <ul class="nav nav-pills">
-            <li class="nav-item">
-              <button
-                id="addReservation"
-                type="button"
-                class="btn btn-primary"
-                onclick="showReservationModal()"
-              >
-                Add Reservation<span class="ms-2"
-                  ><i class="bi bi-plus-circle"></i
-                ></span>
-              </button>
-            </li>
+<!--            <li class="nav-item">-->
+<!--              <button-->
+<!--                id="addReservation"-->
+<!--                type="button"-->
+<!--                class="btn btn-primary"-->
+<!--                onclick="showReservationModal()"-->
+<!--              >-->
+<!--                Add Reservation<span class="ms-2"-->
+<!--                  ><i class="bi bi-plus-circle"></i-->
+<!--                ></span>-->
+<!--              </button>-->
+<!--            </li>-->
             <li class="nav-item ms-auto">
               <input
                 type="text"
                 id="searchReservationBox"
                 onkeyup="searchEntry('searchReservationBox','reservationTable', 4)"
-                placeholder="Search by number"
+                placeholder="Search by email"
                 title="Type in reservation number"
               />
             </li>
@@ -57,17 +57,17 @@
             <tr th:each="reservation : ${reservations}">
               <th scope="row"></th>
               <td>
-                <button class="btn btn-success" type="submit">
-                  <span class="material-symbols-outlined"> print </span>
-                </button>
-                <button
-                  id="editReservation"
-                  class="btn btn-primary"
-                  type="submit"
-                  onclick="showReservationModal()"
-                >
-                  <span class="material-symbols-outlined"> edit </span>
-                </button>
+<!--                <button class="btn btn-success" type="submit">-->
+<!--                  <span class="material-symbols-outlined"> print </span>-->
+<!--                </button>-->
+<!--                <button-->
+<!--                  id="editReservation"-->
+<!--                  class="btn btn-primary"-->
+<!--                  type="submit"-->
+<!--                  onclick="showReservationModal()"-->
+<!--                >-->
+<!--                  <span class="material-symbols-outlined"> edit </span>-->
+<!--                </button>-->
                 <button class="btn btn-danger" type="submit">
                   <span class="material-symbols-outlined"> delete </span>
                 </button>

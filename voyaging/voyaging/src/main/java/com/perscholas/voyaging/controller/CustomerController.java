@@ -16,6 +16,8 @@ import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @Slf4j
 @RequestMapping("/customer")
@@ -47,6 +49,12 @@ public class CustomerController {
             bindingResultCustomer.addError(new FieldError("customer","password", "Passwords don't match."));
             bindingResultCustomer.addError(new FieldError("customer","confirmPassword", "Passwords don't match."));
         }
+        //Verifying if email already taken
+        List<String> emails = customerService.findAllEmails();
+        if(emails.contains(customer.getEmail())){
+            bindingResultCustomer.addError(new FieldError("customer","email","Email is taken."));
+        }
+
 
         if(bindingResultCustomer.hasErrors() || bindingResultAddress.hasErrors() || bindingResultCreditCard.hasErrors()) {
             log.warn("======================errors with binding result=======================");
@@ -65,23 +73,22 @@ public class CustomerController {
     }
 
     @PostMapping("/save")
-    public String saveCustomer(@Valid @ModelAttribute("customer") Customer customer, BindingResult bindingResultCustomer,
+    public String saveCustomer(@ModelAttribute("customer") Customer customer,
                                @Valid @ModelAttribute("address") Address address, BindingResult bindingResultAddress,
                                @Valid @ModelAttribute("creditCard") CreditCard creditCard, BindingResult bindingResultCreditCard){
 
-        if(bindingResultCustomer.hasErrors() || bindingResultAddress.hasErrors() || bindingResultCreditCard.hasErrors()) {
+        if( bindingResultAddress.hasErrors() || bindingResultCreditCard.hasErrors()) {
             log.warn("======================errors with binding result=======================");
-
-
+            log.warn(bindingResultAddress.getAllErrors().toString());
 
             return "redirect:/dashboard/customer";
         }
 
-        if(customerService.isCustomerExist(customer.getEmail())) {
+//        if(customerService.isCustomerExist(customer.getEmail())) {
             customerService.updateCustomer(customer, address, creditCard);
-        }else{
-            customerService.saveCustomer(customer, address, creditCard);
-        }
+//        }else{
+//            customerService.saveCustomer(customer, address, creditCard);
+//        }
 
 
         return "redirect:/dashboard/customer";
