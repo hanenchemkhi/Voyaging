@@ -71,17 +71,5 @@ public class AdviceController {
         return "error";
     }
 
-//    @ModelAttribute
-//    public void theStudent(Model model, HttpServletRequest request, HttpSession http){
-//        Principal principal = request.getUserPrincipal();
-//        User user = null;
-//        if(principal != null){
-//            user =  userRepository.findByEmail(principal.getName()).get();
-//            http.setAttribute("user", user);
-//            log.warn("session attribute in advice controller  " + http.getAttribute("user").toString());
-//
-//        }
-//
-//    }
 
 }

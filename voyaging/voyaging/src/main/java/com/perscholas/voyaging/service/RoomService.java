@@ -157,6 +157,7 @@ public class RoomService {
             roomTypeToUpdate.setMaxGuests(roomType.getMaxGuests());
             roomTypeToUpdate.setPrice(roomType.getPrice());
             roomTypeToUpdate.setAmenities(roomType.getAmenities());
+
             roomTypeRepository.save(roomTypeToUpdate);
 
             try {
@@ -231,7 +232,10 @@ public class RoomService {
 
     public Set<RoomCategory> findRoomCategories() {
 
-        return roomTypeRepository.findAll().stream().map(roomType -> roomType.getRoomCategory()).collect(Collectors.toSet());
+        return roomTypeRepository.findAll()
+                .stream().
+                map(roomType -> roomType.getRoomCategory())
+                .collect(Collectors.toSet());
     }
     public List<Room> findAvailableRooms(LocalDate checkinDate, LocalDate checkoutDate) {
 
@@ -254,7 +258,9 @@ public class RoomService {
 
     }
 
-    public Set<RoomType> availableRoomType(LocalDate checkinDate, LocalDate checkoutDate, int numberRooms,int numberGuests) {
+    public Set<RoomType> availableRoomType(LocalDate checkinDate, LocalDate checkoutDate,
+                                           int numberRooms,int numberGuests) {
+
         List<Room> availableRooms = findAvailableRooms(checkinDate, checkoutDate);
 
         return availableRooms.stream()

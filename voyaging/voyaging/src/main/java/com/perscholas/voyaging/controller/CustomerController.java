@@ -84,11 +84,11 @@ public class CustomerController {
             return "redirect:/dashboard/customer";
         }
 
-//        if(customerService.isCustomerExist(customer.getEmail())) {
+        if(customerService.isCustomerExist(customer.getEmail())) {
             customerService.updateCustomer(customer, address, creditCard);
-//        }else{
-//            customerService.saveCustomer(customer, address, creditCard);
-//        }
+        }else{
+            customerService.saveCustomer(customer, address, creditCard);
+       }
 
 
         return "redirect:/dashboard/customer";

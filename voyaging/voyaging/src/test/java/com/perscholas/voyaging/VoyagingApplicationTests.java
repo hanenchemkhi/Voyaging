@@ -1,9 +1,7 @@
 package com.perscholas.voyaging;
 
-import ch.qos.logback.core.net.SyslogOutputStream;
 import com.perscholas.voyaging.model.*;
-import com.perscholas.voyaging.repository.AddressRepository;
-import com.perscholas.voyaging.repository.CreditCardRepository;
+
 import com.perscholas.voyaging.repository.CustomerRepository;
 import com.perscholas.voyaging.repository.RoomTypeRepository;
 import com.perscholas.voyaging.service.CustomerService;

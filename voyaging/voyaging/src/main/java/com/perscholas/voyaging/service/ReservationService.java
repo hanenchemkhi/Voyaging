@@ -56,7 +56,8 @@ public class ReservationService {
         return formatter.format(price);
     }
 
-    public Reservation saveReservation(LocalDate checkin, LocalDate checkout, int nbGuests, Customer customer, RoomType roomType, int nbRooms) {
+    public Reservation saveReservation(LocalDate checkin, LocalDate checkout,
+                                       int nbGuests, Customer customer, RoomType roomType, int nbRooms) {
 
         List<Room> rooms = roomService.findAvailableRooms(checkin,checkout)
                 .stream()
