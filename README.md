@@ -1,4 +1,6 @@
-# About the Project
+# Voyaging
+
+## About the Project
 
 Voyaging is an application that implements a hotel reservation service. It provides a user scenario as well as an admin scenario.
 
@@ -14,4 +16,5 @@ Voyaging is an application that implements a hotel reservation service. It provi
 - As a user :
     - Search for a room vacancy in the hotel between specific date.
     - Book a room.
+
 
