@@ -14,6 +14,6 @@ Voyaging is an application that implements a hotel reservation service. It provi
 - Bootstrap, JavaScrip
 ##Usage
 - As a user :
--  Search for a room vacancy in the hotel between specific date
--  Book a room.
+  -  Search for a room vacancy in the hotel between specific date
+  -  Book a room.
  
