@@ -1,8 +1,8 @@
 # Voyaging
-##About the Project
+## About the Project
 Voyaging is an application that implements a hotel reservation service. It provides a user scenario as well as an admin scenario.
 
-##Built with
+## Built with
 - Core Java
 - Spring framework
   - Spring MVC
