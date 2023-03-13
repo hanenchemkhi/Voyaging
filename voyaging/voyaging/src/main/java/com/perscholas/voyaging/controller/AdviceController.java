@@ -17,6 +17,11 @@ import java.time.LocalDate;
 @ControllerAdvice
 @Slf4j
 public class AdviceController {
+    private final UserRepository userRepository;
+
+    public AdviceController(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 //    private final UserRepository userRepository;
 //
 //    public AdviceController(UserRepository userRepository) {
@@ -69,6 +74,19 @@ public class AdviceController {
         String errorMessage = (exception != null ? exception.getMessage() : "Unknown error");
         model.addAttribute("error",errorMessage);
         return "error";
+    }
+
+    @ModelAttribute
+    public void userAdviceController(Model model, HttpServletRequest request, HttpSession http){
+        Principal principal = request.getUserPrincipal();
+        User user = null;
+        if(principal != null){
+            user =  userRepository.findByEmail(principal.getName()).get();
+            http.setAttribute("user", user);
+            log.warn("session attr userAdvice in advice controller  " + http.getAttribute("user").toString());
+
+        }
+        model.addAttribute("user", user);
     }
 
 
