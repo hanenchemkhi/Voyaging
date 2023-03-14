@@ -75,7 +75,8 @@ public class RoomService {
 
 
 
-    public void saveImage(MultipartFile file,Long roomTypeId) throws Exception{
+    public RoomImage saveImage(MultipartFile file,Long roomTypeId) throws Exception{
+        log.warn(roomTypeId.toString());
 
         try {
             String ext = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
@@ -95,12 +96,21 @@ public class RoomService {
 
 
             RoomImage roomImage = new RoomImage();
+            log.warn("before if findRoomImage by roomTypeId");
+
+            if(roomImageRepository.existsByRoomTypeId(roomTypeId)){
+                log.warn("inside if findRoomImage by roomTypeId");
+                roomImage = roomImageRepository.findByRoomTypeId(roomTypeId);
+
+            }
+            log.warn("outside if findRoomImage by roomTypeId");
             roomImage.setImageUrl(url);
             roomImage.setImageName(imageName);
             log.warn(imageName);
             roomImage.setRoomType(roomType);
             log.warn(roomCategory);
-            roomImageRepository.save(roomImage);
+            return roomImageRepository.save(roomImage);
+
 
         } catch (Exception e) {
             if (e instanceof FileAlreadyExistsException) {
@@ -144,9 +154,7 @@ public class RoomService {
 
     }
 
-    public List<RoomType> findAllRoomType() {
-        return roomTypeRepository.findAll();
-    }
+
 
     public void saveRoomCategory(RoomType roomType, MultipartFile file) {
 
@@ -158,13 +166,15 @@ public class RoomService {
             roomTypeToUpdate.setPrice(roomType.getPrice());
             roomTypeToUpdate.setAmenities(roomType.getAmenities());
 
-            roomTypeRepository.save(roomTypeToUpdate);
 
             try {
-                saveImage(file, roomTypeToUpdate.getId());
+                roomTypeToUpdate.setRoomImage(saveImage(file, roomTypeToUpdate.getId()));
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
+            roomTypeRepository.save(roomTypeToUpdate);
+
+
 
         }else {
             roomTypeRepository.save(roomType);
@@ -236,6 +246,10 @@ public class RoomService {
                 .stream().
                 map(roomType -> roomType.getRoomCategory())
                 .collect(Collectors.toSet());
+    }
+
+    public List<RoomType> findAllRoomType() {
+        return roomTypeRepository.findAll();
     }
     public List<Room> findAvailableRooms(LocalDate checkinDate, LocalDate checkoutDate) {
 

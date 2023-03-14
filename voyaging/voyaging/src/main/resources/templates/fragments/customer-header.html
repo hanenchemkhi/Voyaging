@@ -58,7 +58,7 @@
 
               <li class="nav-item">
 
-                  <div class="nav-link" sec:authorize="hasRole('CUSTOMER')">
+                  <div class="nav-link" sec:authorize="hasRole('CUSTOMER')"><span>Welcome </span>
                     <span th:text="${user.firstName}+' '+ ${user.lastName}"> </span>
                   </div>
 

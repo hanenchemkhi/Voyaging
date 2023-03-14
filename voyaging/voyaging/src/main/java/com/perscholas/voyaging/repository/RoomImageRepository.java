@@ -9,5 +9,7 @@ public interface RoomImageRepository extends JpaRepository<RoomImage, Long> {
 
     Optional<RoomImage> findByImageName(String imageName);
     Optional<RoomImage> findByImageUrl(String url);
+    boolean existsByRoomTypeId(Long roomTypeId);
+    RoomImage findByRoomTypeId(Long roomTypeId);
 
 }
