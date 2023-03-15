@@ -159,6 +159,7 @@ public class RoomService {
     public void saveRoomCategory(RoomType roomType, MultipartFile file) {
 
         RoomCategory roomCategory = roomType.getRoomCategory();
+
         if(roomTypeRepository.existsRoomTypesByRoomCategory(roomCategory)){
             //update roomType
             RoomType roomTypeToUpdate = roomTypeRepository.findByRoomCategory(roomCategory);
@@ -193,7 +194,7 @@ public class RoomService {
     }
 
     public Double calculateCostPerRoom(Long id, int nbRooms) {
-        return calculateTaxes(id) + finRoomById(id).getRoomType().getPrice();
+        return (calculateTaxes(id) + finRoomById(id).getRoomType().getPrice())*nbRooms;
     }
 
     public Double calculateTotalCost(Long id, Long lengthOfStay, int nbRooms) {

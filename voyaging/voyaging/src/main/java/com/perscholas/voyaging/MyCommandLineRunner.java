@@ -60,12 +60,14 @@ public class MyCommandLineRunner implements CommandLineRunner {
         Room room2 = new Room(127,roomType1);
         Room room3 = new Room(129,roomType1);
         Room room4 = new Room(131,roomType2);
+        Room room5 = new Room(133,roomType2);
 
 
         roomRepository.saveAndFlush(room1);
         roomRepository.saveAndFlush(room2);
         roomRepository.saveAndFlush(room3);
         roomRepository.saveAndFlush(room4);
+        roomRepository.saveAndFlush(room5);
 
 
         Authority admin = new Authority("ROLE_ADMIN");

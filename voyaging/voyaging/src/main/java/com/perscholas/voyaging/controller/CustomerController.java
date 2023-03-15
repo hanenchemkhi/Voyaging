@@ -52,7 +52,7 @@ public class CustomerController {
         //Verifying if email already taken
         List<String> emails = customerService.findAllEmails();
         if(emails.contains(customer.getEmail())){
-            bindingResultCustomer.addError(new FieldError("customer","email","Email is taken."));
+            bindingResultCustomer.addError(new FieldError("customer","email","Email is already in use."));
         }
 
 

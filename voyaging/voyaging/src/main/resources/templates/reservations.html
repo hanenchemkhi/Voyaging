@@ -74,8 +74,20 @@
               </td>
 
               <td th:text="${reservation.id}"></td>
-              <td th:each="room:${reservation.rooms}">
-                <span th:text="${room.getRoomNumber()}"> </span>
+              <td >
+                  <select
+                          class="form-select form-select-sm"
+                          size="2"
+                          aria-label=""
+                          disabled
+                  >
+                      <option
+                              th:each="room:${reservation.rooms}"
+                              th:value="${room}"
+                              th:text="${room.getRoomNumber()}"
+                      ></option>
+                  </select>
+
              </td>
 
               <td th:text="${reservation.customer.email}"></td>
