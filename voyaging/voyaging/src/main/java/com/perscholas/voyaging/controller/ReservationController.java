@@ -1,6 +1,6 @@
 package com.perscholas.voyaging.controller;
 
-import com.perscholas.voyaging.dto.RoomDTO;
+import com.perscholas.voyaging.dto.SearchCriteria;
 import com.perscholas.voyaging.model.*;
 import com.perscholas.voyaging.repository.CustomerRepository;
 import com.perscholas.voyaging.service.CustomerService;
@@ -16,27 +16,22 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 
 
 import java.security.Principal;
 import java.text.NumberFormat;
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.function.Function;
-import java.util.stream.Collectors;
+
 
 @Controller
 @Slf4j
 @RequestMapping()
 public class ReservationController {
-    @Autowired
-    private CustomerRepository customerRepository;
     @Autowired
     private CustomerService customerService;
     @Autowired
@@ -45,20 +40,32 @@ public class ReservationController {
     private ReservationService reservationService;
 
     @GetMapping("/search-result")
-    public String searchRooms(@RequestParam("checkinDate")@Valid @NotNull @Future(message = "Invalid checkin date") LocalDate checkinDate,
-                              @RequestParam("checkoutDate")@Valid @NotNull @Future(message = "Invalid checkout date")LocalDate checkoutDate,
-                              @RequestParam("nbRooms")@Valid @NotNull @Min(value = 1) @Max(value = 4) Integer numberRooms,
-                              @RequestParam("nbGuests")@Valid @NotNull @Min(value = 1) @Max(value = 4) Integer numberGuests,
+    public String searchRooms(@Valid @ModelAttribute("searchCriteria") SearchCriteria searchCriteria,
+                              BindingResult bindingResult,
                               Model model ){
+        log.warn("Inside /search-result");
+        log.warn("chekin date = "+searchCriteria.checkin());
+        log.warn("chekin date = "+searchCriteria.checkout());
+
+        if(bindingResult.hasErrors()){
+            log.warn("Error was captured");
+            log.warn("nbRooms = "+searchCriteria.nbRooms());
+            if(searchCriteria.checkin()!=null && searchCriteria.checkout()!=null) {
+                if (!searchCriteria.checkin().isBefore(searchCriteria.checkout())) {
+                    bindingResult.addError(new FieldError("searchCriteria", "checkout", "Check-out date must be after check-in date."));
+                    log.warn("Error was added to bindingResult");
+                }
+            }
+            return "index";
+        }
 
 
-
-
-        model.addAttribute("availableRooms", roomService.availableRoomType(checkinDate,checkoutDate,numberRooms,numberGuests));
-        model.addAttribute("checkin",checkinDate );
-        model.addAttribute("checkout",checkoutDate );
-        model.addAttribute("nbRooms", numberRooms);
-        model.addAttribute("nbGuests", numberGuests);
+        model.addAttribute("availableRooms", roomService.availableRoomType(searchCriteria.checkin(),
+                searchCriteria.checkout(),searchCriteria.nbRooms(),searchCriteria.nbGuests()));
+        model.addAttribute("checkin",searchCriteria.checkin() );
+        model.addAttribute("checkout",searchCriteria.checkout() );
+        model.addAttribute("nbRooms", searchCriteria.nbRooms());
+        model.addAttribute("nbGuests", searchCriteria.nbGuests());
         model.addAttribute("reservationService", reservationService);
 
         return "search-result";

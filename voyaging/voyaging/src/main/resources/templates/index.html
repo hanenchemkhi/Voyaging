@@ -22,8 +22,9 @@
                 <h3>Book A Unique Place</h3>
 
                 <form
-                  class="requires-validation"
-                  th:action="@{/search-result}" method="get"
+                  th:action="@{/search-result}"
+                  th:object="${searchCriteria}"
+                  method="get"
                   novalidate
                 >
                   <div class="row">
@@ -34,17 +35,20 @@
                       <input
                         class="form-control"
                         id="checkinInput"
-
                         type="date"
-                        name="checkinDate"
-                        placeholder="Check In"
+                        name="checkin"
+                        th:field="*{checkin}"
+                        th:value="${searchCriteria.checkin}"
                         onchange="validateCheckin()"
                         required
                       />
-                      <div class="valid-feedback">Check In field is valid!</div>
-                      <div id="invalidCheckin" class="invalid-feedback">
-                        Invalid Check In Date
-                      </div>
+                      <div th:if="${#fields.hasErrors('checkin')}" th:errors="*{checkin}" class="error text-warning"></div>
+
+
+<!--                      <div class="valid-feedback">Check In field is valid!</div>-->
+<!--                      <div id="invalidCheckin" class="invalid-feedback">-->
+<!--                        Invalid Check In Date-->
+<!--                      </div>-->
                     </div>
 
                     <div class="col-md-6">
@@ -54,18 +58,21 @@
                       <input
                         class="form-control"
                         id="checkoutInput"
+                        th:field="*{checkout}"
+                        th:value="${searchCriteria.checkout}"
                         onchange="validateCheckout()"
                         type="date"
-                        name="checkoutDate"
-                        placeholder="Check Out"
+                        name="checkout"
                         required
                       />
-                      <div class="valid-feedback">
-                        Check Out field is valid!
-                      </div>
-                      <div id="invalidCheckout" class="invalid-feedback">
-                        Invalid Check Out Date
-                      </div>
+
+                      <div th:if="${#fields.hasErrors('checkout')}" th:errors="*{checkout}" class="error text-warning"></div>
+<!--                      <div class="valid-feedback">-->
+<!--                        Check Out field is valid!-->
+<!--                      </div>-->
+<!--                      <div id="invalidCheckout" class="invalid-feedback">-->
+<!--                        Invalid Check Out Date-->
+<!--                      </div>-->
                     </div>
                   </div>
 
@@ -74,20 +81,39 @@
                       <label for="numberRooms" class="form-label"
                         >Rooms</label
                       >
-                      <input class="form-control" type="number" id="numberRooms" name="nbRooms" min="1" max="4">
-                      <div id="invalidRooms" class="invalid-feedback">
-                        Invalid Rooms Number
-                      </div>
+                      <input class="form-control"
+                             type="number"
+                             id="numberRooms"
+                             th:field="*{nbRooms}"
+                             th:value="${searchCriteria.nbRooms}"
+                             name="nbRooms"
+                             min="1"
+                             max="4"
+                             required
+                      >
+                      <div th:if="${#fields.hasErrors('nbRooms')}" th:errors="*{nbRooms}" class="error text-warning"></div>
+<!--                      <div id="invalidRooms" class="invalid-feedback">-->
+<!--                        Invalid Rooms Number-->
+<!--                      </div>-->
                     </div>
                     <div class="col-md-6">
                       <label for="numberGuests" class="form-label"
                         >Guests</label
                       >
-                      <input class="form-control" type="number" id="numberGuests" name="nbGuests" min="1" max="4">
+                      <input class="form-control"
+                             type="number"
+                             id="numberGuests"
+                             th:field="*{nbGuests}"
+                             th:value="${searchCriteria.nbGuests}"
+                             name="nbGuests"
+                             min="1"
+                             max="4"
+                             required>
+                      <div th:if="${#fields.hasErrors('nbGuests')}" th:errors="*{nbGuests}" class="error text-warning"></div>
                       <div id="helper" class="form-text form-label" style="color:white">(Maximum: 4 total guests/room)</div>
-                      <div id="invalidGuests" class="invalid-feedback">
-                        Invalid Guests Number
-                      </div>
+<!--                      <div id="invalidGuests" class="invalid-feedback">-->
+<!--                        Invalid Guests Number-->
+<!--                      </div>-->
                     </div>
                   </div>
                   <div class="row">

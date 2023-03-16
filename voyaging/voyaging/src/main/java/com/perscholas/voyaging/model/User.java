@@ -29,11 +29,11 @@ public abstract class User {
     @Nationalized
     @NotBlank(message = "Please enter first name")
     @Size(min=2, max= 50, message = "Please enter a valid name")
-     String firstName;
+    String firstName;
     @Nationalized
     @NotBlank(message = "Please enter last name")
     @Size(min=2, max= 50, message = "Please enter a valid name")
-     String lastName;
+    String lastName;
     @NotBlank(message = "Please enter email")
     @Column(unique = true)
     @Email(message="Please enter a valid email address")
