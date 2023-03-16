@@ -252,6 +252,7 @@ public class RoomService {
     public List<RoomType> findAllRoomType() {
         return roomTypeRepository.findAll();
     }
+
     public List<Room> findAvailableRooms(LocalDate checkinDate, LocalDate checkoutDate) {
 
         List<Room> availableRooms = roomRepository.findAll();
