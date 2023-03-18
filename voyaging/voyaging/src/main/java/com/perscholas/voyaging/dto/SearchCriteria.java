@@ -16,9 +16,9 @@ public record SearchCriteria(@Future(message = "Check-in date can not be in the 
                              @NotNull(message = "Number of rooms can not be empty")
                              @Min(value = 1, message = "Min: 1 room")
                              @Max(value = 4, message = "Max: 4 rooms")
-                             int nbRooms,
+                             Integer nbRooms,
                              @NotNull(message = "Number of guests can not be empty")
                              @Min(value = 1, message = "Min: 1 guest")
                              @Max(value = 4, message = "Max: 4 total guests/room")
-                             int nbGuests) {
+                             Integer nbGuests) {
 }
