@@ -9,8 +9,7 @@
   <script th:src="@{/scripts/script.js}" defer></script>
 </head>
 
-  <body>
-
+<body>
 
   <div th:replace="~{fragments/user-header :: header}"></div>
     <section class="result-header">
@@ -20,7 +19,9 @@
           <div class="container mb-2">
             <h4 class="p-2 text-center">Available Rooms Between</h4>
             <form
-              th:action="@{/search-result}" method="get"
+              th:action="@{/search-result}"
+              th:object="${searchCriteria}"
+              method="get"
               class="row d-flex justify-content-center g-3"
             >
               <div class="col-auto">
@@ -28,21 +29,29 @@
                 <input
                   type="date"
                   class="form-control"
-                  name="checkinDate"
+                  name="checkin"
                   id="checkinDate"
-                  th:value="${checkin}"
+                  th:field="*{checkin}"
+                  th:value="${searchCriteria.checkin}"
+                  required
                 />
+                <div th:if="${#fields.hasErrors('checkin')}" th:errors="*{checkin}" class="error text-warning"></div>
               </div>
+
               <div class="col-auto">
                 <label for="checkoutDate" >Check Out</label>
                 <input
                   type="date"
                   class="form-control"
                   id="checkoutDate"
-                  name="checkoutDate"
-                  th:value="${checkout}"
+                  name="checkout"
+                  th:field="*{checkout}"
+                  th:value="${searchCriteria.checkout}"
+                  required
                 />
+                <div th:if="${#fields.hasErrors('checkout')}" th:errors="*{checkout}" class="error text-warning"></div>
               </div>
+
               <div class="col-auto">
                 <label for="numberRooms" > Rooms</label>
                 <input
@@ -52,21 +61,27 @@
                         name="nbRooms"
                         min="1" max="4"
                         placeholder="Rooms"
-                        th:value="${nbRooms}"
-
+                        th:field="*{nbRooms}"
+                        th:value="${searchCriteria.nbRooms}"
+                        required
                 />
+                <div th:if="${#fields.hasErrors('nbRooms')}" th:errors="*{nbRooms}" class="error text-warning"></div>
               </div>
-                <div class="col-auto">
-                  <label for="numberGuests">Guests</label>
-                  <input
-                          type="number"
-                          class="form-control "
-                          name="nbGuests"
-                          id="numberGuests"
-                          min="1" max="4"
-                          th:value="${nbGuests}"
-                  />
-                </div>
+              <div class="col-auto">
+                <label for="numberGuests">Guests</label>
+                <input
+                        type="number"
+                        class="form-control "
+                        name="nbGuests"
+                        id="numberGuests"
+                        min="1" max="4"
+                        th:field="*{nbGuests}"
+                        th:value="${searchCriteria.nbGuests}"
+                        required
+                />
+                <div th:if="${#fields.hasErrors('nbGuests')}" th:errors="*{nbGuests}" class="error text-warning"></div>
+
+              </div>
 
               <div class="col-auto ">
                 <button type="submit" class="btn btn-primary mt-4">
@@ -106,7 +121,7 @@
                     </ul>
 
                     <div class="d-flex justify-content-end">
-                      <a th:href="@{/book(roomTypeId=${roomType.id},checkin =${checkin},checkout =${checkout} , nbRooms=${nbRooms}, nbGuests=${nbGuests})}" class="btn btn-primary"
+                      <a th:href="@{/book(roomTypeId=${roomType.id},checkin =${searchCriteria.checkin()},checkout =${searchCriteria.checkout()} , nbRooms=${searchCriteria.nbRooms()}, nbGuests=${searchCriteria.nbGuests()})}" class="btn btn-primary"
                         >Check offer</a
                       >
                     </div>

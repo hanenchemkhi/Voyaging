@@ -71,10 +71,7 @@ public class ReservationController {
 
         model.addAttribute("availableRooms", roomService.availableRoomType(searchCriteria.checkin(),
                 searchCriteria.checkout(),searchCriteria.nbRooms(),searchCriteria.nbGuests()));
-        model.addAttribute("checkin",searchCriteria.checkin() );
-        model.addAttribute("checkout",searchCriteria.checkout() );
-        model.addAttribute("nbRooms", searchCriteria.nbRooms());
-        model.addAttribute("nbGuests", searchCriteria.nbGuests());
+
 
         model.addAttribute("reservationService", reservationService);
 
@@ -84,32 +81,29 @@ public class ReservationController {
 
     @GetMapping("/book")
     public String viewBooking(@RequestParam("roomTypeId") Long id,
-                              @RequestParam("checkin") LocalDate checkin,
-                              @RequestParam("checkout") LocalDate checkout,
-                              @RequestParam("nbRooms") int nbRooms,
-                              @RequestParam("nbGuests") int nbGuests,
+                              @ModelAttribute("searchCriteria") SearchCriteria searchCriteria,
                               Model model, HttpSession httpSession){
 
-        Long lengthOfStay = reservationService.findLengthOfStay(checkin, checkout);
+        Long lengthOfStay = reservationService.findLengthOfStay(searchCriteria.checkin(), searchCriteria.checkout());
         NumberFormat formatter = NumberFormat.getCurrencyInstance();
 
         RoomType roomType = roomService.findRoomTypeById(id);
 
         model.addAttribute("lengthOfStay" , lengthOfStay);
         model.addAttribute("roomType", roomType );
-        model.addAttribute("checkin",reservationService.formatDate( checkin) );
-        model.addAttribute("checkout", reservationService.formatDate(checkout) );
-        model.addAttribute("nbRooms", nbRooms);
-        model.addAttribute("nbGuests", nbGuests);
+        model.addAttribute("checkin",reservationService.formatDate( searchCriteria.checkin()) );
+        model.addAttribute("checkout", reservationService.formatDate(searchCriteria.checkout()) );
+        model.addAttribute("nbRooms", searchCriteria.nbRooms());
+        model.addAttribute("nbGuests", searchCriteria.nbGuests());
         model.addAttribute("price", formatter.format(roomType.getPrice()));
         model.addAttribute("taxes", formatter.format(roomService.calculateTaxes(id)));
-        model.addAttribute("costPerRoom", formatter.format(roomService.calculateCostPerRoom(id, nbRooms)));
-        model.addAttribute("totalCost", formatter.format(roomService.calculateTotalCost(id, lengthOfStay, nbRooms)));
+        model.addAttribute("costPerRoom", formatter.format(roomService.calculateCostPerRoom(id, searchCriteria.nbRooms())));
+        model.addAttribute("totalCost", formatter.format(roomService.calculateTotalCost(id, lengthOfStay, searchCriteria.nbGuests())));
 
-        httpSession.setAttribute("checkin",checkin );
-        httpSession.setAttribute("checkout", checkout );
-        httpSession.setAttribute("nbRooms", nbRooms);
-        httpSession.setAttribute("nbGuests", nbGuests);
+        httpSession.setAttribute("checkin",searchCriteria.checkin() );
+        httpSession.setAttribute("checkout", searchCriteria.checkout() );
+        httpSession.setAttribute("nbRooms", searchCriteria.nbRooms());
+        httpSession.setAttribute("nbGuests", searchCriteria.nbGuests());
         httpSession.setAttribute("roomType", roomType );
 
         return "book";

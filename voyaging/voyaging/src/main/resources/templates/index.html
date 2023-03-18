@@ -25,7 +25,6 @@
                   th:action="@{/search-result}"
                   th:object="${searchCriteria}"
                   method="get"
-                  novalidate
                 >
                   <div class="row">
                     <div class="col-md-6">
@@ -44,11 +43,6 @@
                       />
                       <div th:if="${#fields.hasErrors('checkin')}" th:errors="*{checkin}" class="error text-warning"></div>
 
-
-<!--                      <div class="valid-feedback">Check In field is valid!</div>-->
-<!--                      <div id="invalidCheckin" class="invalid-feedback">-->
-<!--                        Invalid Check In Date-->
-<!--                      </div>-->
                     </div>
 
                     <div class="col-md-6">
@@ -67,12 +61,7 @@
                       />
 
                       <div th:if="${#fields.hasErrors('checkout')}" th:errors="*{checkout}" class="error text-warning"></div>
-<!--                      <div class="valid-feedback">-->
-<!--                        Check Out field is valid!-->
-<!--                      </div>-->
-<!--                      <div id="invalidCheckout" class="invalid-feedback">-->
-<!--                        Invalid Check Out Date-->
-<!--                      </div>-->
+
                     </div>
                   </div>
 
@@ -92,9 +81,7 @@
                              required
                       >
                       <div th:if="${#fields.hasErrors('nbRooms')}" th:errors="*{nbRooms}" class="error text-warning"></div>
-<!--                      <div id="invalidRooms" class="invalid-feedback">-->
-<!--                        Invalid Rooms Number-->
-<!--                      </div>-->
+
 
                     </div>
                     <div class="col-md-6">
@@ -114,9 +101,7 @@
                       <div th:if="${#fields.hasErrors('nbGuests')}" th:errors="*{nbGuests}" class="error text-warning"></div>
 
                       <div id="helper" class="form-text form-label" style="color:white">(Maximum: 4 total guests/room)</div>
-<!--                      <div id="invalidGuests" class="invalid-feedback">-->
-<!--                        Invalid Guests Number-->
-<!--                      </div>-->
+
                     </div>
                   </div>
                   <div class="row">
