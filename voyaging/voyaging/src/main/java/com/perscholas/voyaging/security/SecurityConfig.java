@@ -43,7 +43,6 @@ public class SecurityConfig {
         return provider;
     }
 
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
@@ -70,11 +69,6 @@ public class SecurityConfig {
                         .clearAuthentication(true)
                         .deleteCookies( "JSESSIONID")
                         .permitAll()).exceptionHandling().accessDeniedPage("/403");
-
-
-
-
         return http.build();
     }
-
 }

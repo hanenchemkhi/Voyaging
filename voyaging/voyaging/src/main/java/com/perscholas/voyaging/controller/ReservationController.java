@@ -1,8 +1,10 @@
 package com.perscholas.voyaging.controller;
 
 
+import com.perscholas.voyaging.dto.SearchCriteria;
+
 import com.perscholas.voyaging.model.*;
-import com.perscholas.voyaging.repository.CustomerRepository;
+
 import com.perscholas.voyaging.service.CustomerService;
 import com.perscholas.voyaging.service.EmailSenderService;
 import com.perscholas.voyaging.service.ReservationService;
@@ -10,7 +12,7 @@ import com.perscholas.voyaging.service.RoomService;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.*;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import lombok.extern.slf4j.Slf4j;
@@ -18,28 +20,25 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 
 
 import java.security.Principal;
 import java.text.NumberFormat;
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.function.Function;
-import java.util.stream.Collectors;
+
+
+
+
 
 @Controller
 @Slf4j
 @RequestMapping()
 public class ReservationController {
-    @Autowired
-    private CustomerRepository customerRepository;
     @Autowired
     private CustomerService customerService;
     @Autowired
@@ -50,18 +49,33 @@ public class ReservationController {
     @Autowired
     EmailSenderService emailSenderService;
     @GetMapping("/search-result")
-    public String searchRooms(@RequestParam(value="checkinDate") LocalDate checkinDate,
-                              @RequestParam(value = "checkoutDate") LocalDate checkoutDate,
-                              @RequestParam(value ="nbRooms", defaultValue = "1") Integer numberRooms,
-                              @RequestParam(value ="nbGuests", defaultValue = "1") Integer numberGuests,
+
+    public String searchRooms(@Valid @ModelAttribute("searchCriteria") SearchCriteria searchCriteria,
+                              BindingResult bindingResult,
                               Model model ){
+        log.warn("Inside /search-result");
+        log.warn("chekin date = "+searchCriteria.checkin());
+        log.warn("chekin date = "+searchCriteria.checkout());
 
+        if(bindingResult.hasErrors()){
+            log.warn("Error was captured");
+            log.warn("nbRooms = "+searchCriteria.nbRooms());
+            if(searchCriteria.checkin()!=null && searchCriteria.checkout()!=null) {
+                if (!searchCriteria.checkin().isBefore(searchCriteria.checkout())) {
+                    bindingResult.addError(new FieldError("searchCriteria", "checkout", "Check-out date must be after check-in date."));
+                    log.warn("Error was added to bindingResult");
+                }
+            }
+            return "index";
+        }
 
-        model.addAttribute("availableRooms", roomService.availableRoomType(checkinDate,checkoutDate,numberRooms,numberGuests));
-        model.addAttribute("checkin",checkinDate );
-        model.addAttribute("checkout",checkoutDate );
-        model.addAttribute("nbRooms", numberRooms);
-        model.addAttribute("nbGuests", numberGuests);
+        model.addAttribute("availableRooms", roomService.availableRoomType(searchCriteria.checkin(),
+                searchCriteria.checkout(),searchCriteria.nbRooms(),searchCriteria.nbGuests()));
+        model.addAttribute("checkin",searchCriteria.checkin() );
+        model.addAttribute("checkout",searchCriteria.checkout() );
+        model.addAttribute("nbRooms", searchCriteria.nbRooms());
+        model.addAttribute("nbGuests", searchCriteria.nbGuests());
+
         model.addAttribute("reservationService", reservationService);
 
         return "search-result";
@@ -105,7 +119,7 @@ public class ReservationController {
     @GetMapping("/customer/save-reservation")
     public String saveReservation(Model model, HttpSession httpSession, Principal principal) throws MessagingException {
 
-        Map<String, Object> properties = new HashMap<>();
+
         NumberFormat formatter = NumberFormat.getCurrencyInstance();
 
         LocalDate checkin = LocalDate.parse(httpSession.getAttribute("checkin").toString());
@@ -173,7 +187,4 @@ public class ReservationController {
         return "confirmation";
 
     }
-
-
-
 }

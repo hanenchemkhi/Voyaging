@@ -1,5 +1,6 @@
 package com.perscholas.voyaging.controller;
 
+import com.perscholas.voyaging.dto.SearchCriteria;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,10 +15,9 @@ public class HomeController {
     @GetMapping()
     public String indexView(Model model) {
 
-        model.addAttribute("checkinDate", LocalDate.now());
-        model.addAttribute("checkoutDate", LocalDate.now().plusDays(1));
-        model.addAttribute("nbRooms",1);
-        model.addAttribute("nbGuests",1);
+        System.out.println(LocalDate.now());
+        System.out.println(LocalDate.now().plusDays(1));
+        model.addAttribute("searchCriteria", new SearchCriteria(LocalDate.now(),LocalDate.now().plusDays(1),1,1));
 
         return "index";
     }

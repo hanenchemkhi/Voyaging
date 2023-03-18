@@ -30,10 +30,12 @@ public abstract class User {
     @Size(min=2, max= 50, message = "Please enter a valid name")
     @Pattern(regexp = "^[\\p{L} .'-]+$")
     String firstName;
+
     @Nationalized
     @NotBlank(message = "Please enter last name")
     @Size(min=2, max= 50, message = "Please enter a valid name")
     @Pattern(regexp = "^[\\p{L} .'-]+$")
+
     String lastName;
     @NotBlank(message = "Please enter email")
     @Column(unique = true)
