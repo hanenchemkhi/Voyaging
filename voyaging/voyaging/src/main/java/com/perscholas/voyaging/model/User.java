@@ -20,6 +20,7 @@ import org.hibernate.annotations.Nationalized;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
+@Table(name="users_table")
 public abstract class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

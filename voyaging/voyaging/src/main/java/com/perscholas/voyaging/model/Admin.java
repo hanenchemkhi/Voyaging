@@ -3,6 +3,7 @@ package com.perscholas.voyaging.model;
 
 import jakarta.persistence.Entity;
 
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -15,6 +16,7 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
+@Table(name="admin_table")
 public class Admin extends User{
 
 
