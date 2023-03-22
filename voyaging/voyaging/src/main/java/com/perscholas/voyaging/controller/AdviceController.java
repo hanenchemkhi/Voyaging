@@ -14,7 +14,7 @@ import java.security.Principal;
 import java.time.LocalDate;
 
 
-//@ControllerAdvice
+@ControllerAdvice
 @Slf4j
 public class AdviceController {
     private final UserRepository userRepository;
@@ -22,11 +22,7 @@ public class AdviceController {
     public AdviceController(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
-//    private final UserRepository userRepository;
-//
-//    public AdviceController(UserRepository userRepository) {
-//        this.userRepository = userRepository;
-//    }
+
 
     @ExceptionHandler(Exception.class)
     public String exception(final Exception exception, final Model model) {
