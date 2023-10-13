@@ -1,6 +1,5 @@
 package com.perscholas.voyaging.security;
 
-import com.perscholas.voyaging.model.Authority;
 import com.perscholas.voyaging.model.User;
 import com.perscholas.voyaging.repository.AuthorityRepository;
 import com.perscholas.voyaging.repository.UserRepository;
@@ -40,16 +39,16 @@ public class AppUserDetailsService implements UserDetailsService {
 
         Optional<User> userByEmail = userRepository.findByEmail(email);
 
-        if (!userByEmail.isPresent()) {
+        if (userByEmail.isEmpty()) {
             throw new UsernameNotFoundException("Invalid credentials!");
         }
         User user = userByEmail.get();
 
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-        user.getAuthorities().stream().forEach(authority ->
+        user.getAuthorities().forEach(authority ->
                 grantedAuthorities.add(new SimpleGrantedAuthority(authority.getAuthority())));
 
-        log.warn("User: "+ user.getEmail()+" with authorities: "+ grantedAuthorities.toString());
+        log.warn("User: "+ user.getEmail()+" with authorities: "+ grantedAuthorities);
 
 
         return new AppUserPrincipal(user,grantedAuthorities);

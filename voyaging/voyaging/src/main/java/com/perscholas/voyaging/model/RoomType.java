@@ -3,14 +3,9 @@ import jakarta.persistence.Entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.aspectj.bridge.IMessage;
-
 import java.util.HashSet;
 import java.util.Set;
 
